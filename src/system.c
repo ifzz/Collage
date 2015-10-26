@@ -20,8 +20,6 @@ void createEvent(unsigned int *eventId) {
 	*eventId = world->eventCount;
 
 	++ world->eventCount;
-
-	//world->eventMask[world->eventCount] = :
 }
 
 void triggerEvent(unsigned int entityId, unsigned int eventId, void *data) {
@@ -32,6 +30,20 @@ void triggerEvent(unsigned int entityId, unsigned int eventId, void *data) {
 		unsigned int systemMask = world->systemMask[eventId][i];
 
 		if ((entityMask & systemMask) == systemMask) {
+			world->systemCallback[eventId][i](data);
+		}
+	}
+}
+
+void triggerEvents(unsigned int eventId, unsigned int componentFlags, void *data) {
+	World *world = getWorld();
+
+	for (unsigned int entityId = 0; entityId < world->entityCount; ++ entityId) {
+		unsigned int entityMask = getWorld()->entityMask[entityId];
+
+		for (int i = 0; i < world->systemIndex[eventId]; ++ i) {
+			unsigned int systemMask = world->systemMask[eventId][i];
+			
 			world->systemCallback[eventId][i](data);
 		}
 	}
