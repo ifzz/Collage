@@ -21,7 +21,6 @@ typedef struct {
 
 void initWorlds(void);
 void createWorld(char*);
-void addComponentToWorld(unsigned int*, size_t);
 World* getWorld(void);
 void setWorld(char*);
 void cleanWorld(void);

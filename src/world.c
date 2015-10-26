@@ -71,16 +71,6 @@ void deleteWorld(void *data) {
 	free(world->entityMask);
 }
 
-void addComponentToWorld(unsigned int *id, size_t size) {
-	World *world = ACTIVE_WORLD;
-
-	world->components[world->componentCount] = malloc(size * world->entityCountMax);
-	
-	*id = 1 << world->componentCount;
-	++ world->componentCount;
-	
-	printf("[WORLD] Added new component \'%u\' of size %zu\n", *id, size);
-}
 
 World* getWorld() {
 	return ACTIVE_WORLD;
