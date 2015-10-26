@@ -4,12 +4,17 @@
 typedef struct {
 	unsigned int *entityMask, *deletedEntityIds;
 	unsigned int *entityIdsToDelete;
+	unsigned int **systemMask;
 	unsigned int entityCount, entityCountMax;
 	unsigned int deletedEntityCount;
 	unsigned int entityIdsToDeleteCount;
-	unsigned int systemCount, systemCountMax;
+	unsigned int systemCountMax;
+	unsigned int eventCount;
+	unsigned int componentCount;
+	unsigned int *systemIndex;
 	void **systems;
-	char **systemNames;
+	void (***systemCallback)(void*);
+	void **components;
 	char *name;
 } World;
 

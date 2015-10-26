@@ -22,7 +22,20 @@ void createWorld(char *name) {
 
 	newWorld->entityCount = 0;
 	newWorld->entityCountMax = 3000;
+	newWorld->systemCountMax = 100;
 	newWorld->entityMask = calloc(sizeof(unsigned int), newWorld->entityCountMax);
+	newWorld->components = calloc(sizeof(void*), newWorld->entityCountMax);
+	newWorld->systemIndex = calloc(sizeof(unsigned int), newWorld->entityCountMax);
+	newWorld->systemMask = calloc(sizeof(unsigned int*), newWorld->systemCountMax);
+
+	for (int i = 0; i < newWorld->systemCountMax; ++ i)
+		newWorld->systemMask[i] = calloc(sizeof(unsigned int), newWorld->systemCountMax);
+
+	newWorld->systemCallback = calloc(sizeof(void (*)(void*)), newWorld->systemCountMax);
+	
+	for (int i = 0; i < newWorld->systemCountMax; ++ i)
+		newWorld->systemCallback[i] = calloc(sizeof(void (*)(void*)), newWorld->systemCountMax);
+	
 	newWorld->entityIdsToDelete = calloc(sizeof(unsigned int), newWorld->entityCountMax);
 	newWorld->deletedEntityIds = calloc(sizeof(unsigned int), newWorld->entityCountMax);
 	newWorld->systems = calloc(sizeof(void*), newWorld->entityCountMax);
@@ -61,10 +74,10 @@ void deleteWorld(void *data) {
 void addComponentToWorld(unsigned int *id, size_t size) {
 	World *world = ACTIVE_WORLD;
 
-	world->systems[world->systemCount] = malloc(size * world->entityCountMax);
+	world->components[world->componentCount] = malloc(size * world->entityCountMax);
 	
-	*id = 1 << world->systemCount;
-	++ world->systemCount;
+	*id = 1 << world->componentCount;
+	++ world->componentCount;
 	
 	printf("[WORLD] Added new component \'%u\' of size %zu\n", *id, size);
 }

@@ -39,6 +39,10 @@ ECS due to the rigidness of translating context-sensitive Event information to a
 
 The solution:
 
-	triggerEvent(world, entityId, "damage target", {ownerId, targetId})
+	init:
+		createEvent(&EVENT_DAMAGE)
+		createSystem(EVENT_DAMAGE, COMPONENT_STATS, &damageCallback);
+	
+	triggerEvent(entityId, EVENT_DAMAGE, {ownerId, targetId, 10})
 
 * `triggerEvent` accepts a void pointer 
