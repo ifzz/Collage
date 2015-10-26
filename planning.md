@@ -43,6 +43,6 @@ The solution:
 		createEvent(&EVENT_DAMAGE)
 		createSystem(EVENT_DAMAGE, COMPONENT_STATS, &damageCallback);
 	
-	triggerEvent(entityId, EVENT_DAMAGE, {ownerId, targetId, 10})
+	triggerEvent(entityId, EVENT_DAMAGE, &eventData)
 
 * `triggerEvent` accepts a void pointer 
