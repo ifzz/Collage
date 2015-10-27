@@ -5,6 +5,8 @@
 #include <string.h>
 #include <assert.h>
 #include "world.h"
+#include "component.h"
+#include "system.h"
 
 
 void deleteWorld(void*);
@@ -15,6 +17,10 @@ linkedList_t *WORLD_LIST = NULL;
 
 void initWorlds() {
 	WORLD_LIST = createLinkedList(&deleteWorld);
+}
+
+void destroyWorlds() {
+	deleteLinkedList(WORLD_LIST);
 }
 
 void createWorld(char *name) {
@@ -66,9 +72,24 @@ void cleanWorld() {
 void deleteWorld(void *data) {
 	World *world = data;
 	
+	for (int i = 0; i < world->componentCount; ++ i)
+		removeComponentFromWorld(i);
+
+	for (int i = 0; i < world->systemCountMax; ++ i)
+		free(world->systemMask[i]);
+
+	for (int i = 0; i < world->systemCountMax; ++ i)
+		free(world->systemCallback[i]);
+	
 	free(world->name);
 	free(world->systems);
 	free(world->entityMask);
+	free(world->components);
+	free(world->systemIndex);
+	free(world->systemMask); 
+	free(world->systemCallback); 
+	free(world->entityIdsToDelete);
+	free(world->deletedEntityIds);
 }
 
 
@@ -92,4 +113,10 @@ void setWorld(char *name) {
 	printf("[WORLD-#FATAL] Cannot get world: %s\n", name);
 
 	assert(NULL);
+}
+
+void killWorld() {
+	deleteListItem(WORLD_LIST, ACTIVE_WORLD);
+
+	ACTIVE_WORLD = NULL;
 }

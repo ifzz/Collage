@@ -4,7 +4,7 @@
 #include "timestep.h"
 
 double TIME = 0.;
-double DELTA_TIME = 0.01;
+double DELTA_TIME = 1 / 60.;
 double CURRENT_TIME = 0.;
 double ACCUMULATOR = 0.;
 unsigned int EVENT_TIMESTEP = 0;

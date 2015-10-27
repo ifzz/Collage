@@ -20,7 +20,9 @@ typedef struct {
 
 
 void initWorlds(void);
+void destroyWorlds(void);
 void createWorld(char*);
+void killWorld(void);
 World* getWorld(void);
 void setWorld(char*);
 void cleanWorld(void);

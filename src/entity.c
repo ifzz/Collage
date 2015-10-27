@@ -39,8 +39,3 @@ void deleteEntity(unsigned int entityId) {
 	printf("[ENTITY] Deleted entity #%u\n", entityId);
 }
 
-void addComponentToEntity(unsigned int entityId, unsigned int componentFlag) {
-	getWorld()->entityMask[entityId] |= componentFlag;
-
-	printf("[ENTITY] Added entity #%u to component ID=%u\n", entityId, componentFlag);
-}

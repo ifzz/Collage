@@ -5,11 +5,11 @@
 
 int WINDOW_WIDTH, WINDOW_HEIGHT;
 
-int displayInit(void);
+int initDisplay(void);
+void destroyDisplay(void);
 void displayFrameStart(void);
 void displayFrameEnd(void);
 void displayUpdateTime(void);
-void displayDestroy(void);
 void displayApplyResolution(void);
 int displayGetWindowWidth(void);
 int displayGetWindowHeight(void);

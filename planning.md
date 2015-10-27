@@ -46,3 +46,9 @@ The solution:
 	triggerEvent(entityId, EVENT_DAMAGE, &eventData)
 
 * `triggerEvent` accepts a void pointer 
+
+ToDo
+----
+
+Component IDs are not reused after delete.
+	The constant would also need to be returned to 0.

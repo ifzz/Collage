@@ -44,7 +44,9 @@ void triggerEvents(unsigned int eventId, unsigned int componentFlags, void *data
 		for (int i = 0; i < world->systemIndex[eventId]; ++ i) {
 			unsigned int systemMask = world->systemMask[eventId][i];
 			
-			world->systemCallback[eventId][i](data);
+			if ((systemMask & componentFlags) == componentFlags) {
+				world->systemCallback[eventId][i](data);
+			}
 		}
 	}
 }

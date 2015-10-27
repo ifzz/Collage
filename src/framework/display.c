@@ -18,7 +18,7 @@ int RENDER_HEIGHT = 720;
 bool FULLSCREEN = false;
 
 
-int displayInit() {
+int initDisplay() {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER) != 0) {
 		printf("Couldn't init SDL.\n");
 		
@@ -154,7 +154,7 @@ void displayUpdateTime() {
 	//TIME += TIMESTEP;
 }
 
-void displayDestroy() {
+void destroyDisplay() {
 	//if (WINDOW)
 	//	SDL_DestroyWindow(WINDOW);
 	
