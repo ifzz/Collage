@@ -5,6 +5,7 @@ typedef struct {
 	unsigned int *entityMask, *deletedEntityIds;
 	unsigned int *entityIdsToDelete;
 	unsigned int **systemMask;
+	unsigned int **entityEventCallbackCount;
 	unsigned int entityCount, entityCountMax;
 	unsigned int deletedEntityCount;
 	unsigned int entityIdsToDeleteCount;
@@ -14,6 +15,7 @@ typedef struct {
 	unsigned int *systemIndex;
 	void **systems;
 	void (***systemCallback)(void*);
+	void (****entityEventCallback)(void*);
 	void **components;
 	char *name;
 } World;

@@ -1,7 +1,7 @@
-#include "world.h"
-#include "entity.h"
 #include <stdio.h>
 #include <assert.h>
+#include "world.h"
+#include "entity.h"
 
 
 unsigned int createEntity() {
@@ -37,5 +37,14 @@ void deleteEntity(unsigned int entityId) {
 	++ world->entityIdsToDeleteCount;
 	
 	printf("[ENTITY] Deleted entity #%u\n", entityId);
+}
+
+void registerEntityEvent(unsigned int entityId, unsigned int eventId, void (*callback)(void*)) {
+	World *world = getWorld();
+	int callbackCount = world->entityEventCallbackCount[entityId][eventId];
+
+	world->entityEventCallback[entityId][eventId][callbackCount] = callback;
+	++ world->entityEventCallbackCount[entityId][eventId];
+
 }
 

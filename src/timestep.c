@@ -7,7 +7,6 @@ double TIME = 0.;
 double DELTA_TIME = 1 / 60.;
 double CURRENT_TIME = 0.;
 double ACCUMULATOR = 0.;
-unsigned int EVENT_TIMESTEP = 0;
 
 typedef struct {
 	double time;
@@ -25,7 +24,7 @@ int getHiResTime() {
 void initTimestep() {
 	CURRENT_TIME = getHiResTime();
 
-	createEvent(&EVENT_TIMESTEP);
+	//createEvent(&EVENT_TIMESTEP);
 }
 
 void stepTime() {
@@ -42,7 +41,7 @@ void stepTime() {
 	while (ACCUMULATOR >= DELTA_TIME) {
 		Delta timeInfo = {TIME, DELTA_TIME};
 
-		triggerEvents(EVENT_TIMESTEP, 0, &timeInfo);
+		//triggerEvents(EVENT_TIMESTEP, 0, &timeInfo);
 
 		TIME += DELTA_TIME;
 		ACCUMULATOR -= DELTA_TIME;

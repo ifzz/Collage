@@ -1,18 +1,19 @@
-#include "componentHealth.h"
-#include "constants.h"
-#include "../system.h"
-#include "../component.h"
+#include <stdio.h>
+#include "health.h"
+#include "../constants.h"
+#include "../../system.h"
+#include "../../component.h"
 
-void testEvent1Callback(void*);
-void testEvent2Callback(void*);
+void eventHitCallback(void*);
+void eventDamageCallback(void*);
 
 
 void initComponentHealth() {
 	addComponentToWorld(&COMPONENT_STATS, sizeof(HealthComponent));
 	createEvent(&EVENT_HIT);
 	createEvent(&EVENT_DAMAGE);
-	createSystem(EVENT_HIT, COMPONENT_STATS, testEvent1Callback);
-	createSystem(EVENT_DAMAGE, COMPONENT_STATS, testEvent2Callback);
+	createSystem(EVENT_HIT, COMPONENT_STATS, eventHitCallback);
+	createSystem(EVENT_DAMAGE, COMPONENT_STATS, eventDamageCallback);
 }
 
 void registerHealth(unsigned int entityId) {
@@ -22,7 +23,7 @@ void registerHealth(unsigned int entityId) {
 	hC->hp = 15;
 }
 
-void testEvent1Callback(void *data) {
+void eventHitCallback(void *data) {
 	DamageEvent *tC = data;
 	DamageEvent dE = {tC->targetId, tC->ownerId, tC->damage};
 
@@ -31,7 +32,7 @@ void testEvent1Callback(void *data) {
 	triggerEvent(tC->targetId, EVENT_DAMAGE, &dE);
 }   
 
-void testEvent2Callback(void *data) {
+void eventDamageCallback(void *data) {
 	DamageEvent *dE = data;
 	HealthComponent *hC = getComponent(dE->ownerId, COMPONENT_STATS);
 	

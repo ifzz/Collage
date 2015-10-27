@@ -47,6 +47,16 @@ The solution:
 
 * `triggerEvent` accepts a void pointer 
 
+Use Cases 
+=========
+
+Game Loop
+---------
+
+The problem with 
+
+
+
 ToDo
 ----
 

@@ -22,6 +22,7 @@ void createEvent(unsigned int *eventId) {
 	++ world->eventCount;
 }
 
+//#TODO: Move to entity.c
 void triggerEvent(unsigned int entityId, unsigned int eventId, void *data) {
 	World *world = getWorld();
 	unsigned int entityMask = getWorld()->entityMask[entityId];
@@ -33,8 +34,15 @@ void triggerEvent(unsigned int entityId, unsigned int eventId, void *data) {
 			world->systemCallback[eventId][i](data);
 		}
 	}
+
+	printf("Events: %i\n", world->entityEventCallbackCount[entityId][eventId]);
+
+	for (int i = 0; i < world->entityEventCallbackCount[entityId][eventId]; ++ i) {
+		world->entityEventCallback[entityId][eventId][i](data);
+	}
 }
 
+//#TODO: Rename: triggerSystemEvent
 void triggerEvents(unsigned int eventId, unsigned int componentFlags, void *data) {
 	World *world = getWorld();
 
@@ -48,5 +56,8 @@ void triggerEvents(unsigned int eventId, unsigned int componentFlags, void *data
 				world->systemCallback[eventId][i](data);
 			}
 		}
+		
 	}
+
+
 }
