@@ -47,6 +47,26 @@ The solution:
 
 * `triggerEvent` accepts a void pointer 
 
+Problem 3: Saving/Loading
+-------------------------
+
+Components should be easy enough to dump directly to disk, then just as easily be loaded back in.
+I have a feeling there will be a few cases where some components just won't dump correctly:
+
+	* Components with callbacks of their own.
+	* Use of reference by Pointer.
+
+This may be a design choice we make early on.
+
+
+Tech
+====
+
+Object Blobs
+------------
+
+Object 
+
 Use Cases 
 =========
 
