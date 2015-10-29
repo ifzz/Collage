@@ -17,7 +17,7 @@ int main() {
 	
 	initTimestep();
 	initComponentHealth();
-	initDisplay();
+	//initDisplay();
 
 	unsigned int entityId = createEntity();
 	unsigned int targetId = createHunter(0, 0, 0);
