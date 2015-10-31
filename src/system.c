@@ -2,6 +2,7 @@
 #include "world.h"
 #include "system.h"
 
+
 void createSystem(unsigned int eventId, unsigned int componentMask, void (*callback)(void*)) {
 	World *world = getWorld();
 
@@ -35,7 +36,7 @@ void triggerEvent(unsigned int entityId, unsigned int eventId, void *data) {
 		}
 	}
 
-	printf("Events: %i\n", world->entityEventCallbackCount[entityId][eventId]);
+	//printf("Events: %i\n", world->entityEventCallbackCount[entityId][eventId]);
 
 	for (int i = 0; i < world->entityEventCallbackCount[entityId][eventId]; ++ i) {
 		world->entityEventCallback[entityId][eventId][i](data);
@@ -47,8 +48,6 @@ void triggerEvents(unsigned int eventId, unsigned int componentFlags, void *data
 	World *world = getWorld();
 
 	for (unsigned int entityId = 0; entityId < world->entityCount; ++ entityId) {
-		unsigned int entityMask = getWorld()->entityMask[entityId];
-
 		for (int i = 0; i < world->systemIndex[eventId]; ++ i) {
 			unsigned int systemMask = world->systemMask[eventId][i];
 			

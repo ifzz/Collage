@@ -65,7 +65,23 @@ Tech
 Object Blobs
 ------------
 
-Object 
+http://troydhanson.github.io/tpl/index.html 
+
+Rendering
+=========
+
+Scenes
+------
+
+Process:
+	* Sprites are added to a Scene.
+	* Sprites are ordered on-the-fly via `UPDATE_SPRITE`.
+	* The scene is rendered out.
+
+Scenes track:
+	* Sprite orders.
+	* Camera offsets.
+
 
 Use Cases 
 =========

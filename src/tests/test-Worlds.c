@@ -6,6 +6,7 @@
 #include "../component.h"
 #include "../timestep.h"
 #include "components/health.h"
+#include "components/sprite.h"
 #include "components/worldPosition.h"
 #include "constants.h"
 #include "actors.h"
@@ -19,6 +20,7 @@ int main() {
 	initTimestep();
 	initComponentHealth();
 	initComponentWorldPosition();
+	initComponentSprite();
 	//initDisplay();
 
 	unsigned int entityId = createEntity();

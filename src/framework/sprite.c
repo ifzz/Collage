@@ -16,6 +16,16 @@ typedef struct textureManagerEntry {
 } textureManagerEntry;
 
 
+void startTextureManager() {
+	TEXTURE_MANAGER = createLinkedList(&deleteTextureFromList);
+}
+
+void destroyTextureManager() {
+	deleteLinkedList(TEXTURE_MANAGER);
+
+	TEXTURE_MANAGER = NULL:
+}
+
 Sprite* spriteCreate(char *filename) {
 	Sprite *newSprite = malloc(sizeof(Sprite));
 
@@ -169,8 +179,6 @@ void shutdownSprites() {
 }
 
 void addTexture(char *filename, SDL_Texture *texture) {
-	if (!TEXTURE_MANAGER)
-		TEXTURE_MANAGER = createLinkedList(&deleteTextureFromList);
 
 	textureManagerEntry *textureEntry = malloc(sizeof(textureManagerEntry));
 
