@@ -7,15 +7,17 @@
 #include "../timestep.h"
 #include "../sprite.h"
 #include "../scene.h"
+#include "../worldPosition.h"
 #include "components/health.h"
-#include "components/worldPosition.h"
 #include "constants.h"
 #include "actors.h"
 
 
-void loop() {
+void loop(void) {
 	stepTime();
+	displayClear();
 	drawScene();
+	displayPresent();
 }
 
 int main() {
@@ -34,11 +36,11 @@ int main() {
 	setScene("action");
 
 	unsigned int entityId = createEntity();
-	unsigned int targetId = createHunter(0, 0, 0);
+	unsigned int targetId = createHunter(100, 43, 0);
 	
 	registerHealth(entityId);
 
-	DamageEvent tC = {entityId, targetId, 10};
+	DamageEvent tC = {targetId, 10};
 	triggerEvent(entityId, EVENT_HIT, &tC);
 
 	loop();

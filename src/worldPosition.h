@@ -1,10 +1,13 @@
+unsigned int COMPONENT_WORLD_POSITION;
+unsigned int EVENT_SET_POSITION;
+
 #ifndef WORLD_POSITION_H
 #define WORLD_POSITION_H
 
 typedef struct {
-	int vX;
-	int vY;
-} MoveEvent;
+	int x;
+	int y;
+} SetPositionEvent;
 
 typedef struct {
 	int x;
@@ -14,5 +17,5 @@ typedef struct {
 #endif
 
 void initComponentWorldPosition(void);
-void registerWorldPosition(unsigned int);
+void registerWorldPosition(unsigned int, int, int);
 

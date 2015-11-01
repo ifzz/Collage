@@ -4,8 +4,8 @@
 #include "../../system.h"
 #include "../../component.h"
 
-void eventHitCallback(void*);
-void eventDamageCallback(void*);
+void eventHitCallback(unsigned int, void*);
+void eventDamageCallback(unsigned int, void*);
 
 
 void initComponentHealth() {
@@ -23,21 +23,21 @@ void registerHealth(unsigned int entityId) {
 	hC->hp = 15;
 }
 
-void eventHitCallback(void *data) {
+void eventHitCallback(unsigned int entityId, void *data) {
 	DamageEvent *tC = data;
-	DamageEvent dE = {tC->targetId, tC->ownerId, tC->damage};
+	DamageEvent dE = {tC->targetId, tC->damage};
 
-	printf("%u: Hitting %u for %i damage!\n", tC->ownerId, tC->targetId, tC->damage);
+	printf("%u: Hitting %u for %i damage!\n", entityId, tC->targetId, tC->damage);
 
 	triggerEvent(tC->targetId, EVENT_DAMAGE, &dE);
 }   
 
-void eventDamageCallback(void *data) {
+void eventDamageCallback(unsigned int entityId, void *data) {
 	DamageEvent *dE = data;
-	HealthComponent *hC = getComponent(dE->ownerId, COMPONENT_STATS);
+	HealthComponent *hC = getComponent(entityId, COMPONENT_STATS);
 	
 	hC->hp -= dE->damage;
 
-	printf("%u: Ouch! Hit for %i damage. Total HP: %i\n", dE->ownerId, dE->damage, hC->hp);
+	printf("%u: Ouch! Hit for %i damage. Total HP: %i\n", entityId, dE->damage, hC->hp);
 }
 

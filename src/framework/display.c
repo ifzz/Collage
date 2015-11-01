@@ -26,7 +26,7 @@ int initDisplay() {
 	}
 	
 	WINDOW = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
-	RENDERER = SDL_CreateRenderer(WINDOW, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_TARGETTEXTURE);
+	RENDERER = SDL_CreateRenderer(WINDOW, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
 	
 	if (displayGetFullscreen())
 		SDL_SetWindowFullscreen(WINDOW, SDL_WINDOW_FULLSCREEN);
@@ -73,6 +73,15 @@ int initDisplay() {
 	//timerStart(FPS_TIMER);
 	
 	return 1;
+}
+
+void displayClear() {
+	SDL_RenderClear(RENDERER);
+}
+
+void displayPresent() {
+	SDL_RenderPresent(RENDERER);
+	SDL_Delay(1200);
 }
 
 int displayGetWindowWidth() {

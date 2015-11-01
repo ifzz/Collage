@@ -2,6 +2,6 @@
 #include "abilities.h"
 
 
-void activateHunterAbility(void *data) {
+void activateHunterAbility(unsigned int entityId, void *data) {
 	printf("Activated ability!\n");
 }

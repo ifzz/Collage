@@ -47,18 +47,18 @@ void createWorld(char *name) {
 	for (int i = 0; i < newWorld->systemCountMax; ++ i)
 		newWorld->systemMask[i] = calloc(sizeof(unsigned int), newWorld->systemCountMax);
 
-	newWorld->systemCallback = calloc(sizeof(void (**)(void*)), newWorld->systemCountMax);
+	newWorld->systemCallback = calloc(sizeof(void (**)(unsigned int, void*)), newWorld->systemCountMax);
 	
 	for (int i = 0; i < newWorld->systemCountMax; ++ i)
-		newWorld->systemCallback[i] = calloc(sizeof(void (*)(void*)), newWorld->systemCountMax);
+		newWorld->systemCallback[i] = calloc(sizeof(void (*)(unsigned int, void*)), newWorld->systemCountMax);
 	
-	newWorld->entityEventCallback = calloc(sizeof(void (***)(void*)), newWorld->entityCountMax);
+	newWorld->entityEventCallback = calloc(sizeof(void (***)(unsigned int, void*)), newWorld->entityCountMax);
 
 	for (int e = 0; e < newWorld->entityCountMax; ++ e) {
-		newWorld->entityEventCallback[e] = calloc(sizeof(void (**)(void*)), maxEvents); //#TODO: MAX_EVENTS
+		newWorld->entityEventCallback[e] = calloc(sizeof(void (**)(unsigned int, void*)), maxEvents); //#TODO: MAX_EVENTS
 
 		for (int i = 0; i < maxEvents; ++ i) {
-			newWorld->entityEventCallback[e][i] = calloc(sizeof(void (*)(void*)), entityEventCallbackCountMax); //#TODO: MAX_ENTITY_EVENT_CALLBACKS
+			newWorld->entityEventCallback[e][i] = calloc(sizeof(void (*)(unsigned int, void*)), entityEventCallbackCountMax); //#TODO: MAX_ENTITY_EVENT_CALLBACKS
 		}
 	}
 

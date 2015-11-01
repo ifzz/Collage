@@ -3,7 +3,7 @@
 #include "system.h"
 
 
-void createSystem(unsigned int eventId, unsigned int componentMask, void (*callback)(void*)) {
+void createSystem(unsigned int eventId, unsigned int componentMask, void (*callback)(unsigned int, void*)) {
 	World *world = getWorld();
 
 	world->systemMask[eventId][world->systemIndex[eventId]] = componentMask;
@@ -32,14 +32,14 @@ void triggerEvent(unsigned int entityId, unsigned int eventId, void *data) {
 		unsigned int systemMask = world->systemMask[eventId][i];
 
 		if ((entityMask & systemMask) == systemMask) {
-			world->systemCallback[eventId][i](data);
+			world->systemCallback[eventId][i](entityId, data);
 		}
 	}
 
 	//printf("Events: %i\n", world->entityEventCallbackCount[entityId][eventId]);
 
 	for (int i = 0; i < world->entityEventCallbackCount[entityId][eventId]; ++ i) {
-		world->entityEventCallback[entityId][eventId][i](data);
+		world->entityEventCallback[entityId][eventId][i](entityId, data);
 	}
 }
 
@@ -54,7 +54,7 @@ void triggerEvents(unsigned int eventId, unsigned int componentFlags, void *data
 			
 			//#TODO Should we even check for this?
 			if ((systemMask & componentFlags) == componentFlags) {
-				world->systemCallback[eventId][i](data);
+				world->systemCallback[eventId][i](entityId, data);
 			}
 		}
 		

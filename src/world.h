@@ -14,8 +14,8 @@ typedef struct {
 	unsigned int componentCount;
 	unsigned int *systemIndex;
 	void **systems;
-	void (***systemCallback)(void*);
-	void (****entityEventCallback)(void*);
+	void (***systemCallback)(unsigned int, void*);
+	void (****entityEventCallback)(unsigned int, void*);
 	void **components;
 	char *name;
 } World;

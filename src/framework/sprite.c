@@ -160,7 +160,7 @@ void addTexture(char *filename, SDL_Texture *texture) {
 
 	addListItem(TEXTURE_MANAGER, textureEntry);
 
-	printf("TextureMan: %s\n", textureEntry->name);
+	printf("[SPRITE] Loaded new texture: %s\n", textureEntry->name);
 }
 
 SDL_Texture* getTextureWithName(char *filename) {

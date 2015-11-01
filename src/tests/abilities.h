@@ -1,1 +1,1 @@
-void activateHunterAbility(void*);
+void activateHunterAbility(unsigned int, void*);

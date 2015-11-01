@@ -5,10 +5,10 @@
 #include "list.h"
 
 
-void *createLinkedList(void (*deleteCallback)(void*)) {
+linkedList_t* createLinkedList(void (*deleteCallback)(void*)) {
 	linkedList_t *newListItem;
 
-	newListItem = malloc(sizeof(linkedList_t));
+	newListItem = (linkedList_t*)malloc(sizeof(linkedList_t));
 
 	if (newListItem == NULL) {
 		puts("**FATAL** Could not create linked list.");

@@ -3,6 +3,7 @@
 #include <string.h>
 #include <assert.h>
 #include "framework/list.h"
+#include "framework/display.h"
 #include "framework/strings.h"
 #include "scene.h"
 #include "system.h"
@@ -12,7 +13,7 @@ Scene *ACTIVE_SCENE = NULL;
 linkedList_t *SCENES = NULL;
 
 void deleteScene(void *data) {
-	Scene *scene = data;
+	Scene *scene = (Scene*)data;
 
 	free(scene->entityIds);
 	free(scene->name);
@@ -58,7 +59,7 @@ void setScene(char *name) {
 	assert(ACTIVE_SCENE);
 }
 
-void addEntityToScene(char *sceneName, unsigned int entityId) {
+void addEntityToScene(unsigned int entityId) {
 	ACTIVE_SCENE->entityIds[ACTIVE_SCENE->entityCount] = entityId;
 
 	++ ACTIVE_SCENE->entityCount;
@@ -66,7 +67,14 @@ void addEntityToScene(char *sceneName, unsigned int entityId) {
 
 void drawScene() {
 	//#TODO: Send camera data!
-	//
+	
+	DrawEvent drawEvent;
+	drawEvent.renderer = displayGetRenderer();
+	drawEvent.cameraZoom = 1.;
+	drawEvent.cameraOffsetX = 0;
+	drawEvent.cameraOffsetY = 0;
+
 	for (int i = 0; i < ACTIVE_SCENE->entityCount; ++ i)
-		triggerEvent(ACTIVE_SCENE->entityIds[i], EVENT_DRAW, NULL);
+		triggerEvent(ACTIVE_SCENE->entityIds[i], EVENT_DRAW, &drawEvent);
+
 }

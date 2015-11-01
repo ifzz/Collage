@@ -19,7 +19,7 @@ struct listItem_t {
 #endif
 
 
-void *createLinkedList(void (*)(void*));
+linkedList_t *createLinkedList(void (*)(void*));
 void deleteLinkedList(linkedList_t*);
 void *popListItem(linkedList_t*);
 void *getListItem(linkedList_t*, int);

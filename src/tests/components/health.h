@@ -2,7 +2,6 @@
 #define HEALTH_H
 
 typedef struct {
-	int ownerId; //For -1
 	int targetId; //For -1
 	int damage;
 } DamageEvent;

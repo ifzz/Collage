@@ -20,7 +20,6 @@ typedef struct {
 
 typedef struct {
 	SDL_Renderer *renderer;
-	unsigned int entityId;
 	int cameraOffsetX;
 	int cameraOffsetY;
 	//int cameraViewportWidth;

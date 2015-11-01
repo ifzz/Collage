@@ -6,6 +6,8 @@
 int WINDOW_WIDTH, WINDOW_HEIGHT;
 
 int initDisplay(void);
+void displayClear(void);
+void displayPresent(void);
 void destroyDisplay(void);
 void displayFrameStart(void);
 void displayFrameEnd(void);

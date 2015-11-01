@@ -39,7 +39,7 @@ void deleteEntity(unsigned int entityId) {
 	printf("[ENTITY] Deleted entity #%u\n", entityId);
 }
 
-void registerEntityEvent(unsigned int entityId, unsigned int eventId, void (*callback)(void*)) {
+void registerEntityEvent(unsigned int entityId, unsigned int eventId, void (*callback)(unsigned int, void*)) {
 	World *world = getWorld();
 	int callbackCount = world->entityEventCallbackCount[entityId][eventId];
 
