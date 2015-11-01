@@ -47,10 +47,12 @@ void triggerEvent(unsigned int entityId, unsigned int eventId, void *data) {
 void triggerEvents(unsigned int eventId, unsigned int componentFlags, void *data) {
 	World *world = getWorld();
 
+	//#TODO: Can we cache event->enttiyIds?
 	for (unsigned int entityId = 0; entityId < world->entityCount; ++ entityId) {
 		for (int i = 0; i < world->systemIndex[eventId]; ++ i) {
 			unsigned int systemMask = world->systemMask[eventId][i];
 			
+			//#TODO Should we even check for this?
 			if ((systemMask & componentFlags) == componentFlags) {
 				world->systemCallback[eventId][i](data);
 			}

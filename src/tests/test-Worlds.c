@@ -5,8 +5,9 @@
 #include "../entity.h"
 #include "../component.h"
 #include "../timestep.h"
+#include "../sprite.h"
+#include "../scene.h"
 #include "components/health.h"
-#include "components/sprite.h"
 #include "components/worldPosition.h"
 #include "constants.h"
 #include "actors.h"
@@ -29,9 +30,11 @@ int main() {
 	registerHealth(entityId);
 
 	DamageEvent tC = {entityId, targetId, 10};
+	SceneComponent *sceneData = TEST_SCENE;
 
 	triggerEvent(entityId, EVENT_HIT, &tC);
 	stepTime();
+	triggerEvents(EVENT_DRAW, 0, &sceneData);
 	killWorld();
 	destroyWorlds();
 	destroyDisplay();
