@@ -13,6 +13,11 @@
 #include "actors.h"
 
 
+void loop() {
+	stepTime();
+	drawScene();
+}
+
 int main() {
 	initWorlds();
 	createWorld("World1");
@@ -22,7 +27,11 @@ int main() {
 	initComponentHealth();
 	initComponentWorldPosition();
 	initComponentSprite();
-	//initDisplay();
+	initScene();
+	initDisplay();
+	
+	createScene("action", 100, 0);
+	setScene("action");
 
 	unsigned int entityId = createEntity();
 	unsigned int targetId = createHunter(0, 0, 0);
@@ -30,12 +39,14 @@ int main() {
 	registerHealth(entityId);
 
 	DamageEvent tC = {entityId, targetId, 10};
-	SceneComponent *sceneData = TEST_SCENE;
-
 	triggerEvent(entityId, EVENT_HIT, &tC);
-	stepTime();
-	triggerEvents(EVENT_DRAW, 0, &sceneData);
-	killWorld();
+
+	loop();
+
+	/*killWorld();*/
 	destroyWorlds();
+	destroyScene();
+	destroyComponentSprite();
 	destroyDisplay();
+	return 0;
 }

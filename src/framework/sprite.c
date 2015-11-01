@@ -6,7 +6,6 @@
 #include "list.h"
 #include "display.h"
 #include "sprite.h"
-#include "../camera.h"
 
 linkedList_t *TEXTURE_MANAGER = NULL;
 
@@ -16,6 +15,13 @@ typedef struct textureManagerEntry {
 } textureManagerEntry;
 
 
+void deleteTextureFromList(void *data) {
+	textureManagerEntry *texture = data;
+
+	free(texture->name);
+	SDL_DestroyTexture(texture->texture);
+}
+
 void startTextureManager() {
 	TEXTURE_MANAGER = createLinkedList(&deleteTextureFromList);
 }
@@ -23,126 +29,106 @@ void startTextureManager() {
 void destroyTextureManager() {
 	deleteLinkedList(TEXTURE_MANAGER);
 
-	TEXTURE_MANAGER = NULL:
+	TEXTURE_MANAGER = NULL;
 }
 
-Sprite* spriteCreate(char *filename) {
-	Sprite *newSprite = malloc(sizeof(Sprite));
+//void spriteSetTexture(Sprite *sprite, char *filename) {
+	//sprite->texture = textureCreate(filename);
+	//sprite->renderer = displayGetRenderer();
+	////sprite->rect.x = 10;
+	////sprite->rect.y = 10;
 
-	newSprite->texture = textureCreate(filename);
-	newSprite->renderer = displayGetRenderer();
-	newSprite->rect.x = 0;
-	newSprite->rect.y = 0;
-	newSprite->rect.w = 10;
-	newSprite->rect.h = 10;
-	newSprite->obeyScrolling = false;
+	//SDL_QueryTexture(sprite->texture, NULL, NULL, &sprite->rect.w, &sprite->rect.h);
+//}
 
-	SDL_QueryTexture(newSprite->texture, NULL, NULL, &newSprite->rect.w, &newSprite->rect.h);
+//void spriteSetTextureEx(Sprite *sprite, SDL_Texture *texture) {
+	//sprite->texture = texture;
+	//sprite->renderer = displayGetRenderer();
+	////sprite->rect.x = 10;
+	////sprite->rect.y = 10;
 
-	return newSprite;
-}
+	//SDL_QueryTexture(sprite->texture, NULL, NULL, &sprite->rect.w, &sprite->rect.h);
+//}
 
-Sprite* getSprite(World *world, unsigned int entityId) {
-	return &world->sprite[entityId];
-}
+//void renderSprite(Sprite *sprite) {
+	//SDL_Renderer *renderer = displayGetRenderer();
+	//SDL_Rect renderRect;
 
-void spriteSetTexture(Sprite *sprite, char *filename) {
-	sprite->texture = textureCreate(filename);
-	sprite->renderer = displayGetRenderer();
-	//sprite->rect.x = 10;
-	//sprite->rect.y = 10;
+	//renderRect.w = sprite->rect.w * sprite->widthScale;
+	//renderRect.h = sprite->rect.h * sprite->heightScale;
 
-	SDL_QueryTexture(sprite->texture, NULL, NULL, &sprite->rect.w, &sprite->rect.h);
-}
+	//SDL_SetTextureAlphaMod(sprite->texture, sprite->alpha);
+	//SDL_SetTextureColorMod(sprite->texture, sprite->r, sprite->g, sprite->b);
+	////if (sprite->scaleRate) {
+	////	SDL_RenderSetScale(sprite->renderer, sprite->scale, sprite->scale);
+	////}
 
-void spriteSetTextureEx(Sprite *sprite, SDL_Texture *texture) {
-	sprite->texture = texture;
-	sprite->renderer = displayGetRenderer();
-	//sprite->rect.x = 10;
-	//sprite->rect.y = 10;
+	//if (sprite->obeyScrolling) {
+		//renderRect.x = sprite->staticX;
+		//renderRect.y = sprite->staticY;
 
-	SDL_QueryTexture(sprite->texture, NULL, NULL, &sprite->rect.w, &sprite->rect.h);
-}
+		////renderRect.x -= (getViewportWidth() / 4) * (getCameraZoom() - 1);
+		////renderRect.y -= (getViewportHeight() / 4) * (getCameraZoom() - 1);
 
-void renderSprite(Sprite *sprite) {
-	SDL_Renderer *renderer = displayGetRenderer();
-	SDL_Rect renderRect;
+		//renderRect.x -= (renderRect.w - sprite->rect.w) / 2;
+		//renderRect.y -= (renderRect.h - sprite->rect.h) / 2;
 
-	renderRect.w = sprite->rect.w * sprite->widthScale;
-	renderRect.h = sprite->rect.h * sprite->heightScale;
+		//SDL_RenderCopy(sprite->renderer, sprite->texture, NULL, &renderRect);
+	//} else {
+		//renderRect.x = sprite->rect.x - getCameraOffsetX();
+		//renderRect.y = sprite->rect.y - getCameraOffsetY();
+		
+		//if (sprite->cameraLayer > 0) {
+			//int cameraXCenter = getCameraOffsetX() + ((getViewportWidth() / getCameraZoom()) / 2);
+			//int layerXCenter = renderRect.x + ((getViewportWidth() / getCameraZoom()) / 2);
+			//int xDiff = cameraXCenter - layerXCenter;
+			
+			//renderRect.x += xDiff * (sprite->cameraLayer * .03);
+		//}
 
-	SDL_SetTextureAlphaMod(sprite->texture, sprite->alpha);
-	SDL_SetTextureColorMod(sprite->texture, sprite->r, sprite->g, sprite->b);
-	//if (sprite->scaleRate) {
-	//	SDL_RenderSetScale(sprite->renderer, sprite->scale, sprite->scale);
+		////renderRect.x -= (getViewportWidth() / 4) * (getCameraZoom() - 1);
+		////renderRect.y -= (getViewportHeight() / 4) * (getCameraZoom() - 1);
+
+		//renderRect.x -= (renderRect.w - sprite->rect.w) / 2;
+		//renderRect.y -= (renderRect.h - sprite->rect.h) / 2;
+
+		//SDL_RenderCopyEx(sprite->renderer, sprite->texture, NULL, &renderRect, sprite->angle, NULL, SDL_FLIP_NONE);
 	//}
+//}
 
-	if (sprite->obeyScrolling) {
-		renderRect.x = sprite->staticX;
-		renderRect.y = sprite->staticY;
+//void renderRect(Sprite *sprite) {
+	//SDL_Rect renderRect;
+	//renderRect.w = sprite->rect.w;
+	//renderRect.h = sprite->rect.h;
 
-		//renderRect.x -= (getViewportWidth() / 4) * (getCameraZoom() - 1);
-		//renderRect.y -= (getViewportHeight() / 4) * (getCameraZoom() - 1);
+	//if (sprite->obeyScrolling) {
+		//renderRect.x = sprite->staticX;
+		//renderRect.y = sprite->staticY;
 
-		renderRect.x -= (renderRect.w - sprite->rect.w) / 2;
-		renderRect.y -= (renderRect.h - sprite->rect.h) / 2;
+		////renderRect.x -= (getViewportWidth() / 4) * (getCameraZoom() - 1);
+		////renderRect.y -= (getViewportHeight() / 4) * (getCameraZoom() - 1);
 
-		SDL_RenderCopy(sprite->renderer, sprite->texture, NULL, &renderRect);
-	} else {
-		renderRect.x = sprite->rect.x - getCameraOffsetX();
-		renderRect.y = sprite->rect.y - getCameraOffsetY();
+		//SDL_SetRenderDrawColor(sprite->renderer, sprite->r, sprite->g, sprite->b, sprite->alpha);
+		//SDL_RenderFillRect(sprite->renderer, &renderRect);
+	//} else {
+		//renderRect.x = sprite->rect.x - getCameraOffsetX();
+		//renderRect.y = sprite->rect.y - getCameraOffsetY();
+
+		//renderRect.x -= (renderRect.w - sprite->rect.w) / 2;
+		//renderRect.y -= (renderRect.h - sprite->rect.h) / 2;
 		
-		if (sprite->cameraLayer > 0) {
-			int cameraXCenter = getCameraOffsetX() + ((getViewportWidth() / getCameraZoom()) / 2);
-			int layerXCenter = renderRect.x + ((getViewportWidth() / getCameraZoom()) / 2);
-			int xDiff = cameraXCenter - layerXCenter;
+		//if (sprite->cameraLayer > 0) {
+			//int cameraXCenter = getCameraOffsetX() + ((getViewportWidth() / getCameraZoom()) / 2);
+			//int layerXCenter = renderRect.x + ((getViewportWidth() / getCameraZoom()) / 2);
+			//int xDiff = cameraXCenter - layerXCenter;
 			
-			renderRect.x += xDiff * (sprite->cameraLayer * .03);
-		}
+			//renderRect.x += xDiff * (sprite->cameraLayer * .03);
+		//}
 
-		//renderRect.x -= (getViewportWidth() / 4) * (getCameraZoom() - 1);
-		//renderRect.y -= (getViewportHeight() / 4) * (getCameraZoom() - 1);
-
-		renderRect.x -= (renderRect.w - sprite->rect.w) / 2;
-		renderRect.y -= (renderRect.h - sprite->rect.h) / 2;
-
-		SDL_RenderCopyEx(sprite->renderer, sprite->texture, NULL, &renderRect, sprite->angle, NULL, SDL_FLIP_NONE);
-	}
-}
-
-void renderRect(Sprite *sprite) {
-	SDL_Rect renderRect;
-	renderRect.w = sprite->rect.w;
-	renderRect.h = sprite->rect.h;
-
-	if (sprite->obeyScrolling) {
-		renderRect.x = sprite->staticX;
-		renderRect.y = sprite->staticY;
-
-		//renderRect.x -= (getViewportWidth() / 4) * (getCameraZoom() - 1);
-		//renderRect.y -= (getViewportHeight() / 4) * (getCameraZoom() - 1);
-
-		SDL_SetRenderDrawColor(sprite->renderer, sprite->r, sprite->g, sprite->b, sprite->alpha);
-		SDL_RenderFillRect(sprite->renderer, &renderRect);
-	} else {
-		renderRect.x = sprite->rect.x - getCameraOffsetX();
-		renderRect.y = sprite->rect.y - getCameraOffsetY();
-
-		renderRect.x -= (renderRect.w - sprite->rect.w) / 2;
-		renderRect.y -= (renderRect.h - sprite->rect.h) / 2;
-		
-		if (sprite->cameraLayer > 0) {
-			int cameraXCenter = getCameraOffsetX() + ((getViewportWidth() / getCameraZoom()) / 2);
-			int layerXCenter = renderRect.x + ((getViewportWidth() / getCameraZoom()) / 2);
-			int xDiff = cameraXCenter - layerXCenter;
-			
-			renderRect.x += xDiff * (sprite->cameraLayer * .03);
-		}
-
-		SDL_SetRenderDrawColor(sprite->renderer, sprite->r, sprite->g, sprite->b, sprite->alpha);
-		SDL_RenderFillRect(sprite->renderer, &renderRect);
-	}
-}
+		//SDL_SetRenderDrawColor(sprite->renderer, sprite->r, sprite->g, sprite->b, sprite->alpha);
+		//SDL_RenderFillRect(sprite->renderer, &renderRect);
+	//}
+//}
 
 SDL_Surface* surfaceCreate(char *filename) {
 	printf("**FATAL** THIS IS BROKEN\n");
@@ -153,8 +139,6 @@ SDL_Surface* surfaceCreate(char *filename) {
 
 	if (tempSurface == NULL) {
 		printf("Problem loading sprite: %s\n", SDL_GetError());
-
-		displayDestroy();
 	} else {
 		surface = SDL_ConvertSurface(tempSurface, windowSurface->format, 0);
 		surfaceDestroy(tempSurface);
@@ -167,19 +151,7 @@ void surfaceDestroy(SDL_Surface *surface) {
 	SDL_FreeSurface(surface);
 }
 
-void deleteTextureFromList(void *data) {
-	textureManagerEntry *texture = data;
-
-	free(texture->name);
-	SDL_DestroyTexture(texture->texture);
-}
-
-void shutdownSprites() {
-	deleteLinkedList(TEXTURE_MANAGER);
-}
-
 void addTexture(char *filename, SDL_Texture *texture) {
-
 	textureManagerEntry *textureEntry = malloc(sizeof(textureManagerEntry));
 
 	textureEntry->name = malloc(strlen(filename) + 1);
@@ -228,7 +200,7 @@ SDL_Texture* textureCreate(char *filename) {
 	if (texture == NULL){
 		printf("Problem loading texture: %s\n", SDL_GetError());
 
-		displayDestroy();
+		//displayDestroy();
 	}
 
 	return texture;
@@ -241,7 +213,7 @@ SDL_Texture* textureCreateFromSurface(SDL_Surface *surface) {
 	if (texture == NULL){
 		printf("Problem loading texture: %s\n", SDL_GetError());
 
-		displayDestroy();
+		//displayDestroy();
 	}
 
 	return texture;

@@ -1,10 +1,9 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
-#include "../../framework/sprite.h"
+#include "framework/sprite.h"
 #include "sprite.h"
-#include "../constants.h"
-#include "../../system.h"
-#include "../../component.h"
+#include "system.h"
+#include "component.h"
 
 //void eventHitCallback(void*);
 //void eventDamageCallback(void*);
@@ -17,6 +16,10 @@ void initComponentSprite() {
 	startTextureManager();
 	//createSystem(EVENT_HIT, COMPONENT_STATS, eventHitCallback);
 	//createSystem(EVENT_DAMAGE, COMPONENT_STATS, eventDamageCallback);
+}
+
+void destroyComponentSprite() {
+	destroyTextureManager();
 }
 
 void registerSprite(unsigned int entityId, char *spriteFilename) {

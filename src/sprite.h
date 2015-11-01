@@ -1,6 +1,9 @@
 #include <SDL2/SDL.h>
 #include <stdbool.h>
 
+unsigned int COMPONENT_SPRITE;
+unsigned int EVENT_DRAW;
+
 #ifndef SPRITE_H
 #define SPRITE_H
 
@@ -28,5 +31,6 @@ typedef struct {
 #endif
 
 void initComponentSprite(void);
+void destroyComponentSprite(void);
 void registerSprite(unsigned int, char*);
 
