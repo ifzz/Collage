@@ -3,20 +3,22 @@
 
 unsigned int COMPONENT_SPRITE;
 unsigned int EVENT_DRAW;
+typedef struct SpriteComponent SpriteComponent;
 
 #ifndef SPRITE_H
 #define SPRITE_H
 
-typedef struct {
+
+struct SpriteComponent {
 	SDL_Texture *texture;
-	SDL_Rect rect;
-	SDL_Point centerPoint;
-	int angle;
-	int alpha;
+	SDL_Rect rect, lastRect;
+	SDL_Point centerPoint, lastCenter;
+	int angle, lastAngle;
+	int alpha, lastAlpha;
 	int layerIndex;
-	double scaleW;
-	double scaleH;
-} SpriteComponent;
+	double scaleW, lastScaleW;
+	double scaleH, lastScaleH;
+};
 
 typedef struct {
 	SDL_Renderer *renderer;

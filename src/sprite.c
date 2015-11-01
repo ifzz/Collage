@@ -7,7 +7,7 @@
 #include "component.h"
 
 void eventDrawCallback(unsigned int, void*);
-void eventSetPositionCallback(unsigned int, void*);
+void eventSetSpritePositionCallback(unsigned int, void*);
 
 void initComponentSprite() {
 	addComponentToWorld(&COMPONENT_SPRITE, sizeof(SpriteComponent));
@@ -15,7 +15,7 @@ void initComponentSprite() {
 
 	startTextureManager();
 	createSystem(EVENT_DRAW, COMPONENT_SPRITE, eventDrawCallback);
-	createSystem(EVENT_SET_POSITION, COMPONENT_SPRITE, eventSetPositionCallback);
+	createSystem(EVENT_SET_POSITION, COMPONENT_SPRITE, eventSetSpritePositionCallback);
 }
 
 void destroyComponentSprite() {
@@ -60,12 +60,12 @@ void eventDrawCallback(unsigned int entityId, void *data) {
 	SDL_RenderCopyEx(renderer, sprite->texture, NULL, &renderRect, sprite->angle, &sprite->centerPoint, SDL_FLIP_NONE);
 }
 
-void eventSetPositionCallback(unsigned int entityId, void *data) {
+void eventSetSpritePositionCallback(unsigned int entityId, void *data) {
 	SetPositionEvent *newPosition = (SetPositionEvent*)data;
 	SpriteComponent *sprite = getComponent(entityId, COMPONENT_SPRITE);
 
 	sprite->rect.x = newPosition->x;
 	sprite->rect.y = newPosition->y;
 
-	printf("Set sprite pos: %i, %i\n", sprite->rect.x, sprite->rect.y);
+	printf("Set SPRITE_POS: %i, %i\n", sprite->rect.x, sprite->rect.y);
 }
