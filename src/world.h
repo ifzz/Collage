@@ -7,12 +7,12 @@ typedef struct {
 	unsigned int *entityIdsToDelete;
 	unsigned int **systemMask;
 	unsigned int **entityEventCallbackCount;
-	unsigned int entityCount, entityCountMax;
-	unsigned int deletedEntityCount;
-	unsigned int entityIdsToDeleteCount;
-	unsigned int systemCountMax;
-	unsigned int eventCount;
-	unsigned int componentCount;
+	int entityCount, entityCountMax;
+	int deletedEntityCount;
+	int entityIdsToDeleteCount;
+	int systemCountMax;
+	int eventCount;
+	int componentCount;
 	unsigned int *systemIndex;
 	void **systems;
 	void (***systemCallback)(unsigned int, void*);

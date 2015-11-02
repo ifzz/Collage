@@ -36,15 +36,13 @@ void createScene(char *name, int size, int renderIndex) {
 
 	addComponentToEntity(entityId, COMPONENT_SCENE);
 
-	SceneComponent *scene = getComponent(entityId, COMPONENT_SCENE);
+	SceneComponent *scene = &getComponent(entityId, COMPONENT_SCENE)->scene;
 
 	copyText(&scene->name, name);
 
 	//#TODO: EntityIds never get free'd!
 	scene->renderIndex = renderIndex;
 	scene->entityIds = calloc(size, sizeof(unsigned int));
-
-	assert(scene->entityIds);
 
 	scene->entityCount = 0;
 	scene->entityCountMax = size;
@@ -63,6 +61,7 @@ void setScene(char *name) {
 
 	for (listItem_t *item = SCENES->head; item; item = item->next) {
 		SceneComponent *scene = (SceneComponent*)item->item;
+		printf("%s vs %s\n", name, scene->name);
 
 		if (!strcmp(scene->name, name)) {
 			ACTIVE_SCENE = scene;
@@ -87,7 +86,7 @@ void addEntityToScene(unsigned int entityId) {
 void drawScene(unsigned int entityId, void *data) {
 	//#TODO: Send camera data!
 	Delta *timestepInfo = (Delta*)data;
-	SceneComponent *scene = getComponent(entityId, COMPONENT_SCENE);
+	SceneComponent *scene = &getComponent(entityId, COMPONENT_SCENE)->scene;
 
 	DrawEvent drawEvent;
 	drawEvent.renderer = displayGetRenderer();

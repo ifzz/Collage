@@ -17,7 +17,7 @@ void initComponentWorldPosition() {
 
 void registerWorldPosition(unsigned int entityId, int x, int y) {
 	addComponentToEntity(entityId, COMPONENT_WORLD_POSITION);
-	WorldPositionComponent *position = getComponent(entityId, COMPONENT_WORLD_POSITION);
+	WorldPositionComponent *position = &getComponent(entityId, COMPONENT_WORLD_POSITION)->worldPosition;
 
 	position->x = x;
 	position->y = y;
@@ -25,7 +25,7 @@ void registerWorldPosition(unsigned int entityId, int x, int y) {
 
 void eventSetWorldPositionCallback(unsigned int entityId, void *data) {
 	SetPositionEvent *newPosition = (SetPositionEvent*)data;
-	WorldPositionComponent *position = getComponent(entityId, COMPONENT_WORLD_POSITION);
+	WorldPositionComponent *position = &getComponent(entityId, COMPONENT_WORLD_POSITION)->worldPosition;
 
 	position->x = newPosition->x;
 	position->y = newPosition->y;

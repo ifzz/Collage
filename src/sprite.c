@@ -12,7 +12,6 @@ void eventSetSpritePositionCallback(unsigned int, void*);
 
 void initComponentSprite() {
 	addComponentToWorld(&COMPONENT_SPRITE, sizeof(SpriteComponent));
-	printf("SPRITE = %u\n", COMPONENT_SPRITE);
 	createEvent(&EVENT_DRAW);
 
 	startTextureManager();
@@ -25,10 +24,11 @@ void destroyComponentSprite() {
 }
 
 void registerSprite(unsigned int entityId, char *spriteFilename) {
+	//#TODO: Go back to using rects!
 	addComponentToEntity(entityId, COMPONENT_SPRITE);
 	SpriteComponent *sprite = &getComponent(entityId, COMPONENT_SPRITE)->sprite;
 
-	printf("Sprite size = %lu\n", sizeof(&sprite));
+	printf("Sprite size = %lu\n", sizeof(sprite));
 	sprite->texture = textureCreate(spriteFilename);
 	
 	SDL_QueryTexture(sprite->texture, NULL, NULL, &sprite->width, &sprite->height);
@@ -38,8 +38,8 @@ void registerSprite(unsigned int entityId, char *spriteFilename) {
 	//sprite->rect.y = 30;
 	sprite->scaleW = 1.;
 	sprite->scaleH = 1.;
-	//sprite->centerPoint.x = sprite->rect.w / 2;
-	//sprite->centerPoint.y = sprite->rect.h / 2;
+	/*//sprite->centerPoint.x = sprite->rect.w / 2;*/
+	/*//sprite->centerPoint.y = sprite->rect.h / 2;*/
 	sprite->alpha = 255;
 }
 
@@ -64,6 +64,8 @@ void eventDrawCallback(unsigned int entityId, void *data) {
 
 	renderRect.x -= (renderRect.w - interp(sprite->width, sprite->lastWidth, delta) / 2);
 	renderRect.y -= (renderRect.h - interp(sprite->height, sprite->lastHeight, delta) / 2);
+
+	printf("%i, %i\n", renderRect.x, renderRect.y);
 
 	//#TODO: Center point
 	SDL_RenderCopyEx(renderer, sprite->texture, NULL, &renderRect, sprite->angle, NULL, SDL_FLIP_NONE);

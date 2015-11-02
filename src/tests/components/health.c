@@ -14,11 +14,13 @@ void initComponentHealth() {
 	createEvent(&EVENT_DAMAGE);
 	createSystem(EVENT_HIT, COMPONENT_STATS, eventHitCallback);
 	createSystem(EVENT_DAMAGE, COMPONENT_STATS, eventDamageCallback);
+
+	printf("Stats: %u\n", COMPONENT_STATS);
 }
 
 void registerHealth(unsigned int entityId) {
 	addComponentToEntity(entityId, COMPONENT_STATS);
-	HealthComponent *hC = getComponent(entityId, COMPONENT_STATS);
+	HealthComponent *hC = &getComponent(entityId, COMPONENT_STATS)->health;
 
 	hC->hp = 15;
 }
@@ -34,7 +36,7 @@ void eventHitCallback(unsigned int entityId, void *data) {
 
 void eventDamageCallback(unsigned int entityId, void *data) {
 	DamageEvent *dE = data;
-	HealthComponent *hC = getComponent(entityId, COMPONENT_STATS);
+	HealthComponent *hC = &getComponent(entityId, COMPONENT_STATS)->health;
 	
 	hC->hp -= dE->damage;
 

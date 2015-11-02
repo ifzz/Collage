@@ -15,9 +15,9 @@
 
 
 void loop(void) {
-	//stepTime();
-	//displayPresent();
-	//displayClear();
+	stepTime();
+	displayPresent();
+	displayClear();
 }
 
 int main() {
@@ -31,7 +31,7 @@ int main() {
 	initComponentPhysics();
 	initComponentSprite();
 	initScene();
-	//initDisplay();
+	initDisplay();
 	
 	createScene("action", 100, 0);
 	setScene("action");
@@ -47,6 +47,6 @@ int main() {
 	//#TODO: This should be done by the ECS!
 	//destroyScene();
 	destroyComponentSprite();
-	//destroyDisplay();
+	destroyDisplay();
 	return 0;
 }
