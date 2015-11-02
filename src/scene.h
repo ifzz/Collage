@@ -1,5 +1,7 @@
 //#include <SDL2/SDL.h>
 
+unsigned int COMPONENT_SCENE;
+
 #ifndef SCENE_H
 #define SCENE_H
 
@@ -10,7 +12,7 @@ typedef struct {
 	int entityCount;
 	int entityCountMax;
 	unsigned int *entityIds;
-} Scene;
+} SceneComponent;
 
 #endif
 
@@ -20,4 +22,4 @@ void destroyScene(void);
 void createScene(char*, int, int);
 void setScene(char *name);
 void addEntityToScene(unsigned int);
-void drawScene(void);
+void drawScene(unsigned int, void*);

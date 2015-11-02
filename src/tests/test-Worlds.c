@@ -15,9 +15,8 @@
 
 void loop(void) {
 	stepTime();
-	displayClear();
-	drawScene();
 	displayPresent();
+	displayClear();
 }
 
 int main() {
@@ -47,7 +46,8 @@ int main() {
 
 	/*killWorld();*/
 	destroyWorlds();
-	destroyScene();
+	//#TODO: This should be done by the ECS!
+	//destroyScene();
 	destroyComponentSprite();
 	destroyDisplay();
 	return 0;

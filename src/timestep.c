@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <time.h>
+#include "scene.h"
 #include "system.h"
 #include "timestep.h"
 
@@ -8,10 +9,6 @@ double DELTA_TIME = 1 / 60.;
 double CURRENT_TIME = 0.;
 double ACCUMULATOR = 0.;
 
-typedef struct {
-	double time;
-	double delta;
-} Delta;
 
 int getHiResTime() {
 	struct timespec hiTime;
@@ -24,7 +21,8 @@ int getHiResTime() {
 void initTimestep() {
 	CURRENT_TIME = getHiResTime();
 
-	//createEvent(&EVENT_TIMESTEP);
+	createEvent(&EVENT_TIMESTEP);
+	createEvent(&EVENT_TIMESTEP_END);
 }
 
 void stepTime() {
@@ -41,12 +39,14 @@ void stepTime() {
 	while (ACCUMULATOR >= DELTA_TIME) {
 		Delta timeInfo = {TIME, DELTA_TIME};
 
-		//triggerEvents(EVENT_TIMESTEP, 0, &timeInfo);
+		triggerEvents(EVENT_TIMESTEP, 0, &timeInfo);
 
 		TIME += DELTA_TIME;
 		ACCUMULATOR -= DELTA_TIME;
 	}
 
 	const double alpha = ACCUMULATOR / DELTA_TIME;
+	Delta simulationInfo = {TIME, alpha};
 
+	triggerEvents(EVENT_TIMESTEP_END, COMPONENT_SCENE, &simulationInfo);
 }	

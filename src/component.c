@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "world.h"
 #include "component.h"
 
@@ -9,7 +10,7 @@ void addComponentToWorld(unsigned int *id, size_t size) {
 
 	world->components[world->componentCount] = malloc(size * world->entityCountMax);
 	
-	*id = world->componentCount;//1 << world->componentCount;
+	*id = 1 << world->componentCount;
 	++ world->componentCount;
 	
 	printf("[WORLD] Added new component \'%u\' of size %zu\n", *id, size);
@@ -30,5 +31,7 @@ void addComponentToEntity(unsigned int entityId, unsigned int componentFlag) {
 }
 
 void* getComponent(unsigned int entityId, unsigned int componentId) {
-	return &getWorld()->components[componentId][entityId];
+	int index = (int)log(componentId) / log(2);
+
+	return &getWorld()->components[index][entityId];
 }	

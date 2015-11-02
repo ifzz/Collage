@@ -6,14 +6,18 @@
 #include "framework/display.h"
 #include "framework/strings.h"
 #include "scene.h"
+#include "timestep.h"
 #include "system.h"
 #include "sprite.h"
+#include "entity.h"
+#include "component.h"
 
-Scene *ACTIVE_SCENE = NULL;
+SceneComponent *ACTIVE_SCENE = NULL;
 linkedList_t *SCENES = NULL;
 
+
 void deleteScene(void *data) {
-	Scene *scene = (Scene*)data;
+	SceneComponent *scene = (SceneComponent*)data;
 
 	free(scene->entityIds);
 	free(scene->name);
@@ -21,14 +25,22 @@ void deleteScene(void *data) {
 
 void initScene() {
 	SCENES = createLinkedList(&deleteScene);
+
+	addComponentToWorld(&COMPONENT_SCENE, sizeof(SceneComponent));
+	createSystem(EVENT_TIMESTEP_END, COMPONENT_SCENE, drawScene);
 }
 
 //#TODO: In the future, these should be entities.
 void createScene(char *name, int size, int renderIndex) {
-	Scene *scene = calloc(sizeof(Scene), 1);
+	unsigned int entityId = createEntity();
+
+	addComponentToEntity(entityId, COMPONENT_SCENE);
+
+	SceneComponent *scene = (SceneComponent*)getComponent(entityId, COMPONENT_SCENE);
 
 	copyText(&scene->name, name);
 
+	//#TODO: EntityIds never get free'd!
 	scene->renderIndex = renderIndex;
 	scene->entityIds = malloc(sizeof(unsigned int) * size);
 	scene->entityCount = 0;
@@ -47,7 +59,7 @@ void setScene(char *name) {
 	ACTIVE_SCENE = NULL;
 
 	for (listItem_t *item = SCENES->head; item; item = item->next) {
-		Scene *scene = item->item;
+		SceneComponent *scene = (SceneComponent*)item->item;
 
 		if (!strcmp(scene->name, name)) {
 			ACTIVE_SCENE = scene;
@@ -65,16 +77,19 @@ void addEntityToScene(unsigned int entityId) {
 	++ ACTIVE_SCENE->entityCount;
 }
 
-void drawScene() {
+void drawScene(unsigned int entityId, void *data) {
 	//#TODO: Send camera data!
-	
+	Delta *timestepInfo = (Delta*)data;
+	SceneComponent *scene = getComponent(entityId, COMPONENT_SCENE);
+
 	DrawEvent drawEvent;
 	drawEvent.renderer = displayGetRenderer();
+	drawEvent.delta = timestepInfo->delta;
 	drawEvent.cameraZoom = 1.;
 	drawEvent.cameraOffsetX = 0;
 	drawEvent.cameraOffsetY = 0;
 
-	for (int i = 0; i < ACTIVE_SCENE->entityCount; ++ i)
-		triggerEvent(ACTIVE_SCENE->entityIds[i], EVENT_DRAW, &drawEvent);
+	for (int i = 0; i < scene->entityCount; ++ i)
+		triggerEvent(scene->entityIds[i], EVENT_DRAW, &drawEvent);
 
 }

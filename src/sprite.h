@@ -26,6 +26,7 @@ typedef struct {
 	int cameraOffsetY;
 	//int cameraViewportWidth;
 	//int cameraViewportHeight;
+	double delta;
 	double cameraZoom;
 } DrawEvent;
 

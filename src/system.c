@@ -28,7 +28,7 @@ void triggerEvent(unsigned int entityId, unsigned int eventId, void *data) {
 	World *world = getWorld();
 	unsigned int entityMask = getWorld()->entityMask[entityId];
 
-	for (int i = 0; i < world->systemIndex[eventId]; ++ i) {
+	for (unsigned int i = 0; i < world->systemIndex[eventId]; ++ i) {
 		unsigned int systemMask = world->systemMask[eventId][i];
 
 		if ((entityMask & systemMask) == systemMask) {
@@ -36,9 +36,7 @@ void triggerEvent(unsigned int entityId, unsigned int eventId, void *data) {
 		}
 	}
 
-	//printf("Events: %i\n", world->entityEventCallbackCount[entityId][eventId]);
-
-	for (int i = 0; i < world->entityEventCallbackCount[entityId][eventId]; ++ i) {
+	for (unsigned int i = 0; i < world->entityEventCallbackCount[entityId][eventId]; ++ i) {
 		world->entityEventCallback[entityId][eventId][i](entityId, data);
 	}
 }
@@ -47,9 +45,14 @@ void triggerEvent(unsigned int entityId, unsigned int eventId, void *data) {
 void triggerEvents(unsigned int eventId, unsigned int componentFlags, void *data) {
 	World *world = getWorld();
 
-	//#TODO: Can we cache event->enttiyIds?
+	//#TODO: Can we cache event->entityIds?
 	for (unsigned int entityId = 0; entityId < world->entityCount; ++ entityId) {
-		for (int i = 0; i < world->systemIndex[eventId]; ++ i) {
+		unsigned int entityMask = getWorld()->entityMask[entityId];
+
+		if ((entityMask & componentFlags) != componentFlags)
+			continue;
+
+		for (unsigned int i = 0; i < world->systemIndex[eventId]; ++ i) {
 			unsigned int systemMask = world->systemMask[eventId][i];
 			
 			//#TODO Should we even check for this?

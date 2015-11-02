@@ -71,6 +71,7 @@ int initDisplay() {
 	//CAP_TIMER = timerCreate();
 	
 	//timerStart(FPS_TIMER);
+	displayClear();
 	
 	return 1;
 }
