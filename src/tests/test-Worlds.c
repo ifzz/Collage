@@ -9,14 +9,15 @@
 #include "../scene.h"
 #include "../worldPosition.h"
 #include "components/health.h"
+#include "components/physics.h"
 #include "constants.h"
 #include "actors.h"
 
 
 void loop(void) {
-	stepTime();
-	displayPresent();
-	displayClear();
+	//stepTime();
+	//displayPresent();
+	//displayClear();
 }
 
 int main() {
@@ -27,28 +28,25 @@ int main() {
 	initTimestep();
 	initComponentHealth();
 	initComponentWorldPosition();
+	initComponentPhysics();
 	initComponentSprite();
 	initScene();
-	initDisplay();
+	//initDisplay();
 	
 	createScene("action", 100, 0);
 	setScene("action");
 
-	unsigned int entityId = createEntity();
 	unsigned int targetId = createHunter(100, 43, 0);
-	
-	registerHealth(entityId);
 
-	DamageEvent tC = {targetId, 10};
-	triggerEvent(entityId, EVENT_HIT, &tC);
 
-	loop();
+	for (int i = 0; i < 5; ++ i)
+		loop();
 
 	/*killWorld();*/
 	destroyWorlds();
 	//#TODO: This should be done by the ECS!
 	//destroyScene();
 	destroyComponentSprite();
-	destroyDisplay();
+	//destroyDisplay();
 	return 0;
 }

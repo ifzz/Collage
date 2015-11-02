@@ -5,6 +5,7 @@
 #include "../scene.h"
 #include "../worldPosition.h"
 #include "components/health.h"
+#include "components/physics.h"
 #include "constants.h"
 #include "abilities.h"
 #include "actors.h"
@@ -17,6 +18,7 @@ unsigned int createHunter(int x, int y, int team) {
 	registerEntityEvent(entityId, EVENT_DAMAGE, &activateHunterAbility);
 	registerWorldPosition(entityId, x, y);
 	registerSprite(entityId, "src/tests/data/sprites/test.png");
+	registerPhysics(entityId);
 	addEntityToScene(entityId);
 
 	SetPositionEvent pos = {x, y};

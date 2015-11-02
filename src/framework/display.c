@@ -10,7 +10,7 @@
 
 SDL_Window *WINDOW = NULL;
 SDL_Renderer *RENDERER = NULL;
-unsigned int IMAGE_INIT_FLAGS = IMG_INIT_JPG | IMG_INIT_PNG;
+int IMAGE_INIT_FLAGS = IMG_INIT_JPG | IMG_INIT_PNG;
 int WINDOW_WIDTH = 1280;
 int WINDOW_HEIGHT = 720;
 int RENDER_WIDTH = 1280;
@@ -71,7 +71,7 @@ int initDisplay() {
 	//CAP_TIMER = timerCreate();
 	
 	//timerStart(FPS_TIMER);
-	displayClear();
+	//displayClear();
 	
 	return 1;
 }
@@ -82,7 +82,7 @@ void displayClear() {
 
 void displayPresent() {
 	SDL_RenderPresent(RENDERER);
-	SDL_Delay(1200);
+	SDL_Delay(500);
 }
 
 int displayGetWindowWidth() {

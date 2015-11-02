@@ -36,13 +36,16 @@ void createScene(char *name, int size, int renderIndex) {
 
 	addComponentToEntity(entityId, COMPONENT_SCENE);
 
-	SceneComponent *scene = (SceneComponent*)getComponent(entityId, COMPONENT_SCENE);
+	SceneComponent *scene = getComponent(entityId, COMPONENT_SCENE);
 
 	copyText(&scene->name, name);
 
 	//#TODO: EntityIds never get free'd!
 	scene->renderIndex = renderIndex;
-	scene->entityIds = malloc(sizeof(unsigned int) * size);
+	scene->entityIds = calloc(size, sizeof(unsigned int));
+
+	assert(scene->entityIds);
+
 	scene->entityCount = 0;
 	scene->entityCountMax = size;
 
@@ -71,6 +74,10 @@ void setScene(char *name) {
 	assert(ACTIVE_SCENE);
 }
 
+void getSceneName() {
+	printf("Active Scene: %s\n", ACTIVE_SCENE->name);
+}
+
 void addEntityToScene(unsigned int entityId) {
 	ACTIVE_SCENE->entityIds[ACTIVE_SCENE->entityCount] = entityId;
 
@@ -91,5 +98,4 @@ void drawScene(unsigned int entityId, void *data) {
 
 	for (int i = 0; i < scene->entityCount; ++ i)
 		triggerEvent(scene->entityIds[i], EVENT_DRAW, &drawEvent);
-
 }

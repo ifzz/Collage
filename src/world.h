@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include "component.h"
 
 
 typedef struct {
@@ -16,7 +17,7 @@ typedef struct {
 	void **systems;
 	void (***systemCallback)(unsigned int, void*);
 	void (****entityEventCallback)(unsigned int, void*);
-	void **components;
+	ComponentContainer **components;
 	char *name;
 } World;
 

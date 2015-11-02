@@ -23,3 +23,4 @@ void createScene(char*, int, int);
 void setScene(char *name);
 void addEntityToScene(unsigned int);
 void drawScene(unsigned int, void*);
+void getSceneName(void);

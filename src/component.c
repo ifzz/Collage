@@ -8,12 +8,12 @@
 void addComponentToWorld(unsigned int *id, size_t size) {
 	World *world = getWorld();
 
-	world->components[world->componentCount] = malloc(size * world->entityCountMax);
+	world->components[world->componentCount] = calloc(world->entityCount, sizeof(ComponentContainer));
 	
 	*id = 1 << world->componentCount;
 	++ world->componentCount;
 	
-	printf("[WORLD] Added new component \'%u\' of size %zu\n", *id, size);
+	printf("[WORLD] Added new component \'%u\' of size %zu\n", *id, sizeof(ComponentContainer));
 }
 
 void removeComponentFromWorld(unsigned int id) {
@@ -30,8 +30,8 @@ void addComponentToEntity(unsigned int entityId, unsigned int componentFlag) {
 	printf("[ENTITY] Added entity #%u to component ID=%u\n", entityId, componentFlag);
 }
 
-void* getComponent(unsigned int entityId, unsigned int componentId) {
-	int index = (int)log(componentId) / log(2);
+ComponentContainer* getComponent(unsigned int entityId, unsigned int componentId) {
+	int id = (int)log(componentId) / log(2);
 
-	return &getWorld()->components[index][entityId];
+	return &getWorld()->components[id][entityId];
 }	
