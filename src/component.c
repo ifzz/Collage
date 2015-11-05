@@ -35,11 +35,10 @@ void addComponentToEntity(unsigned int entityId, unsigned int componentFlag) {
 }
 
 ComponentContainer* getComponent(unsigned int entityId, unsigned int componentId) {
-	printf("%f\n", log(componentId) / log(2));
 	int id = (int)log(componentId) / log(2);
 
 	assert(entityId < 3000);
-	printf("Getting COMP id=%i for entity=%u\n", componentId, entityId);
+	//printf("Getting COMP id=%i for entity=%u\n", componentId, entityId);
 
 	return &getWorld()->components[id][entityId];
 }	

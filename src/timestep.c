@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include <time.h>
+#include <SDL2/SDL.h>
 #include "scene.h"
 #include "system.h"
 #include "timestep.h"
@@ -10,30 +9,21 @@ double CURRENT_TIME = 0.;
 double ACCUMULATOR = 0.;
 
 
-int getHiResTime() {
-	struct timespec hiTime;
-    
-	clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &hiTime);
-
-	return hiTime.tv_nsec;
-}
-
 void initTimestep() {
-	CURRENT_TIME = getHiResTime();
+	CURRENT_TIME = SDL_GetTicks();
 
 	createEvent(&EVENT_TIMESTEP);
 	createEvent(&EVENT_TIMESTEP_END);
 }
 
 void stepTime() {
-	double newTime = getHiResTime();
-	double frameTime = newTime - CURRENT_TIME;
+	double newTime = SDL_GetTicks();
+	double frameTime = (newTime - CURRENT_TIME) / 1000.0f;
 
 	if (frameTime > .25)
 		frameTime = .25;
 
 	CURRENT_TIME = newTime;
-
 	ACCUMULATOR += frameTime;
 
 	while (ACCUMULATOR >= DELTA_TIME) {

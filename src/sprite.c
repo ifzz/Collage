@@ -28,18 +28,23 @@ void registerSprite(unsigned int entityId, char *spriteFilename) {
 	addComponentToEntity(entityId, COMPONENT_SPRITE);
 	SpriteComponent *sprite = &getComponent(entityId, COMPONENT_SPRITE)->sprite;
 
-	printf("Sprite size = %lu\n", sizeof(sprite));
+	//printf("Sprite size = %lu\n", sizeof(sprite));
 	sprite->texture = textureCreate(spriteFilename);
 	
 	SDL_QueryTexture(sprite->texture, NULL, NULL, &sprite->width, &sprite->height);
+	sprite->lastWidth = sprite->width;
+	sprite->lastHeight = sprite->height;
 	sprite->x = 0; 
 	sprite->y = 0; 
 	//sprite->rect.x = 30;
 	//sprite->rect.y = 30;
+	sprite->lastScaleW = 1.;
+	sprite->lastScaleH = 1.;
 	sprite->scaleW = 1.;
 	sprite->scaleH = 1.;
 	/*//sprite->centerPoint.x = sprite->rect.w / 2;*/
 	/*//sprite->centerPoint.y = sprite->rect.h / 2;*/
+	sprite->lastAlpha = 255;
 	sprite->alpha = 255;
 }
 
@@ -52,7 +57,7 @@ void eventDrawCallback(unsigned int entityId, void *data) {
 	double cameraZoom = drawEvent->cameraZoom;
 	SDL_Rect renderRect;
 
-	printf("Delta: %f\n", drawEvent->delta);
+	//printf("Delta: %f\n", drawEvent->delta);
 
 	renderRect.w = interp(sprite->width * sprite->scaleW, sprite->lastWidth * sprite->lastScaleW, delta);
 	renderRect.h = interp(sprite->height * sprite->scaleH, sprite->lastHeight * sprite->lastScaleH, delta);
@@ -65,7 +70,7 @@ void eventDrawCallback(unsigned int entityId, void *data) {
 	renderRect.x -= (renderRect.w - interp(sprite->width, sprite->lastWidth, delta) / 2);
 	renderRect.y -= (renderRect.h - interp(sprite->height, sprite->lastHeight, delta) / 2);
 
-	printf("%i, %i\n", renderRect.x, renderRect.y);
+	//printf("%i, %i\n", renderRect.x, renderRect.y);
 
 	//#TODO: Center point
 	SDL_RenderCopyEx(renderer, sprite->texture, NULL, &renderRect, sprite->angle, NULL, SDL_FLIP_NONE);
@@ -79,7 +84,7 @@ void oldEventDrawCallback(unsigned int entityId, void *data) {
 	double cameraZoom = drawEvent->cameraZoom;
 	SDL_Rect renderRect;
 
-	printf("Delta: %f\n", drawEvent->delta);
+	//printf("Delta: %f\n", drawEvent->delta);
 
 	//renderRect.w = sprite->rect.w * sprite->scaleW;
 	//renderRect.h = sprite->rect.h * sprite->scaleH;
@@ -99,8 +104,10 @@ void eventSetSpritePositionCallback(unsigned int entityId, void *data) {
 	SetPositionEvent *newPosition = (SetPositionEvent*)data;
 	SpriteComponent *sprite = &getComponent(entityId, COMPONENT_SPRITE)->sprite;
 
+	sprite->lastX = sprite->x;
+	sprite->lastY = sprite->y;
 	sprite->x = newPosition->x;
 	sprite->y = newPosition->y;
 
-	printf("Set SPRITE_POS: %i, %i\n", sprite->x, sprite->y);
+	//printf("Set SPRITE_POS: %i, %i\n", sprite->x, sprite->y);
 }

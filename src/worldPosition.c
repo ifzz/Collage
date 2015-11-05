@@ -30,5 +30,5 @@ void eventSetWorldPositionCallback(unsigned int entityId, void *data) {
 	position->x = newPosition->x;
 	position->y = newPosition->y;
 
-	printf("Set WORLD_POS: %i, %i\n", position->x, position->y);
+	//printf("Set WORLD_POS: %i, %i\n", position->x, position->y);
 }

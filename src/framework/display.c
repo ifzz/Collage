@@ -82,7 +82,6 @@ void displayClear() {
 
 void displayPresent() {
 	SDL_RenderPresent(RENDERER);
-	SDL_Delay(500);
 }
 
 int displayGetWindowWidth() {

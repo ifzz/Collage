@@ -38,8 +38,7 @@ int main() {
 
 	unsigned int targetId = createHunter(100, 43, 0);
 
-
-	for (int i = 0; i < 5; ++ i)
+	for (int i = 0; i < 3500; ++ i)
 		loop();
 
 	/*killWorld();*/

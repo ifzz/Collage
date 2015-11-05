@@ -61,7 +61,7 @@ void setScene(char *name) {
 
 	for (listItem_t *item = SCENES->head; item; item = item->next) {
 		SceneComponent *scene = (SceneComponent*)item->item;
-		printf("%s vs %s\n", name, scene->name);
+		//printf("%s vs %s\n", name, scene->name);
 
 		if (!strcmp(scene->name, name)) {
 			ACTIVE_SCENE = scene;
