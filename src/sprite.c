@@ -57,8 +57,6 @@ void eventDrawCallback(unsigned int entityId, void *data) {
 	double cameraZoom = drawEvent->cameraZoom;
 	SDL_Rect renderRect;
 
-	//printf("Delta: %f\n", drawEvent->delta);
-
 	renderRect.w = interp(sprite->width * sprite->scaleW, sprite->lastWidth * sprite->lastScaleW, delta);
 	renderRect.h = interp(sprite->height * sprite->scaleH, sprite->lastHeight * sprite->lastScaleH, delta);
 

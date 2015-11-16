@@ -13,11 +13,25 @@
 #include "constants.h"
 #include "actors.h"
 
+double FRAMES = 0;
+double FRAME_TIMER = 0.;
+
 
 void loop(void) {
-	stepTime();
-	displayPresent();
-	displayClear();
+	while (SDL_GetTicks() < 3200) {
+		stepTime();
+		displayPresent();
+		displayClear();
+
+		++ FRAMES;
+
+		if (SDL_GetTicks() - FRAME_TIMER >= 1000) {
+			printf("FPS=%f\n", FRAMES);
+
+			FRAMES = 0;
+			FRAME_TIMER = SDL_GetTicks();
+		}
+	}
 }
 
 int main() {
@@ -36,10 +50,10 @@ int main() {
 	createScene("action", 100, 0);
 	setScene("action");
 
-	unsigned int targetId = createHunter(100, 43, 0);
+	for (int i = 0; i < 1; ++ i)
+		createHunter(100, 43 + 12 * i, 0);
 
-	for (int i = 0; i < 3500; ++ i)
-		loop();
+	loop();
 
 	/*killWorld();*/
 	destroyWorlds();
@@ -47,5 +61,6 @@ int main() {
 	//destroyScene();
 	destroyComponentSprite();
 	destroyDisplay();
+	showTimestepInfo();
 	return 0;
 }
