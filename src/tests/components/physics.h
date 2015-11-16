@@ -2,12 +2,12 @@
 #define PHYSICS_H
 
 typedef struct {
-	double lastExactX; //Cut
-	double lastExactY; //Cut
-	double exactX;
-	double exactY;
-	double velocityX;
-	double velocityY;
+	float lastExactX; //Cut
+	float lastExactY; //Cut
+	float exactX;
+	float exactY;
+	float velocityX;
+	float velocityY;
 } PhysicsComponent;
 
 #endif

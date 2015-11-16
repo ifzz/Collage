@@ -13,12 +13,15 @@
 #include "constants.h"
 #include "actors.h"
 
-double FRAMES = 0;
-double FRAME_TIMER = 0.;
-double FPS_CAP = -1; //1000 / 400.;
+float FRAMES = 0;
+float FRAME_TIMER = 0.;
+float FPS_CAP = -1; //1000 / 400.;
+//float FPS_CAP = 1000 / 90.;
 
 
 void loop(void) {
+	resetTimestep();
+
 	while (SDL_GetTicks() < 3200) {
 		stepTime();
 		displayPresent();
@@ -27,7 +30,7 @@ void loop(void) {
 		++ FRAMES;
 
 		if (FPS_CAP > -1) {
-			double ticks = (SDL_GetTicks() - FRAME_TIMER) / 1000.;
+			float ticks = (SDL_GetTicks() - FRAME_TIMER) / 1000.;
 
 			if (ticks < FPS_CAP) {
 				SDL_Delay(FPS_CAP - ticks);
@@ -56,10 +59,10 @@ int main() {
 	initScene();
 	initDisplay();
 	
-	createScene("action", 1000, 0);
+	createScene("action", 100, 0);
 	setScene("action");
 
-	for (int i = 0; i < 1000; ++ i)
+	for (int i = 0; i < 10; ++ i)
 		createHunter(100 + 16 * i, 32, 0);
 
 	FRAME_TIMER = SDL_GetTicks();
@@ -72,5 +75,6 @@ int main() {
 	destroyComponentSprite();
 	destroyDisplay();
 	showTimestepInfo();
+
 	return 0;
 }

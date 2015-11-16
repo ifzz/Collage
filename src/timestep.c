@@ -3,14 +3,14 @@
 #include "system.h"
 #include "timestep.h"
 
-double TIME = 0.;
-double DELTA_TIME = 1 / 6.;
-double CURRENT_TIME = 0.;
-double ACCUMULATOR = 0.;
-double MAX_ACCUMULATOR = 0.;
-double MIN_FRAME_TIME = 10000.;
-double MAX_FRAME_TIME = 0;
-double MAX_FRAMES = 0;
+float TIME = 0.;
+float DELTA_TIME = 1 / 6.;
+float CURRENT_TIME = 0.;
+float ACCUMULATOR = 0.;
+float MAX_ACCUMULATOR = 0.;
+float MIN_FRAME_TIME = 10000.;
+float MAX_FRAME_TIME = 0;
+float MAX_FRAMES = 0;
 
 
 void initTimestep() {
@@ -20,9 +20,13 @@ void initTimestep() {
 	createEvent(&EVENT_TIMESTEP_END);
 }
 
+void resetTimestep() {
+	CURRENT_TIME = SDL_GetTicks();
+}
+
 void stepTime() {
-	double newTime = SDL_GetTicks();
-	double frameTime = (newTime - CURRENT_TIME) / 100.0f;
+	float newTime = SDL_GetTicks();
+	float frameTime = (newTime - CURRENT_TIME) / 100.0f;
 
 	if (frameTime > MAX_FRAME_TIME)
 		MAX_FRAME_TIME = frameTime;
@@ -48,7 +52,7 @@ void stepTime() {
 		ACCUMULATOR -= DELTA_TIME;
 	}
 
-	const double alpha = 1 - (ACCUMULATOR / DELTA_TIME);
+	const float alpha = 1 - (ACCUMULATOR / DELTA_TIME);
 
 	Delta simulationInfo = {TIME, alpha};
 

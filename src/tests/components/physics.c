@@ -45,7 +45,7 @@ float evaluateXVelocity(const State state, float t) {
 }
 
 float evaluateYVelocity(const State state, float t) {
-	return 6;
+	return 2;
 }
 
 void eventSimulateCallback(unsigned int entityId, void *data) {

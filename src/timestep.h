@@ -12,6 +12,7 @@ typedef struct {
 #endif
 
 void initTimestep(void);
+void resetTimestep(void);
 void stepTime(void);
 void showTimestepInfo(void);
 

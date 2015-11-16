@@ -14,8 +14,6 @@ void initComponentHealth() {
 	createEvent(&EVENT_DAMAGE);
 	createSystem(EVENT_HIT, COMPONENT_STATS, eventHitCallback);
 	createSystem(EVENT_DAMAGE, COMPONENT_STATS, eventDamageCallback);
-
-	printf("Stats: %u\n", COMPONENT_STATS);
 }
 
 void registerHealth(unsigned int entityId) {
