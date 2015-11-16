@@ -7,9 +7,6 @@
 #include "../../timestep.h"
 #include "../../worldPosition.h"
 
-void eventSimulateCallback(unsigned int, void*);
-void integrate(PhysicsComponent*, float, float);
-
 typedef struct {
 	float x;
 	float v;
@@ -19,6 +16,10 @@ typedef struct {
 	float dx;
 	float dv;
 } Derivative;
+
+void eventSimulateCallback(unsigned int, void*);
+void integrate(State*, float, float, float (*)(const State, float));
+
 
 void initComponentPhysics() {
 	addComponentToWorld(&COMPONENT_PHYSICS, sizeof(PhysicsComponent));
@@ -35,79 +36,72 @@ void registerPhysics(unsigned int entityId) {
 	physics->lastExactY = position->y;
 	physics->exactX = position->x;
 	physics->exactY = position->y;
-	physics->velocityX = 3.;
-	physics->velocityY = 3.09;
+	physics->velocityX = 1.;
+	physics->velocityY = 1.09;
+}
+
+float evaluateXVelocity(const State state, float t) {
+	return 0;
+}
+
+float evaluateYVelocity(const State state, float t) {
+	return 6;
 }
 
 void eventSimulateCallback(unsigned int entityId, void *data) {
 	Delta *timestepInfo = (Delta*)data;
 	PhysicsComponent *physics = &getComponent(entityId, COMPONENT_PHYSICS)->physics;
 
-	//double velX = physics->exactX - physics->lastExactX;
-	//double velY = physics->exactY - physics->lastExactY;
+	State x = {physics->exactX, physics->velocityX};
+	State y = {physics->exactY, physics->velocityY};
 
-	//physics->lastExactX = physics->exactX;
-	//physics->lastExactY = physics->exactY;
+	integrate(&x, timestepInfo->time, timestepInfo->delta, &evaluateXVelocity);
+	integrate(&y, timestepInfo->time, timestepInfo->delta, &evaluateYVelocity);
 
-	//physics->exactX += velX + 0.0;
-	//
-	//physics->exactY += physics->velocityY;
-	integrate(physics, timestepInfo->time, timestepInfo->delta);
+	physics->exactX = x.x;
+	physics->velocityX = x.v;
+	physics->exactY = y.x;
+	physics->velocityY = y.v;
 
 	SetPositionEvent positionData = {round(physics->exactX), round(physics->exactY)};
 	
 	triggerEvent(entityId, EVENT_SET_POSITION, &positionData);
 } 
 
-float acceleration(const PhysicsComponent state, float t) {
-	const float k = .09; //Force
-	const float b = 1;
 
-	return k * state.exactX - b*state.velocityX;
-}
-
-Derivative evaluate(const PhysicsComponent initial, float t, float dt, const Derivative d) {
-	PhysicsComponent state;
+Derivative evaluate(const State initial, float t, float dt, const Derivative d, float (*callback)(const State, float)) {
+	State state;
 	Derivative output;
 
-	state.exactX = initial.exactX + d.dx*dt; //Needs function for y?
-	state.velocityX = initial.velocityX + d.dv*dt; //Needs function for vY?
+	state.x = initial.x + d.dx * dt;
+	state.v = initial.v + d.dv * dt;
 
-	output.dx = state.velocityX; //Should this be exactX?
-	output.dv = acceleration(state, t+dt);
+	output.dx = state.v;
+	output.dv = callback(state, t + dt);
 	return output;
 }
 
-Derivative evaluateInitial(const PhysicsComponent initial, float t) {
+Derivative evaluateInitial(const State initial, float t, float (*callback)(const State, float)) {
 	Derivative output;
 
-	output.dx = initial.velocityX;
-	output.dv = acceleration(initial, t);
+	output.dx = initial.v;
+	output.dv = callback(initial, t);
 
 	return output;
 
 }	
 
-void integrate(PhysicsComponent *state, float t, float dt) {
+void integrate(State *state, float t, float dt, float (*callback)(const State, float)) {
 	Derivative a,b,c,d;
 
-	a = evaluateInitial( *state, t);
-	b = evaluate( *state, t, dt*0.5f, a );
-	c = evaluate( *state, t, dt*0.5f, b );
-	d = evaluate( *state, t, dt, c );
+	a = evaluateInitial(*state, t, callback);
+	b = evaluate(*state, t, dt * 0.5f, a, callback);
+	c = evaluate(*state, t, dt * 0.5f, b, callback);
+	d = evaluate(*state, t, dt, c, callback);
 
-	float dxdt = 1.0f / 6.0f * 
-		( a.dx + 2.0f*(b.dx + c.dx) + d.dx );
+	float dxdt = 1.0f / 6.0f * (a.dx + 2.0f * (b.dx + c.dx) + d.dx);
+	float dvdt = 1.0f / 6.0f * (a.dv + 2.0f * (b.dv + c.dv) + d.dv);
 
-	float dvdt = 1.0f / 6.0f * 
-		( a.dv + 2.0f*(b.dv + c.dv) + d.dv );
-
-	//printf("TIME=%f, DT=%f\n", t, dt);
-	//printf("\t%f (%f), %f (%f)\n", dxdt,  dxdt * dt, dvdt, dvdt * dt);
-	//printf("BEFORE: %f\n", state->exactX);
-
-	state->exactX = state->exactX + dxdt * dt;
-	state->velocityX = state->velocityX + dvdt * dt;
-
-	//printf("AFTER: %f\n", state->exactX);
+	state->x += dxdt * dt;
+	state->v += dvdt * dt;
 }

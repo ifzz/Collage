@@ -15,6 +15,7 @@
 
 double FRAMES = 0;
 double FRAME_TIMER = 0.;
+double FPS_CAP = -1; //1000 / 400.;
 
 
 void loop(void) {
@@ -25,7 +26,15 @@ void loop(void) {
 
 		++ FRAMES;
 
-		if (SDL_GetTicks() - FRAME_TIMER >= 1000) {
+		if (FPS_CAP > -1) {
+			double ticks = (SDL_GetTicks() - FRAME_TIMER) / 1000.;
+
+			if (ticks < FPS_CAP) {
+				SDL_Delay(FPS_CAP - ticks);
+			}
+		}
+
+		if (SDL_GetTicks() - FRAME_TIMER >= 1000.) {
 			printf("FPS=%f\n", FRAMES);
 
 			FRAMES = 0;
@@ -47,12 +56,13 @@ int main() {
 	initScene();
 	initDisplay();
 	
-	createScene("action", 100, 0);
+	createScene("action", 1000, 0);
 	setScene("action");
 
-	for (int i = 0; i < 1; ++ i)
-		createHunter(100, 43 + 12 * i, 0);
+	for (int i = 0; i < 1000; ++ i)
+		createHunter(100 + 16 * i, 32, 0);
 
+	FRAME_TIMER = SDL_GetTicks();
 	loop();
 
 	/*killWorld();*/
