@@ -58,14 +58,34 @@ I have a feeling there will be a few cases where some components just won't dump
 
 This may be a design choice we make early on.
 
+Problem 4: The component.h Problem
+----------------------------------
+
+When the line is drawn between framework and project-specific code, something to keep in mind is
+how these things can be linked together logically. Currently, `component.h` describes the structures
+in use by the project to the framework so it can allocate memory. However, this isn't so much a
+problem as it is, again, something to keep in mind moving forward. KISS.
 
 Tech
 ====
 
+Debugging
+---------
+
+It should be relatively easy to pause the entity world and spin up another that can both access
+and modify the main entity world. This would open up a lot of possibilties- mostly because objects
+could be changed in the editor, then spit back out to their data file.
+
 Object Blobs
 ------------
 
-http://troydhanson.github.io/tpl/index.html 
+http://troydhanson.github.io/tpl/index.html
+
+Entities are data-driven- kind of important to remember since we want to spend some time outside
+the framework code itself. Basically, projects built in this framework would either need to parse these
+files and describe it to the framework, or some sort of "compiler" could look over the files and produce
+something more readable by the framework. Either way, we need to make this easy for people to understand,
+so perhaps we could pay more attention to files like `component.h` (SEE: `The component.h Problem`)
 
 Rendering
 =========

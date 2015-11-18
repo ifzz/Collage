@@ -41,7 +41,11 @@ void registerPhysics(unsigned int entityId) {
 }
 
 float evaluateXVelocity(const State state, float t) {
-	return 0;
+	const float k = 10;
+	const float b = 2;
+
+	return - k*(state.x - 128) - b*state.v;
+	/*return 0;*/
 }
 
 float evaluateYVelocity(const State state, float t) {
