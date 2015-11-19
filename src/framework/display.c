@@ -11,10 +11,13 @@
 SDL_Window *WINDOW = NULL;
 SDL_Renderer *RENDERER = NULL;
 int IMAGE_INIT_FLAGS = IMG_INIT_JPG | IMG_INIT_PNG;
-int WINDOW_WIDTH = 1280;
-int WINDOW_HEIGHT = 720;
-int RENDER_WIDTH = 1280;
-int RENDER_HEIGHT = 720;
+int RENDER_WIDTH = 512;
+int RENDER_HEIGHT = 448;
+int WINDOW_WIDTH = 1024;
+int WINDOW_HEIGHT = 768;
+float FRAMES = 0;
+float FRAME_TIMER = 0.;
+float FPS_CAP = -1; //1000 / 400.;
 bool FULLSCREEN = false;
 
 
@@ -27,6 +30,7 @@ int initDisplay() {
 	
 	WINDOW = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
 	RENDERER = SDL_CreateRenderer(WINDOW, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
+	FRAME_TIMER = SDL_GetTicks();
 	
 	if (displayGetFullscreen())
 		SDL_SetWindowFullscreen(WINDOW, SDL_WINDOW_FULLSCREEN);
@@ -65,12 +69,7 @@ int initDisplay() {
 		
 		return 0;
 	}
-		
 	
-	//FPS_TIMER = timerCreate();
-	//CAP_TIMER = timerCreate();
-	
-	//timerStart(FPS_TIMER);
 	displayClear();
 	
 	return 1;
@@ -80,8 +79,77 @@ void displayClear() {
 	SDL_RenderClear(RENDERER);
 }
 
+float getCameraZoom() {
+	return 1.;
+}
+
 void displayPresent() {
+	SDL_Rect displayRect;
+
+	int viewportWidth = RENDER_WIDTH;//getViewportWidth();
+	int viewportHeight = RENDER_HEIGHT;//getViewportHeight();
+	double renderWidthScale = WINDOW_WIDTH / (double)viewportWidth;
+	double renderHeightScale = WINDOW_HEIGHT / (double)viewportHeight;
+
+	//if (isSplitScreen()) {
+		//displayRect.w = viewportWidth;
+		//displayRect.h = viewportHeight;
+		//displayRect.x = 0;
+		//renderHeightScale /= 2;
+
+		////if (lastLoop) {
+			////displayRect.y = viewportHeight;
+		////} else {
+		//displayRect.y = 0;
+		////}
+	//} else {
+
+	displayRect.w = viewportWidth;
+	displayRect.h = viewportHeight;
+	displayRect.x = 0;
+	displayRect.y = 0;
+	//}
+
+	//if (!lastLoop || !isSplitScreen()) {
+
+	//SDL_RenderClear(RENDERER);
+	//}
+
+	SDL_RenderSetViewport(RENDERER, &displayRect);
+	SDL_RenderSetScale(RENDERER, getCameraZoom() * renderWidthScale, getCameraZoom() * renderHeightScale);
+
+	//for (int i = -2; i <= 2; ++ i) {
+		////setZLevel(i);
+		//levelDraw();
+		////tickSystemsWithMask(getWorld(), EVENT_DRAW);
+	//}
+	
+	SDL_RenderSetScale(RENDERER, renderWidthScale, renderHeightScale);
+
+	//drawUi(lastLoop);
+
+	//if (lastLoop) {
+		//drawMenus();
+
 	SDL_RenderPresent(RENDERER);
+	//}
+
+	++ FRAMES;
+
+	if (FPS_CAP > -1) {
+		float ticks = (SDL_GetTicks() - FRAME_TIMER) / 1000.;
+
+		if (ticks < FPS_CAP) {
+			SDL_Delay(FPS_CAP - ticks);
+		}
+	}
+
+	if (SDL_GetTicks() - FRAME_TIMER >= 1000.) {
+		printf("FPS=%f\n", FRAMES);
+
+		FRAMES = 0;
+		FRAME_TIMER = SDL_GetTicks();
+	}
 }
 
 int displayGetWindowWidth() {

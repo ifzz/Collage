@@ -8,6 +8,8 @@ typedef struct {
 	float exactY;
 	float velocityX;
 	float velocityY;
+	float frictionX;
+	float frictionY;
 } PhysicsComponent;
 
 #endif

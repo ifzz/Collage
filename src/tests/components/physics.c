@@ -38,18 +38,20 @@ void registerPhysics(unsigned int entityId) {
 	physics->exactY = position->y;
 	physics->velocityX = 1.;
 	physics->velocityY = 1.09;
+	physics->frictionX = 1.;
+	physics->frictionY = 1.;
 }
 
 float evaluateXVelocity(const State state, float t) {
-	const float k = 10;
-	const float b = 2;
+	/*const float k = 10;*/
+	/*const float b = 2;*/
 
-	return - k*(state.x - 128) - b*state.v;
-	/*return 0;*/
+	return 0;
+	/*return - k * (state.x - 256) - b * state.v;*/
 }
 
 float evaluateYVelocity(const State state, float t) {
-	return 2;
+	return 0;
 }
 
 void eventSimulateCallback(unsigned int entityId, void *data) {
@@ -63,9 +65,9 @@ void eventSimulateCallback(unsigned int entityId, void *data) {
 	integrate(&y, timestepInfo->time, timestepInfo->delta, &evaluateYVelocity);
 
 	physics->exactX = x.x;
-	physics->velocityX = x.v;
+	physics->velocityX = x.v * physics->frictionX;
 	physics->exactY = y.x;
-	physics->velocityY = y.v;
+	physics->velocityY = y.v * physics->frictionY;
 
 	SetPositionEvent positionData = {round(physics->exactX), round(physics->exactY)};
 	
@@ -82,6 +84,7 @@ Derivative evaluate(const State initial, float t, float dt, const Derivative d, 
 
 	output.dx = state.v;
 	output.dv = callback(state, t + dt);
+
 	return output;
 }
 
