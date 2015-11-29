@@ -129,3 +129,4 @@ ToDo
 
 Component IDs are not reused after delete.
 	The constant would also need to be returned to 0.
+Rename `scene.c` to `stage.c`
