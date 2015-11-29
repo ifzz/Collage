@@ -12,7 +12,9 @@
 #include "components/physics.h"
 #include "components/health.h"
 #include "constants.h"
+#include "levels.h"
 #include "actors.h"
+#include "items.h"
 #include "ui.h"
 
 
@@ -38,16 +40,18 @@ int main() {
 	initComponentWorldPosition();
 	initComponentPhysics();
 	initComponentSprite();
+	initItems();
 	initScene();
 	initDisplay();
 	
 	createStage("main");
 	createScene("main", "action", 100, 0);
 	createScene("main", "ui", 100, 1);
+	createLevel(displayGetRenderWidth() / 16, displayGetRenderHeight() / 16);
 
 	createUi();
 	
-	createPlayer(100, 32, 1);
+	createPlayer(2, 2, 1);
 
 	loop();
 

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "../framework/display.h"
+#include "../framework/numbers.h"
 #include "../component.h"
 #include "../entity.h"
 #include "../sprite.h"
@@ -17,22 +18,62 @@
 
 void actorGridMoveHandler(unsigned int entityId, void *data) {
 	InputComponent *input = &getComponent(entityId, COMPONENT_INPUT)->input;
-	/*PhysicsComponent *physics = &getComponent(entityId, COMPONENT_PHYSICS)->physics;*/
+	PhysicsComponent *physics = &getComponent(entityId, COMPONENT_PHYSICS)->physics;
 	WorldPositionComponent *position = &getComponent(entityId, COMPONENT_WORLD_POSITION)->worldPosition;
 
-	if (input->movingLeft && position->x > 16 * 1) {
-		MovementEvent moveInfo = {-5, 0};
+	bool ladderBelow = isPositionLadder((position->x / 16), (position->y / 16) + 1);
+	bool onGround = (position->x % 16) || isPositionSolid((position->x / 16), (position->y / 16) + 1) || ladderBelow;
+	bool onLadder = !(position->x % 16) && (isPositionLadder((position->x / 16), (position->y / 16)));
+
+	printf("Ground=%i, Ladder=%i, LadderBelow=%i\n", onGround, onLadder, ladderBelow);
+
+	if (onGround) {
+		if (input->movingLeft && position->x > 16 * 1) {
+			MovementEvent moveInfo = {-5, 0};
+
+			triggerEvent(entityId, EVENT_SET_VELOCITY, &moveInfo);
+		} else if (input->movingRight && position->x < 16 * ((displayGetRenderWidth() / 16) - 1)) {
+			MovementEvent moveInfo = {5, 0};
+
+			triggerEvent(entityId, EVENT_SET_VELOCITY, &moveInfo);
+		} else if (!(position->x % 16)) {
+			MovementEvent moveInfo = {0, physics->velocityY};
+
+			triggerEvent(entityId, EVENT_SET_VELOCITY, &moveInfo);
+		}
+	}
+	
+	if (onLadder || ladderBelow) {
+		if (input->movingUp && position->y > 16 * 1) {
+			/*if (isPositionLadder((position->x / 16), (position->y / 16))) {*/
+			if (onLadder) {
+				MovementEvent moveInfo = {0, -5};
+
+				triggerEvent(entityId, EVENT_SET_VELOCITY, &moveInfo);
+			}
+		} else if (input->movingDown && position->y < 16 * ((displayGetRenderHeight() / 16) - 1)) {
+			if (ladderBelow) {
+				MovementEvent moveInfo = {0, 5};
+
+				triggerEvent(entityId, EVENT_SET_VELOCITY, &moveInfo);
+			}
+		} else if (!(position->y % 16)) {
+			MovementEvent moveInfo = {physics->velocityX, 0};
+
+			triggerEvent(entityId, EVENT_SET_VELOCITY, &moveInfo);
+		}
+	}
+
+	if (!onGround && !onLadder && !ladderBelow) {
+		MovementEvent moveInfo = {0, 10};
 
 		triggerEvent(entityId, EVENT_SET_VELOCITY, &moveInfo);
-	} else if (input->movingRight && position->x < 16 * ((displayGetRenderWidth() / 16) - 1)) {
-		MovementEvent moveInfo = {5, 0};
-
-		triggerEvent(entityId, EVENT_SET_VELOCITY, &moveInfo);
-	} else if (!(position->x % 16)) {
-		MovementEvent moveInfo = {0, 0};
+	} else if (onGround && !ladderBelow) {
+		MovementEvent moveInfo = {physics->velocityX, clipFloat(physics->velocityY, -5, 0)};
 
 		triggerEvent(entityId, EVENT_SET_VELOCITY, &moveInfo);
 	}
+
 }
 
 void actorKeyInputHandler(unsigned int entityId, void *data) {
@@ -41,25 +82,26 @@ void actorKeyInputHandler(unsigned int entityId, void *data) {
 	PhysicsComponent *physics = &getComponent(entityId, COMPONENT_PHYSICS)->physics;
 
 	if (!strcmp(inputEvent->keyName, "Left")) {
-		/*MovementEvent moveInfo = {-5, 0};*/
 		input->movingLeft = inputEvent->pressed;
-
-		/*triggerEvent(entityId, EVENT_SET_VELOCITY, &moveInfo);*/
 	} else if (!strcmp(inputEvent->keyName, "Right")) {
 		input->movingRight = inputEvent->pressed;
-		/*MovementEvent moveInfo = {5, 0};*/
-
-		/*triggerEvent(entityId, EVENT_SET_VELOCITY, &moveInfo);*/
 	}
 
 	if (!strcmp(inputEvent->keyName, "Up")) {
-		//triggerEvent(entityId, , &moveInfo);
+		input->movingUp = inputEvent->pressed;
 	} else if (!strcmp(inputEvent->keyName, "Down")) {
+		input->movingDown = inputEvent->pressed;
 	}
+}
+
+void actorAiInputHandler(unsigned int entityId, void *data) {
 }
 
 unsigned int createActor(int x, int y, int team) {
 	unsigned int entityId = createEntity();
+
+	x *= 16;
+	y *= 16;
 
 	registerHealth(entityId);
 	registerWorldPosition(entityId, x, y);

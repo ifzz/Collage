@@ -69,6 +69,9 @@ void triggerEvents(unsigned int eventId, unsigned int componentFlags, void *data
 		for (unsigned int i = 0; i < world->systemIndex[eventId]; ++ i) {
 			unsigned int systemMask = world->systemMask[eventId][i];
 			
+			if ((entityMask & systemMask) != systemMask)
+				continue;
+			
 			//#TODO Should we even check for this?
 			if ((systemMask & componentFlags) == componentFlags) {
 				world->systemCallback[eventId][i](entityId, data);

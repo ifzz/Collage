@@ -43,3 +43,12 @@ ComponentContainer* getComponent(unsigned int entityId, unsigned int componentId
 
 	return &getWorld()->components[id][entityId];
 }	
+
+ComponentContainer* getAllComponents(unsigned int componentId) {
+	int id = (int)round(log(componentId) / log(2));
+
+	printf("STUB, test this first!\n");
+
+	return getWorld()->components[id];
+}
+

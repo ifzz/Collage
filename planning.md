@@ -105,14 +105,22 @@ Scenes
 ------
 
 Process:
+	* A stage is created.
 	* Sprites are added to a Scene.
-	* Sprites are ordered on-the-fly via `UPDATE_SPRITE`.
+	* The scene is added to the Stage.
+	* ? Sprites are ordered on-the-fly via `UPDATE_SPRITE`.
 	* The scene is rendered out.
 
 Scenes track:
 	* Sprite orders.
 	* Camera offsets.
 
+Static Scenes
+-------------
+
+If there are no advantages to drawing every entity in a scene
+multiple times, then we can render out a scene to a target texture
+instead.
 
 Use Cases 
 =========

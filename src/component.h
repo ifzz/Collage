@@ -25,3 +25,4 @@ void addComponentToWorld(unsigned int*, size_t);
 void removeComponentFromWorld(unsigned int);
 void addComponentToEntity(unsigned int, unsigned int);
 ComponentContainer* getComponent(unsigned int, unsigned int);
+ComponentContainer* getAllComponents(unsigned int);

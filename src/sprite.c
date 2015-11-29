@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include <assert.h>
 #include <stdio.h>
 #include "framework/sprite.h"
 #include "framework/numbers.h"
@@ -106,5 +107,6 @@ void eventSetSpritePositionCallback(unsigned int entityId, void *data) {
 	sprite->x = newPosition->x;
 	sprite->y = newPosition->y;
 
-	//printf("Set SPRITE_POS: %i, %i\n", sprite->x, sprite->y);
+	if (sprite->x == 0)
+		assert(1 == 2);
 }
