@@ -108,6 +108,7 @@ void displayPresent() {
 	displayRect.h = viewportHeight;
 	displayRect.x = 0;
 	displayRect.y = 0;
+	SDL_SetRenderDrawColor(RENDERER, 15, 10, 10, 255);
 	//}
 
 	//if (!lastLoop || !isSplitScreen()) {

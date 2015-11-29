@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "../framework/display.h"
 #include "../component.h"
 #include "../entity.h"
 #include "../sprite.h"
@@ -14,23 +15,16 @@
 #include "actors.h"
 
 
-void applyMovements(unsigned int entityId) {
-	InputComponent *input = &getComponent(entityId, COMPONENT_INPUT)->input;
-	PhysicsComponent *physics = &getComponent(entityId, COMPONENT_PHYSICS)->physics;
-	WorldPositionComponent *position = &getComponent(entityId, COMPONENT_WORLD_POSITION)->worldPosition;
-
-}
-
 void actorGridMoveHandler(unsigned int entityId, void *data) {
 	InputComponent *input = &getComponent(entityId, COMPONENT_INPUT)->input;
-	PhysicsComponent *physics = &getComponent(entityId, COMPONENT_PHYSICS)->physics;
+	/*PhysicsComponent *physics = &getComponent(entityId, COMPONENT_PHYSICS)->physics;*/
 	WorldPositionComponent *position = &getComponent(entityId, COMPONENT_WORLD_POSITION)->worldPosition;
 
-	if (input->movingLeft) {
+	if (input->movingLeft && position->x > 16 * 1) {
 		MovementEvent moveInfo = {-5, 0};
 
 		triggerEvent(entityId, EVENT_SET_VELOCITY, &moveInfo);
-	} else if (input->movingRight) {
+	} else if (input->movingRight && position->x < 16 * ((displayGetRenderWidth() / 16) - 1)) {
 		MovementEvent moveInfo = {5, 0};
 
 		triggerEvent(entityId, EVENT_SET_VELOCITY, &moveInfo);
