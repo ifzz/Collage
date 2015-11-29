@@ -26,7 +26,7 @@ void destroyComponentSprite() {
 void registerSprite(unsigned int entityId, char *spriteFilename) {
 	//#TODO: Go back to using rects!
 	addComponentToEntity(entityId, COMPONENT_SPRITE);
-	SpriteComponent *sprite = &getComponent(entityId, COMPONENT_SPRITE)->sprite;
+	SpriteComponent *sprite = &(getComponent(entityId, COMPONENT_SPRITE)->sprite);
 
 	//printf("Sprite size = %lu\n", sizeof(sprite));
 	sprite->texture = textureCreate(spriteFilename);
@@ -53,12 +53,10 @@ void eventDrawCallback(unsigned int entityId, void *data) {
 	DrawEvent *drawEvent = data;
 	double delta = drawEvent->delta;
 	SDL_Renderer *renderer = drawEvent->renderer;
-	SpriteComponent *sprite = &getComponent(entityId, COMPONENT_SPRITE)->sprite;
+	SpriteComponent *sprite = &(getComponent(entityId, COMPONENT_SPRITE)->sprite);
 	int cameraOffsetX = drawEvent->cameraOffsetX, cameraOffsetY = drawEvent->cameraOffsetY;
 	double cameraZoom = drawEvent->cameraZoom;
 	SDL_Rect renderRect;
-
-	printf("Width: %i\n", sprite->width);
 
 	renderRect.w = interp(sprite->width * sprite->scaleW, sprite->lastWidth * sprite->lastScaleW, delta);
 	renderRect.h = interp(sprite->height * sprite->scaleH, sprite->lastHeight * sprite->lastScaleH, delta);

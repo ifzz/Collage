@@ -9,15 +9,17 @@
 void addComponentToWorld(unsigned int *id, size_t size) {
 	World *world = getWorld();
 
-	world->components[world->componentCount] = calloc(world->entityCountMax, sizeof(ComponentContainer));
-	//world->components[world->componentCount] = malloc(world->entityCountMax * sizeof(ComponentContainer));
+	//NOTE: We can either init memory on the fly here, or do it at runtime.
+	
+	/*world->components[world->componentCount] = calloc(world->entityCountMax, sizeof(ComponentContainer));*/
+	/*world->components[world->componentCount] = malloc(world->entityCountMax * sizeof(ComponentContainer));*/
 
 	assert(world->components[world->componentCount]);
 	
 	*id = 1 << world->componentCount;
 	++ world->componentCount;
 	
-	printf("[WORLD] Added new component \'%u\' of size %lu\n", *id, sizeof(ComponentContainer));
+	printf("[WORLD] Added new component \'%u\' @ ID=%i of size %lu\n", *id, world->componentCount - 1, sizeof(ComponentContainer));
 }
 
 void removeComponentFromWorld(unsigned int componentId) {
@@ -35,9 +37,9 @@ void addComponentToEntity(unsigned int entityId, unsigned int componentFlag) {
 }
 
 ComponentContainer* getComponent(unsigned int entityId, unsigned int componentId) {
-	int id = (int)log(componentId) / log(2);
+	int id = (int)round(log(componentId) / log(2));
 
-	//printf("Getting COMP id=%i for entity=%u\n", componentId, entityId);
+	/*printf("Getting COMP %i with ID=%i for entity=%u\n", componentId, id, entityId);*/
 
 	return &getWorld()->components[id][entityId];
 }	
