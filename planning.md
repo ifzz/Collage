@@ -66,6 +66,17 @@ how these things can be linked together logically. Currently, `component.h` desc
 in use by the project to the framework so it can allocate memory. However, this isn't so much a
 problem as it is, again, something to keep in mind moving forward. KISS.
 
+Problem 5: Event IDs
+--------------------
+
+In the future we should check to see if an Event has been checked in to the ECS. Otherwise, the ECS
+assumes Events have had their own ID attached to them via `createEvent`.
+
+Problem 6: When to Malloc Components
+------------------------------------
+
+Components can either be Malloc'd on the fly (via `addComponentToWorld`) or during World init.
+
 Tech
 ====
 

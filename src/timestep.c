@@ -18,6 +18,7 @@ void initTimestep() {
 
 	createEvent(&EVENT_TIMESTEP);
 	createEvent(&EVENT_TIMESTEP_END);
+	createEvent(&EVENT_TICK);
 }
 
 void resetTimestep() {
@@ -46,6 +47,7 @@ void stepTime() {
 		if (ACCUMULATOR > MAX_ACCUMULATOR)
 			MAX_ACCUMULATOR = ACCUMULATOR;
 
+		triggerEventForAll(EVENT_TICK, 0, &timeInfo);
 		triggerEvents(EVENT_TIMESTEP, 0, &timeInfo);
 
 		TIME += DELTA_TIME;

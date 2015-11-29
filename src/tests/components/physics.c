@@ -18,13 +18,17 @@ typedef struct {
 } Derivative;
 
 void eventSimulateCallback(unsigned int, void*);
+void eventSetVelocityCallback(unsigned int, void*);
 void integrate(State*, float, float, float (*)(const State, float));
 
 
 void initComponentPhysics() {
 	addComponentToWorld(&COMPONENT_PHYSICS, sizeof(PhysicsComponent));
 
+	createEvent(&EVENT_SET_VELOCITY);
+
 	createSystem(EVENT_TIMESTEP, COMPONENT_PHYSICS, eventSimulateCallback);
+	createSystem(EVENT_SET_VELOCITY, COMPONENT_PHYSICS, eventSetVelocityCallback);
 }
 
 void registerPhysics(unsigned int entityId) {
@@ -36,10 +40,18 @@ void registerPhysics(unsigned int entityId) {
 	physics->lastExactY = position->y;
 	physics->exactX = position->x;
 	physics->exactY = position->y;
-	physics->velocityX = 1.;
-	physics->velocityY = 1.09;
+	physics->velocityX = 0.;
+	physics->velocityY = 0.;
 	physics->frictionX = 1.;
 	physics->frictionY = 1.;
+}
+
+void eventSetVelocityCallback(unsigned int entityId, void *data) {
+	MovementEvent *move = (MovementEvent*)data;
+	PhysicsComponent *physics = &getComponent(entityId, COMPONENT_PHYSICS)->physics;
+
+	physics->velocityX = move->velocityX;
+	physics->velocityY = move->velocityY;
 }
 
 float evaluateXVelocity(const State state, float t) {

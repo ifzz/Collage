@@ -14,7 +14,7 @@ void deleteWorld(void*);
 World *ACTIVE_WORLD = NULL;
 linkedList_t *WORLD_LIST = NULL;
 
-int MAX_EVENTS = 30;
+int MAX_EVENTS = 70;
 
 void initWorlds() {
 	WORLD_LIST = createLinkedList(&deleteWorld);
@@ -34,7 +34,7 @@ void createWorld(char *name) {
 	newWorld->entityCount = 0;
 	newWorld->componentCount = 0;
 	newWorld->entityCountMax = 2000;
-	newWorld->systemCountMax = 10;
+	newWorld->systemCountMax = MAX_EVENTS;
 	newWorld->entityMask = calloc(newWorld->entityCountMax, sizeof(unsigned int));
 	newWorld->components = calloc(40, sizeof(ComponentContainer*));
 	newWorld->entityEventCallbackCount = calloc(newWorld->entityCountMax, sizeof(unsigned int*));

@@ -18,7 +18,8 @@
 void loop(void) {
 	resetTimestep();
 
-	while (SDL_GetTicks() < 3200) {
+	while (!HARD_EXIT) {
+		inputLoop();
 		stepTime();
 		displayPresent();
 		displayClear();
@@ -43,9 +44,7 @@ int main() {
 	setScene("action");
 
 	
-	createActor(100, 32, 1);
-	/*createActor(100, 32, 1);*/
-	/*createActor(100, 32, 1);*/
+	createPlayer(100, 32, 1);
 
 	loop();
 

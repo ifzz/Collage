@@ -20,6 +20,8 @@ void createEvent(unsigned int *eventId) {
 	world->systemIndex[world->eventCount] = 0;
 	*eventId = world->eventCount;
 
+	/*printf("Created new event: %i\n", world->eventCount);*/
+
 	++ world->eventCount;
 }
 
@@ -38,6 +40,18 @@ void triggerEvent(unsigned int entityId, unsigned int eventId, void *data) {
 
 	for (unsigned int i = 0; i < world->entityEventCallbackCount[entityId][eventId]; ++ i) {
 		world->entityEventCallback[entityId][eventId][i](entityId, data);
+	}
+}
+
+void triggerEventForAll(unsigned int eventId, unsigned int componentFlags, void *data) {
+	World *world = getWorld();
+
+	for (unsigned int entityId = 0; entityId < world->entityCountMax; ++ entityId) {
+		unsigned int entityMask = getWorld()->entityMask[entityId];
+
+		for (unsigned int i = 0; i < world->entityEventCallbackCount[entityId][eventId]; ++ i) {
+			world->entityEventCallback[entityId][eventId][i](entityId, data);
+		}
 	}
 }
 

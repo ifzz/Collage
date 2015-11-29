@@ -1,5 +1,12 @@
+unsigned int EVENT_SET_VELOCITY;
+
 #ifndef PHYSICS_H
 #define PHYSICS_H
+
+typedef struct {
+	float velocityX;
+	float velocityY;
+} MovementEvent;
 
 typedef struct {
 	float lastExactX; //Cut
