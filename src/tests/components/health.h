@@ -7,7 +7,12 @@ typedef struct {
 } DamageEvent;
 
 typedef struct {
+	short int team;
+} SetTeamEvent;
+
+typedef struct {
 	int hp;
+	short int team;
 } HealthComponent;
 
 #endif

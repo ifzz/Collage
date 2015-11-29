@@ -1,7 +1,8 @@
 #include <stdlib.h>
 #include "sprite.h"
-#include "worldPosition.h"
 #include "scene.h"
+#include "input.h"
+#include "worldPosition.h"
 #include "tests/components/physics.h"
 #include "tests/components/health.h"
 
@@ -14,7 +15,7 @@ typedef union componentContainer {
 	WorldPositionComponent worldPosition;
 	PhysicsComponent physics;
 	SceneComponent scene;
-
+	InputComponent input;
 } ComponentContainer;  
 
 #endif

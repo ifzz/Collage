@@ -8,6 +8,7 @@
 #include "../sprite.h"
 #include "../scene.h"
 #include "../worldPosition.h"
+#include "../input.h"
 #include "components/health.h"
 #include "components/physics.h"
 #include "constants.h"
@@ -30,6 +31,7 @@ int main() {
 	setWorld("World1");
 	
 	initTimestep();
+	initInput();
 	initComponentHealth();
 	initComponentWorldPosition();
 	initComponentPhysics();
@@ -40,8 +42,7 @@ int main() {
 	createScene("action", 100, 0);
 	setScene("action");
 
-	for (int i = 0; i < 10; ++ i)
-		createHunter(100 + 64 * i, 32, 0);
+	createActor(100, 32, 1);
 
 	loop();
 

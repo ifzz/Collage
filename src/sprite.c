@@ -60,6 +60,8 @@ void eventDrawCallback(unsigned int entityId, void *data) {
 	renderRect.w = interp(sprite->width * sprite->scaleW, sprite->lastWidth * sprite->lastScaleW, delta);
 	renderRect.h = interp(sprite->height * sprite->scaleH, sprite->lastHeight * sprite->lastScaleH, delta);
 
+	printf("%u\n", sprite->texture);
+
 	SDL_SetTextureAlphaMod(sprite->texture, interp(sprite->alpha, sprite->lastAlpha, delta));
 
 	renderRect.x = interp(sprite->x, sprite->lastX, delta) - cameraOffsetX;
@@ -67,8 +69,6 @@ void eventDrawCallback(unsigned int entityId, void *data) {
 
 	renderRect.x -= (renderRect.w - interp(sprite->width, sprite->lastWidth, delta) / 2);
 	renderRect.y -= (renderRect.h - interp(sprite->height, sprite->lastHeight, delta) / 2);
-
-	//printf("%i, %i\n", renderRect.x, renderRect.y);
 
 	//#TODO: Center point
 	SDL_RenderCopyEx(renderer, sprite->texture, NULL, &renderRect, sprite->angle, NULL, SDL_FLIP_NONE);
