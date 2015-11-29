@@ -14,8 +14,8 @@ typedef union componentContainer {
 	HealthComponent health;
 	WorldPositionComponent worldPosition;
 	PhysicsComponent physics;
-	SceneComponent scene;
 	InputComponent input;
+	SceneComponent scene;
 } ComponentContainer;  
 
 #endif

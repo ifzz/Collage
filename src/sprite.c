@@ -32,6 +32,7 @@ void registerSprite(unsigned int entityId, char *spriteFilename) {
 	sprite->texture = textureCreate(spriteFilename);
 	
 	SDL_QueryTexture(sprite->texture, NULL, NULL, &sprite->width, &sprite->height);
+
 	sprite->lastWidth = sprite->width;
 	sprite->lastHeight = sprite->height;
 	sprite->x = 0; 
@@ -57,10 +58,10 @@ void eventDrawCallback(unsigned int entityId, void *data) {
 	double cameraZoom = drawEvent->cameraZoom;
 	SDL_Rect renderRect;
 
+	printf("Width: %i\n", sprite->width);
+
 	renderRect.w = interp(sprite->width * sprite->scaleW, sprite->lastWidth * sprite->lastScaleW, delta);
 	renderRect.h = interp(sprite->height * sprite->scaleH, sprite->lastHeight * sprite->lastScaleH, delta);
-
-	printf("%u\n", sprite->texture);
 
 	SDL_SetTextureAlphaMod(sprite->texture, interp(sprite->alpha, sprite->lastAlpha, delta));
 

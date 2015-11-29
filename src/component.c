@@ -17,7 +17,7 @@ void addComponentToWorld(unsigned int *id, size_t size) {
 	*id = 1 << world->componentCount;
 	++ world->componentCount;
 	
-	printf("[WORLD] Added new component \'%u\' of size %lu\n", *id, sizeof(world->components[world->componentCount]));
+	printf("[WORLD] Added new component \'%u\' of size %lu\n", *id, sizeof(ComponentContainer));
 }
 
 void removeComponentFromWorld(unsigned int componentId) {
@@ -37,7 +37,6 @@ void addComponentToEntity(unsigned int entityId, unsigned int componentFlag) {
 ComponentContainer* getComponent(unsigned int entityId, unsigned int componentId) {
 	int id = (int)log(componentId) / log(2);
 
-	assert(entityId < 3000);
 	//printf("Getting COMP id=%i for entity=%u\n", componentId, entityId);
 
 	return &getWorld()->components[id][entityId];

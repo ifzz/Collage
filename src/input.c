@@ -7,7 +7,7 @@
 
 
 void initInput() {
-	addComponentToWorld(&COMPONENT_INPUT, sizeof(InputComponent));
+	/*addComponentToWorld(&COMPONENT_INPUT, sizeof(InputComponent));*/
 
 	createEvent(&EVENT_KEY_INPUT);
 	createEvent(&EVENT_CONTROLLER_INPUT);
@@ -19,8 +19,8 @@ void initInput() {
 void registerKeyboardInput(unsigned int entityId) {
 	addComponentToEntity(entityId, COMPONENT_INPUT);
 
-	InputComponent *input = &getComponent(entityId, COMPONENT_INPUT)->input;
+	/*InputComponent *input = &getComponent(entityId, COMPONENT_INPUT)->input;*/
 
-	input->isKeyboard = true;
+	/*input->isKeyboard = true;*/
 }
 

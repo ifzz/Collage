@@ -42,6 +42,9 @@ int main() {
 	createScene("action", 100, 0);
 	setScene("action");
 
+	
+	createActor(100, 32, 1);
+	createActor(100, 32, 1);
 	createActor(100, 32, 1);
 
 	loop();

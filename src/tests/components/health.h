@@ -12,7 +12,7 @@ typedef struct {
 
 typedef struct {
 	int hp;
-	short int team;
+	//int team;
 } HealthComponent;
 
 #endif
