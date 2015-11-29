@@ -58,7 +58,7 @@ void stepTime() {
 
 	Delta simulationInfo = {TIME, alpha};
 
-	triggerEvents(EVENT_TIMESTEP_END, COMPONENT_SCENE, &simulationInfo);
+	triggerEvents(EVENT_TIMESTEP_END, COMPONENT_STAGE, &simulationInfo);
 }	
 
 void showTimestepInfo() {

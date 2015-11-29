@@ -12,9 +12,8 @@
 #include "entity.h"
 #include "component.h"
 
-SceneComponent *ACTIVE_SCENE = NULL;
-linkedList_t *SCENES = NULL;
-
+linkedList_t *STAGES = NULL;
+StageComponent *ACTIVE_STAGE = NULL;
 
 void deleteScene(void *data) {
 	SceneComponent *scene = (SceneComponent*)data;
@@ -24,14 +23,31 @@ void deleteScene(void *data) {
 }
 
 void initScene() {
-	SCENES = createLinkedList(&deleteScene);
+	STAGES = createLinkedList(&deleteScene);
 
 	addComponentToWorld(&COMPONENT_SCENE, sizeof(SceneComponent));
-	createSystem(EVENT_TIMESTEP_END, COMPONENT_SCENE, drawScene);
+	addComponentToWorld(&COMPONENT_STAGE, sizeof(StageComponent));
+	createSystem(EVENT_TIMESTEP_END, COMPONENT_STAGE, drawStage);
 }
 
-//#TODO: In the future, these should be entities.
-void createScene(char *name, int size, int renderIndex) {
+void createStage(char *name) {
+	unsigned int entityId = createEntity();
+
+	addComponentToEntity(entityId, COMPONENT_STAGE);
+
+	StageComponent *stage = &getComponent(entityId, COMPONENT_STAGE)->stage;
+
+	stage->scenes = createLinkedList(&deleteScene);
+	stage->maxRenderIndex = 0;
+
+	copyText(&stage->name, name);
+
+	addListItem(STAGES, stage);
+
+	printf("[STAGE] Created new stage: %s\n", stage->name);
+}
+
+void createScene(char *stageName, char *name, int size, int renderIndex) {
 	unsigned int entityId = createEntity();
 
 	addComponentToEntity(entityId, COMPONENT_SCENE);
@@ -47,46 +63,48 @@ void createScene(char *name, int size, int renderIndex) {
 	scene->entityCount = 0;
 	scene->entityCountMax = size;
 
-	addListItem(SCENES, scene);
-
 	printf("[SCENE] Created new scene: %s\n", scene->name);
-}
 
-void destroyScene() {
-	deleteLinkedList(SCENES);
-}
+	for (listItem_t *item = STAGES->head; item; item = item->next) {
+		StageComponent *stage = (StageComponent*)item->item;
 
-void setScene(char *name) {
-	ACTIVE_SCENE = NULL;
+		if (!strcmp(stage->name, stageName)) {
+			addListItem(stage->scenes, scene);
 
-	for (listItem_t *item = SCENES->head; item; item = item->next) {
-		SceneComponent *scene = (SceneComponent*)item->item;
-		//printf("%s vs %s\n", name, scene->name);
-
-		if (!strcmp(scene->name, name)) {
-			ACTIVE_SCENE = scene;
+			if (scene->renderIndex > stage->maxRenderIndex)
+				stage->maxRenderIndex = scene->renderIndex;
 
 			return;
 		}
 	}
 
-	assert(ACTIVE_SCENE);
 }
 
-void getSceneName() {
-	printf("Active Scene: %s\n", ACTIVE_SCENE->name);
+void destroyScene() {
+	deleteLinkedList(STAGES);
 }
 
-void addEntityToScene(unsigned int entityId) {
-	ACTIVE_SCENE->entityIds[ACTIVE_SCENE->entityCount] = entityId;
+void addEntityToScene(char *name, unsigned int entityId) {
+	for (listItem_t *stageItem = STAGES->head; stageItem; stageItem = stageItem->next) {
+		StageComponent *stage = (StageComponent*)stageItem->item;
 
-	++ ACTIVE_SCENE->entityCount;
+		for (listItem_t *item = stage->scenes->head; item; item = item->next) {
+			SceneComponent *scene = (SceneComponent*)item->item;
+
+			if (!strcmp(scene->name, name)) {
+				scene->entityIds[scene->entityCount] = entityId;
+				++ scene->entityCount;
+
+				return;
+			}
+		}
+	}
+
+	printf("[SCENE-#FATAL] Could not find scene: %s\n", name);
 }
 
-void drawScene(unsigned int entityId, void *data) {
+void drawScene(SceneComponent *scene, Delta *timestepInfo) {
 	//#TODO: Send camera data!
-	Delta *timestepInfo = (Delta*)data;
-	SceneComponent *scene = &getComponent(entityId, COMPONENT_SCENE)->scene;
 
 	DrawEvent drawEvent;
 	drawEvent.renderer = displayGetRenderer();
@@ -98,3 +116,20 @@ void drawScene(unsigned int entityId, void *data) {
 	for (int i = 0; i < scene->entityCount; ++ i)
 		triggerEvent(scene->entityIds[i], EVENT_DRAW, &drawEvent);
 }
+
+void drawStage(unsigned int entityId, void *data) {
+	StageComponent *stage = &getComponent(entityId, COMPONENT_STAGE)->stage;
+	Delta *timestepInfo = (Delta*)data;
+
+	for (int z = 0; z <= stage->maxRenderIndex; ++ z) {
+		for (listItem_t *item = stage->scenes->head; item; item = item->next) {
+			SceneComponent *scene = (SceneComponent*)item->item;
+
+			if (scene->renderIndex != z)
+				continue;
+
+			drawScene(scene, timestepInfo);
+		}
+	}
+}
+

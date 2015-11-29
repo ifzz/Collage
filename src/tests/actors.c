@@ -66,7 +66,7 @@ unsigned int createActor(int x, int y, int team) {
 	registerSprite(entityId, "src/tests/data/sprites/test.png");
 	registerPhysics(entityId);
 	registerEntityEvent(entityId, EVENT_TICK, &actorGridMoveHandler);
-	addEntityToScene(entityId);
+	addEntityToScene("action", entityId);
 
 	SetPositionEvent pos = {x, y};
 

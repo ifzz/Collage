@@ -1,5 +1,7 @@
 //#include <SDL2/SDL.h>
+#include "framework/list.h"
 
+unsigned int COMPONENT_STAGE;
 unsigned int COMPONENT_SCENE;
 
 #ifndef SCENE_H
@@ -14,13 +16,18 @@ typedef struct {
 	unsigned int *entityIds;
 } SceneComponent;
 
+typedef struct {
+	char *name;
+	linkedList_t *scenes;
+	int maxRenderIndex;
+} StageComponent;
+
 #endif
 
 
 void initScene(void);
 void destroyScene(void);
-void createScene(char*, int, int);
-void setScene(char *name);
-void addEntityToScene(unsigned int);
-void drawScene(unsigned int, void*);
-void getSceneName(void);
+void createStage(char*);
+void createScene(char*, char*, int, int);
+void addEntityToScene(char *, unsigned int);
+void drawStage(unsigned int, void*);

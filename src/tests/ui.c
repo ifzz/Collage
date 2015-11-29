@@ -28,6 +28,6 @@ void drawUi(unsigned int entityId, void *data) {
 void createUi() {
 	unsigned int uiEntityId = createEntity();
 
-	addEntityToScene(uiEntityId);
+	addEntityToScene("ui", uiEntityId);
 	registerEntityEvent(uiEntityId, EVENT_DRAW, &drawUi);
 }

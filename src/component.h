@@ -16,6 +16,7 @@ typedef union componentContainer {
 	PhysicsComponent physics;
 	InputComponent input;
 	SceneComponent scene;
+	StageComponent stage;
 } ComponentContainer;  
 
 #endif

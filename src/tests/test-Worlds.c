@@ -41,8 +41,9 @@ int main() {
 	initScene();
 	initDisplay();
 	
-	createScene("action", 100, 0);
-	setScene("action");
+	createStage("main");
+	createScene("main", "action", 100, 0);
+	createScene("main", "ui", 100, 1);
 
 	createUi();
 	
