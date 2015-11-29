@@ -9,10 +9,11 @@
 #include "../scene.h"
 #include "../worldPosition.h"
 #include "../input.h"
-#include "components/health.h"
 #include "components/physics.h"
+#include "components/health.h"
 #include "constants.h"
 #include "actors.h"
+#include "ui.h"
 
 
 void loop(void) {
@@ -43,6 +44,7 @@ int main() {
 	createScene("action", 100, 0);
 	setScene("action");
 
+	createUi();
 	
 	createPlayer(100, 32, 1);
 
