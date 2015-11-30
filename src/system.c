@@ -49,6 +49,9 @@ void triggerEventForAll(unsigned int eventId, unsigned int componentFlags, void 
 	for (unsigned int entityId = 0; entityId < world->entityCountMax; ++ entityId) {
 		unsigned int entityMask = getWorld()->entityMask[entityId];
 
+		if (entityMask == 0)
+			continue;
+
 		for (unsigned int i = 0; i < world->entityEventCallbackCount[entityId][eventId]; ++ i) {
 			world->entityEventCallback[entityId][eventId][i](entityId, data);
 		}

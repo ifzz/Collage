@@ -106,7 +106,4 @@ void eventSetSpritePositionCallback(unsigned int entityId, void *data) {
 	sprite->lastY = sprite->y;
 	sprite->x = newPosition->x;
 	sprite->y = newPosition->y;
-
-	if (sprite->x == 0)
-		assert(1 == 2);
 }

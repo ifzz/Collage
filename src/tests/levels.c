@@ -1,7 +1,9 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <stdio.h>
 #include "levels.h"
+#include "actors.h"
 #include "items.h"
 
 
@@ -15,14 +17,29 @@ void createLevel(int width, int height) {
 	LEVEL_WIDTH = width;
 	LEVEL_HEIGHT = height;
 
-	for (int x = 1; x < 5; ++ x) {
-		setPositionSolid(x, 3);
-		setPositionSolid(x + 3, 6);
+	printf("Level size: %ix%i\n", LEVEL_WIDTH, LEVEL_HEIGHT);
+	int x = 0, y = 0, c;
+
+	FILE *levelFile = fopen ("src/tests/data/levels/001.txt", "r");
+
+	while((c = fgetc(levelFile)) != EOF) {
+		if (c == '@') {
+			createPlayer(x, y, 1);
+		} else if (c == '#') {
+			setPositionSolid(x, y);
+		} else if (c == 'H') {
+			setPositionLadder(x, y);
+		} else if (c == '*') {
+			createCollectible(x, y, "src/tests/data/sprites/gold.png");
+		} else if (c == '\n') {
+			x = 0;
+			++ y;
+		}
+
+		++ x;
 	}
 
-	for (int y = 3; y < 6; ++ y) {
-		setPositionLadder(5, y);
-	}
+	fclose(levelFile);
 }
 
 void setPositionSolid(int x, int y) {

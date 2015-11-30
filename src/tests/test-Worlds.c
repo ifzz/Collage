@@ -50,8 +50,6 @@ int main() {
 	createLevel(displayGetRenderWidth() / 16, displayGetRenderHeight() / 16);
 
 	createUi();
-	
-	createPlayer(2, 2, 1);
 
 	loop();
 

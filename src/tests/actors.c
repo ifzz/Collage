@@ -25,21 +25,23 @@ void actorGridMoveHandler(unsigned int entityId, void *data) {
 	bool onGround = (position->x % 16) || isPositionSolid((position->x / 16), (position->y / 16) + 1) || ladderBelow;
 	bool onLadder = !(position->x % 16) && (isPositionLadder((position->x / 16), (position->y / 16)));
 
-	printf("Ground=%i, Ladder=%i, LadderBelow=%i\n", onGround, onLadder, ladderBelow);
+	/*printf("%i, %i, %i\n", ladderBelow, onGround, onLadder);*/
 
 	if (onGround) {
-		if (input->movingLeft && position->x > 16 * 1) {
-			MovementEvent moveInfo = {-5, 0};
+		if (!(position->y % 16)) {
+			if (input->movingLeft && position->x > 16 * 1) {
+				MovementEvent moveInfo = {-5, 0};
 
-			triggerEvent(entityId, EVENT_SET_VELOCITY, &moveInfo);
-		} else if (input->movingRight && position->x < 16 * ((displayGetRenderWidth() / 16) - 1)) {
-			MovementEvent moveInfo = {5, 0};
+				triggerEvent(entityId, EVENT_SET_VELOCITY, &moveInfo);
+			} else if (input->movingRight && position->x < 16 * ((displayGetRenderWidth() / 16) - 1)) {
+				MovementEvent moveInfo = {5, 0};
 
-			triggerEvent(entityId, EVENT_SET_VELOCITY, &moveInfo);
-		} else if (!(position->x % 16)) {
-			MovementEvent moveInfo = {0, physics->velocityY};
+				triggerEvent(entityId, EVENT_SET_VELOCITY, &moveInfo);
+			} else if (!(position->x % 16)) {
+				MovementEvent moveInfo = {0, physics->velocityY};
 
-			triggerEvent(entityId, EVENT_SET_VELOCITY, &moveInfo);
+				triggerEvent(entityId, EVENT_SET_VELOCITY, &moveInfo);
+			}
 		}
 	}
 	
@@ -71,9 +73,14 @@ void actorGridMoveHandler(unsigned int entityId, void *data) {
 	} else if (onGround && !ladderBelow) {
 		MovementEvent moveInfo = {physics->velocityX, clipFloat(physics->velocityY, -5, 0)};
 
+		SetPositionEvent positionInfo = {position->x, position->y - (position->y % 16)};
+		physics->exactY = position->y - (position->y % 16);
+
+		triggerEvent(entityId, EVENT_SET_POSITION, &positionInfo);
+		/*printf("\tAfter: %i, %i %f\n", position->y, (position->y % 16), physics->velocityY);*/
+
 		triggerEvent(entityId, EVENT_SET_VELOCITY, &moveInfo);
 	}
-
 }
 
 void actorKeyInputHandler(unsigned int entityId, void *data) {
@@ -112,6 +119,7 @@ unsigned int createActor(int x, int y, int team) {
 
 	SetPositionEvent pos = {x, y};
 
+	triggerEvent(entityId, EVENT_SET_POSITION, &pos);
 	triggerEvent(entityId, EVENT_SET_POSITION, &pos);
 
 	return entityId;
