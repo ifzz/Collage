@@ -6,6 +6,7 @@
 #include "../entity.h"
 #include "../scene.h"
 #include "../world.h"
+#include "../input.h"
 #include "constants.h"
 #include "items.h"
 

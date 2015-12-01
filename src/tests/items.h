@@ -1,6 +1,3 @@
-unsigned int EVENT_COLLISION;
-
-
 #ifndef ITEMS_H
 #define ITEMS_H
 

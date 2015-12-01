@@ -12,6 +12,7 @@ void addComponentToWorld(unsigned int *id, size_t size) {
 	//NOTE: We can either init memory on the fly here, or do it at runtime.
 	
 	/*world->components[world->componentCount] = calloc(world->entityCountMax, sizeof(ComponentContainer));*/
+	world->components[world->componentCount] = calloc(world->entityCountMax, size);
 	/*world->components[world->componentCount] = malloc(world->entityCountMax * sizeof(ComponentContainer));*/
 
 	assert(world->components[world->componentCount]);
@@ -19,7 +20,7 @@ void addComponentToWorld(unsigned int *id, size_t size) {
 	*id = 1 << world->componentCount;
 	++ world->componentCount;
 	
-	printf("[WORLD] Added new component \'%u\' @ ID=%i of size %lu\n", *id, world->componentCount - 1, sizeof(ComponentContainer));
+	printf("[WORLD] Added new component \'%u\' @ ID=%i of size %lu\n", *id, world->componentCount - 1, size);
 }
 
 void removeComponentFromWorld(unsigned int componentId) {

@@ -36,13 +36,13 @@ void createWorld(char *name) {
 	newWorld->entityCountMax = 2000;
 	newWorld->systemCountMax = MAX_EVENTS;
 	newWorld->entityMask = calloc(newWorld->entityCountMax, sizeof(unsigned int));
-	newWorld->components = calloc(40, sizeof(ComponentContainer*));
+	newWorld->components = calloc(40, sizeof(void*));
 	newWorld->entityEventCallbackCount = calloc(newWorld->entityCountMax, sizeof(unsigned int*));
 
-	printf("\n\nREPLACE THESE WITH ACTUAL VALUES!!!!!!!!!\n\n");
+	/*printf("\n\nREPLACE THESE WITH ACTUAL VALUES!!!!!!!!!\n\n");*/
 
-	for (int e = 0; e < 40; ++ e)
-		newWorld->components[e] = calloc(newWorld->entityCountMax, sizeof(ComponentContainer));
+	/*for (int e = 0; e < 40; ++ e)*/
+		/*newWorld->components[e] = calloc(newWorld->entityCountMax, sizeof(ComponentContainer));*/
 	
 	for (int e = 0; e < newWorld->entityCountMax; ++ e)
 		newWorld->entityEventCallbackCount[e] = calloc(entityEventCallbackCountMax, sizeof(int));

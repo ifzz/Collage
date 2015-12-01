@@ -14,6 +14,7 @@
 #include "constants.h"
 #include "abilities.h"
 #include "actors.h"
+#include "levels.h"
 
 
 void actorGridMoveHandler(unsigned int entityId, void *data) {

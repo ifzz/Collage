@@ -9,16 +9,15 @@ unsigned int EVENT_DRAW;
 
 typedef struct {
 	SDL_Texture *texture;
-	//SDL_Point centerPoint, lastCenter;
 	int x, lastX;
 	int y, lastY;
 	int width, lastWidth;
 	int height, lastHeight;
-	int angle, lastAngle;
-	int alpha, lastAlpha;
-	int layerIndex;
-	double scaleW, lastScaleW;
-	double scaleH, lastScaleH;
+	short int angle, lastAngle;
+	short int alpha, lastAlpha;
+	//int layerIndex;
+	float scaleW, lastScaleW;
+	float scaleH, lastScaleH;
 } SpriteComponent;
 
 typedef struct {
