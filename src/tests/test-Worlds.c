@@ -58,6 +58,7 @@ int main() {
 
 	//#TODO: This should be done by the ECS!
 	//destroyScene();
+	destroyLevel();
 	destroyComponentSprite();
 	destroyDisplay();
 	showTimestepInfo();

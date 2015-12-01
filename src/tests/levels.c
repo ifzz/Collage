@@ -42,6 +42,11 @@ void createLevel(int width, int height) {
 	fclose(levelFile);
 }
 
+void destroyLevel() {
+	if (LEVEL != NULL)
+		free(LEVEL);
+}
+
 void setPositionSolid(int x, int y) {
 	assert(LEVEL);
 
