@@ -20,4 +20,4 @@ cgame-profile: $(OFILES)
 		$(CC) $(DEBUGLDFLAGS-PROF) -O0 -o $(BINNAME) $^
 		
 clean:
-	rm $(BINNAME) src/*.o src/framework/*.o src/tests/*.o
+	rm $(BINNAME) src/*.o src/framework/*.o src/tests/*.o src/tests/components/*.o

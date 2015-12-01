@@ -33,7 +33,7 @@ int main() {
 	initWorlds();
 	createWorld("World1");
 	setWorld("World1");
-	
+
 	initTimestep();
 	initInput();
 	initComponentHealth();
