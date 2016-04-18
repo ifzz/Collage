@@ -22,6 +22,7 @@ void initComponentSprite() {
 	startTextureManager();
 	createSystem(EVENT_TIMESTEP, COMPONENT_SPRITE, eventSpriteTimestepHandler);
 	createSystem(EVENT_DRAW, COMPONENT_SPRITE, eventDrawCallback);
+	createSystem(EVENT_DRAW, COMPONENT_SPRITE, eventDrawCallback);
 	createSystem(EVENT_SET_POSITION, COMPONENT_SPRITE, eventSetSpritePositionCallback);
 	createSystem(EVENT_SET_ALPHA, COMPONENT_SPRITE, eventSetSpriteAlphaCallback);
 }
@@ -56,6 +57,8 @@ void eventSpriteTimestepHandler(unsigned int entityId, void *data) {
 
 	sprite->lastX = sprite->x;
 	sprite->lastY = sprite->y;
+
+	sprite->lastAlpha = sprite->alpha;
 }
 
 void eventDrawCallback(unsigned int entityId, void *data) {
@@ -70,7 +73,7 @@ void eventDrawCallback(unsigned int entityId, void *data) {
 	renderRect.w = interp(sprite->lastWidth * sprite->lastScaleW, sprite->width * sprite->scaleW, delta);
 	renderRect.h = interp(sprite->lastHeight * sprite->lastScaleH, sprite->height * sprite->scaleH, delta);
 
-	/*sprite->alpha = interp(sprite->alpha, sprite->lastAlpha, delta);*/
+	sprite->alpha = interp(sprite->alpha, sprite->lastAlpha, delta);
 
 	SDL_SetTextureAlphaMod(sprite->texture, sprite->alpha);
 

@@ -2,6 +2,7 @@
 #include "../framework/display.h"
 #include "../framework/drawing.h"
 #include "../framework/sprite.h"
+#include "constants.h"
 #include "../entity.h"
 #include "../scene.h"
 #include "../component.h"
@@ -53,6 +54,30 @@ void uiRenderBackground() {
 
 }
 
+void eventDrawHealthCallback(unsigned int entityId, void *data) {
+	SDL_Renderer *renderer = displayGetRenderer();
+	SpriteComponent *sprite = &getComponent(entityId, COMPONENT_SPRITE)->sprite;
+	SDL_Rect healthRect;
+	DrawEvent *drawEvent = data;
+	int cameraOffsetX = drawEvent->cameraOffsetX, cameraOffsetY = drawEvent->cameraOffsetY;
+
+	healthRect.h = 6;
+	healthRect.w = 16;
+	healthRect.x = sprite->x - sprite->width / 2 - cameraOffsetX;
+	healthRect.y = sprite->y - sprite->height - healthRect.h / 2 - cameraOffsetY;
+
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	SDL_RenderFillRect(renderer, &healthRect);
+
+	healthRect.h = 4;
+	healthRect.w -= 2;
+	healthRect.x += 1;
+	healthRect.y += 1;
+
+	SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
+	SDL_RenderFillRect(renderer, &healthRect);
+}
+
 void createUi() {
 	unsigned int uiEntityId = createEntity();
 	unsigned int backgroundEntityId = createEntity();
@@ -64,5 +89,6 @@ void createUi() {
 
 	registerEntityEvent(uiEntityId, EVENT_DRAW, &drawUi);
 	registerEntityEvent(backgroundEntityId, EVENT_DRAW, &drawBackground);
+	createSystem(EVENT_DRAW, COMPONENT_PHYSICS | COMPONENT_STATS, eventDrawHealthCallback);
 }
 

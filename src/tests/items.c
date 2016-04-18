@@ -1,3 +1,4 @@
+#include "../framework/numbers.h"
 #include "components/health.h"
 #include "../worldPosition.h"
 #include "../timestep.h"
@@ -71,8 +72,8 @@ void itemLightingHandler(unsigned int entityId, void *data) {
 
 	SetAlphaEvent alphaEvent = {255};
 
-	if (closestDist > 128) 
-		alphaEvent.alpha = 0;
+	if (closestDist > 128)
+		alphaEvent.alpha = 255 * cubicPulse(128, 96, closestDist);
 
 	triggerEvent(entityId, EVENT_SET_ALPHA, &alphaEvent);
 }
@@ -91,7 +92,7 @@ unsigned int createItem(int x, int y, char *sprite) {
 	/*triggerEvent(entityId, EVENT_SET_POSITION, &pos);*/
 
 	//Lighting
-	/*registerEntityEvent(entityId, EVENT_TICK, &itemLightingHandler);*/
+	registerEntityEvent(entityId, EVENT_TICK, &itemLightingHandler);
 
 	return entityId;
 }

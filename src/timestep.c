@@ -4,7 +4,7 @@
 #include "timestep.h"
 
 float TIME = 0.;
-float DELTA_TIME = 1 / 3.;
+float DELTA_TIME = 1 / 6.;
 float CURRENT_TIME = 0.;
 float ACCUMULATOR = 0.;
 float MAX_ACCUMULATOR = 0.;

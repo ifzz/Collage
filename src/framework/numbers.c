@@ -39,6 +39,17 @@ float distanceFloat(float x1, float y1, float x2, float y2) {
 	}
 }
 
+float cubicPulse(float c, float w, float x) {
+	x = fabs(x - c);
+
+	if (x > w)
+		return 0.f;
+
+	x /= w;
+
+	return 1.f - x * x * (3.f - 2.f * x);
+}
+
 int clip(int i, int min, int max) {
 	const int t = i < min ? min : i;
 	return t > max ? max : t;
