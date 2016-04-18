@@ -8,7 +8,6 @@ unsigned int COMPONENT_SCENE;
 #define SCENE_H
 
 typedef struct {
-	//SDL_Renderer *rederer;
 	char *name;
 	int renderIndex;
 	int entityCount;

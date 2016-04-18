@@ -9,8 +9,6 @@ typedef struct {
 } MovementEvent;
 
 typedef struct {
-	float lastExactX; //Cut
-	float lastExactY; //Cut
 	float exactX;
 	float exactY;
 	float velocityX;

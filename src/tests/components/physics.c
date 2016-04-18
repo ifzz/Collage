@@ -36,8 +36,8 @@ void registerPhysics(unsigned int entityId) {
 	PhysicsComponent *physics = &getComponent(entityId, COMPONENT_PHYSICS)->physics;
 	WorldPositionComponent *position = &getComponent(entityId, COMPONENT_WORLD_POSITION)->worldPosition;
 
-	physics->lastExactX = position->x;
-	physics->lastExactY = position->y;
+	/*physics->lastExactX = position->x;*/
+	/*physics->lastExactY = position->y;*/
 	physics->exactX = position->x;
 	physics->exactY = position->y;
 	physics->velocityX = 0.;

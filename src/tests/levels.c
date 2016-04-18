@@ -13,7 +13,7 @@ int LEVEL_WIDTH, LEVEL_HEIGHT;
 
 
 void createLevel(int width, int height) {
-	LEVEL = (short int*)calloc(width * height, sizeof(short int));
+	LEVEL = (short int*)calloc((width + 1) * (height + 1), sizeof(short int));
 	LEVEL_WIDTH = width;
 	LEVEL_HEIGHT = height;
 
@@ -40,6 +40,11 @@ void createLevel(int width, int height) {
 	}
 
 	fclose(levelFile);
+}
+
+void destroyLevel() {
+	if (LEVEL != NULL)
+		free(LEVEL);
 }
 
 void setPositionSolid(int x, int y) {
