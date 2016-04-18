@@ -1,8 +1,12 @@
 #include <SDL2/SDL.h>
 #include "../framework/display.h"
+#include "../framework/drawing.h"
+#include "../framework/sprite.h"
 #include "../entity.h"
 #include "../scene.h"
 #include "../component.h"
+
+SDL_Texture *BACKGROUND_TEXTURE = NULL;
 
 
 void drawUi(unsigned int entityId, void *data) {
@@ -25,9 +29,40 @@ void drawUi(unsigned int entityId, void *data) {
 	SDL_RenderDrawLines(renderer, lines, 5);
 }
 
+void drawBackground(unsigned int entityId, void *data) {
+	SDL_Renderer *renderer = displayGetRenderer();
+	DrawEvent *drawEvent = (DrawEvent*)data;
+
+	textureRender(renderer, BACKGROUND_TEXTURE, 8, 8);
+}
+
+void uiRenderBackground() {
+	SDL_Renderer *renderer = displayGetRenderer();
+
+	if (BACKGROUND_TEXTURE != NULL) {
+		SDL_DestroyTexture(BACKGROUND_TEXTURE);
+
+		BACKGROUND_TEXTURE = NULL;
+	}
+
+	SDL_Texture *tileTexture =
+		textureCreate("src/tests/data/sprites/background.png");
+	BACKGROUND_TEXTURE = textureGenerateTile(renderer,
+			tileTexture, displayGetRenderWidth() - 16,
+			displayGetRenderHeight() - 16);
+
+}
+
 void createUi() {
 	unsigned int uiEntityId = createEntity();
+	unsigned int backgroundEntityId = createEntity();
+
+	uiRenderBackground();
 
 	addEntityToScene("ui", uiEntityId);
+	addEntityToScene("background", backgroundEntityId);
+
 	registerEntityEvent(uiEntityId, EVENT_DRAW, &drawUi);
+	registerEntityEvent(backgroundEntityId, EVENT_DRAW, &drawBackground);
 }
+

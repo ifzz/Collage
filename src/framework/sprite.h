@@ -17,5 +17,5 @@ void surfaceDestroy(SDL_Surface*);
 void textureDestroy(SDL_Texture*);
 //void renderSprite(Sprite*);
 //void renderRect(Sprite*);
-void textureRender(SDL_Texture*, SDL_Renderer*, int, int);
-void textureRenderWithScale(SDL_Texture*, SDL_Renderer*, int, int, double, double);
+void textureRender(SDL_Renderer*, SDL_Texture*, int, int);
+void textureRenderWithScale(SDL_Renderer*, SDL_Texture*, int, int, double, double);

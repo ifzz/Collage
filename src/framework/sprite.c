@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
@@ -200,6 +201,7 @@ SDL_Texture* textureCreate(char *filename) {
 	if (texture == NULL){
 		printf("Problem loading texture: %s\n", SDL_GetError());
 
+		assert(texture != NULL);
 		//displayDestroy();
 	}
 
@@ -223,7 +225,7 @@ void textureDestroy(SDL_Texture *texture) {
 	SDL_DestroyTexture(texture);
 }
 
-void textureRender(SDL_Texture *texture, SDL_Renderer *renderer, int x, int y){
+void textureRender(SDL_Renderer *renderer, SDL_Texture *texture, int x, int y){
 	SDL_Rect dst;
 	dst.x = x;
 	dst.y = y;
@@ -232,7 +234,7 @@ void textureRender(SDL_Texture *texture, SDL_Renderer *renderer, int x, int y){
 	SDL_RenderCopy(renderer, texture, NULL, &dst);
 }
 
-void textureRenderWithScale(SDL_Texture *texture, SDL_Renderer *renderer, int x, int y, double wMod, double hMod) {
+void textureRenderWithScale(SDL_Renderer *renderer, SDL_Texture *texture, int x, int y, double wMod, double hMod) {
 	SDL_Rect dst;
 	SDL_Point pnt;
 	dst.x = x;
