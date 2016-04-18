@@ -4,7 +4,7 @@
 #include "timestep.h"
 
 float TIME = 0.;
-float DELTA_TIME = 1 / 6.;
+float DELTA_TIME = 1 / 3.;
 float CURRENT_TIME = 0.;
 float ACCUMULATOR = 0.;
 float MAX_ACCUMULATOR = 0.;
@@ -18,11 +18,20 @@ void initTimestep() {
 
 	createEvent(&EVENT_TIMESTEP);
 	createEvent(&EVENT_TIMESTEP_END);
+	createEvent(&EVENT_TIMESTEP_RENDER);
 	createEvent(&EVENT_TICK);
 }
 
 void resetTimestep() {
 	CURRENT_TIME = SDL_GetTicks();
+}
+
+void update(Delta simulationInfo) {
+	triggerEvents(EVENT_TIMESTEP_END, COMPONENT_STAGE, &simulationInfo);
+}
+
+void render(Delta simulationInfo) {
+	triggerEvents(EVENT_TIMESTEP_RENDER, COMPONENT_STAGE, &simulationInfo);
 }
 
 void stepTime() {
@@ -54,11 +63,12 @@ void stepTime() {
 		ACCUMULATOR -= DELTA_TIME;
 	}
 
-	const float alpha = 1 - (ACCUMULATOR / DELTA_TIME);
+	const float alpha = ACCUMULATOR / DELTA_TIME;
 
 	Delta simulationInfo = {TIME, alpha};
 
-	triggerEvents(EVENT_TIMESTEP_END, COMPONENT_STAGE, &simulationInfo);
+	update(simulationInfo);
+	render(simulationInfo);
 }	
 
 void showTimestepInfo() {

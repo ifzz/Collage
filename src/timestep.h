@@ -1,5 +1,6 @@
 unsigned int EVENT_TIMESTEP;
 unsigned int EVENT_TIMESTEP_END;
+unsigned int EVENT_TIMESTEP_RENDER;
 unsigned int EVENT_TICK;
 
 #ifndef TIMESTEP_H

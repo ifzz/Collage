@@ -3,6 +3,7 @@
 
 unsigned int COMPONENT_SPRITE;
 unsigned int EVENT_DRAW;
+unsigned int EVENT_SET_ALPHA;
 
 #ifndef SPRITE_H
 #define SPRITE_H
@@ -29,6 +30,10 @@ typedef struct {
 	double delta;
 	double cameraZoom;
 } DrawEvent;
+
+typedef struct {
+	int alpha;
+} SetAlphaEvent;
 
 #endif
 

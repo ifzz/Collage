@@ -202,7 +202,6 @@ SDL_Texture* textureCreate(char *filename) {
 		printf("Problem loading texture: %s\n", SDL_GetError());
 
 		assert(texture != NULL);
-		//displayDestroy();
 	}
 
 	return texture;
@@ -225,7 +224,7 @@ void textureDestroy(SDL_Texture *texture) {
 	SDL_DestroyTexture(texture);
 }
 
-void textureRender(SDL_Renderer *renderer, SDL_Texture *texture, int x, int y){
+void textureRender(SDL_Renderer *renderer, SDL_Texture *texture, int x, int y) {
 	SDL_Rect dst;
 	dst.x = x;
 	dst.y = y;

@@ -27,7 +27,7 @@ void initScene() {
 
 	addComponentToWorld(&COMPONENT_SCENE, sizeof(SceneComponent));
 	addComponentToWorld(&COMPONENT_STAGE, sizeof(StageComponent));
-	createSystem(EVENT_TIMESTEP_END, COMPONENT_STAGE, drawStage);
+	createSystem(EVENT_TIMESTEP_RENDER, COMPONENT_STAGE, drawStage);
 }
 
 void createStage(char *name) {

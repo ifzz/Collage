@@ -120,7 +120,7 @@ unsigned int createActor(int x, int y, int team) {
 
 	SetPositionEvent pos = {x, y};
 
-	triggerEvent(entityId, EVENT_SET_POSITION, &pos);
+	/*triggerEvent(entityId, EVENT_SET_POSITION, &pos);*/
 	triggerEvent(entityId, EVENT_SET_POSITION, &pos);
 
 	return entityId;

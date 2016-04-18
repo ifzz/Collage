@@ -10,6 +10,8 @@ typedef struct {
 } SetPositionEvent;
 
 typedef struct {
+	int lastX;
+	int lastY;
 	int x;
 	int y;
 } WorldPositionComponent;
