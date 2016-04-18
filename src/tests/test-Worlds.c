@@ -47,7 +47,7 @@ int main() {
 	createStage("main");
 	createScene("main", "background", 100, 0);
 	createScene("main", "ui", 100, 2);
-	createScene("main", "action", 100, 1);
+	createScene("main", "action", 100, 0);
 	createLevel(displayGetRenderWidth() / 16, displayGetRenderHeight() / 16);
 
 	createUi();

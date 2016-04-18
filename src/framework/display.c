@@ -91,49 +91,18 @@ void displayPresent() {
 	double renderWidthScale = WINDOW_WIDTH / (double)viewportWidth;
 	double renderHeightScale = WINDOW_HEIGHT / (double)viewportHeight;
 
-	//if (isSplitScreen()) {
-		//displayRect.w = viewportWidth;
-		//displayRect.h = viewportHeight;
-		//displayRect.x = 0;
-		//renderHeightScale /= 2;
-
-		////if (lastLoop) {
-			////displayRect.y = viewportHeight;
-		////} else {
-		//displayRect.y = 0;
-		////}
-	//} else {
-
 	displayRect.w = viewportWidth;
 	displayRect.h = viewportHeight;
 	displayRect.x = 0;
 	displayRect.y = 0;
+
 	SDL_SetRenderDrawColor(RENDERER, 15, 10, 10, 255);
-	//}
-
-	//if (!lastLoop || !isSplitScreen()) {
-
-	//SDL_RenderClear(RENDERER);
-	//}
-
 	SDL_RenderSetViewport(RENDERER, &displayRect);
 	SDL_RenderSetScale(RENDERER, getCameraZoom() * renderWidthScale, getCameraZoom() * renderHeightScale);
-
-	//for (int i = -2; i <= 2; ++ i) {
-		////setZLevel(i);
-		//levelDraw();
-		////tickSystemsWithMask(getWorld(), EVENT_DRAW);
-	//}
 	
 	SDL_RenderSetScale(RENDERER, renderWidthScale, renderHeightScale);
 
-	//drawUi(lastLoop);
-
-	//if (lastLoop) {
-		//drawMenus();
-
 	SDL_RenderPresent(RENDERER);
-	//}
 
 	++ FRAMES;
 
@@ -224,21 +193,12 @@ void displayFrameStart() {
 }
 
 void displayFrameEnd() {
-	//COUNTED_FRAMES ++;
 }
 
 void displayUpdateTime() {
-	//ACCUMULATOR -= TIMESTEP;
-	//TIME += TIMESTEP;
 }
 
 void destroyDisplay() {
-	//if (WINDOW)
-	//	SDL_DestroyWindow(WINDOW);
-	
-	//if (RENDERER)
-	//	SDL_DestroyRenderer(RENDERER);
-	
 	SDL_Quit();
 }
 
@@ -264,14 +224,3 @@ SDL_Renderer* displayGetRenderer() {
 	return RENDERER;
 }
 
-double displayGetTimestep() {
-	//return TIMESTEP;
-}
-
-double displayGetAccumulator() {
-	//return ACCUMULATOR;
-}
-
-double displayGetAlpha() {
-	//return ELAPSED_TIME / MAX_FRAME_TIME;
-}

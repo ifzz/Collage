@@ -23,6 +23,8 @@ void actorGridMoveHandler(unsigned int entityId, void *data) {
 	WorldPositionComponent *position = &getComponent(entityId, COMPONENT_WORLD_POSITION)->worldPosition;
 
 	bool ladderBelow = isPositionLadder((position->x / 16), (position->y / 16) + 1);
+	bool canMoveLeft = !isPositionSolid((position->x / 16) - 1, (position->y / 16));
+	bool canMoveRight = !isPositionSolid((position->x / 16) + 1, (position->y / 16));
 	bool onGround = (position->x % 16) || isPositionSolid((position->x / 16), (position->y / 16) + 1) || ladderBelow;
 	bool onLadder = !(position->x % 16) && (isPositionLadder((position->x / 16), (position->y / 16)));
 
@@ -30,11 +32,11 @@ void actorGridMoveHandler(unsigned int entityId, void *data) {
 
 	if (onGround) {
 		if (!(position->y % 16)) {
-			if (input->movingLeft && position->x > 16 * 1) {
+			if (input->movingLeft && canMoveLeft && position->x > 16 * 1) {
 				MovementEvent moveInfo = {-5, 0};
 
 				triggerEvent(entityId, EVENT_SET_VELOCITY, &moveInfo);
-			} else if (input->movingRight && position->x < 16 * ((displayGetRenderWidth() / 16) - 1)) {
+			} else if (input->movingRight && canMoveRight && position->x < 16 * ((displayGetRenderWidth() / 16) - 1)) {
 				MovementEvent moveInfo = {5, 0};
 
 				triggerEvent(entityId, EVENT_SET_VELOCITY, &moveInfo);
@@ -78,8 +80,6 @@ void actorGridMoveHandler(unsigned int entityId, void *data) {
 		physics->exactY = position->y - (position->y % 16);
 
 		triggerEvent(entityId, EVENT_SET_POSITION, &positionInfo);
-		/*printf("\tAfter: %i, %i %f\n", position->y, (position->y % 16), physics->velocityY);*/
-
 		triggerEvent(entityId, EVENT_SET_VELOCITY, &moveInfo);
 	}
 }

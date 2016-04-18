@@ -17,6 +17,8 @@ void createLevel(int width, int height) {
 	LEVEL_WIDTH = width;
 	LEVEL_HEIGHT = height;
 
+	int playerX = -1, playerY = -1;
+
 	printf("Level size: %ix%i\n", LEVEL_WIDTH, LEVEL_HEIGHT);
 	int x = 0, y = 0, c;
 
@@ -24,7 +26,8 @@ void createLevel(int width, int height) {
 
 	while((c = fgetc(levelFile)) != EOF) {
 		if (c == '@') {
-			createPlayer(x, y, 1);
+			playerX = x;
+			playerY = y;
 		} else if (c == '#') {
 			setPositionSolid(x, y);
 		} else if (c == 'H') {
@@ -39,6 +42,8 @@ void createLevel(int width, int height) {
 		++ x;
 	}
 
+	assert(playerX > -1 && playerY > -1);
+	createPlayer(playerX, playerY, 1);
 	fclose(levelFile);
 }
 
