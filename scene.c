@@ -92,6 +92,8 @@ void addEntityToScene(char *name, unsigned int entityId) {
 			SceneComponent *scene = (SceneComponent*)item->item;
 
 			if (!strcmp(scene->name, name)) {
+				assert(scene->entityCount < scene->entityCountMax);
+
 				scene->entityIds[scene->entityCount] = entityId;
 				++ scene->entityCount;
 
