@@ -1,11 +1,9 @@
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 
-#define WINDOW_TITLE "testWorlds"
-
 int WINDOW_WIDTH, WINDOW_HEIGHT;
 
-int initDisplay(void);
+int initDisplay(char*, int, int);
 void displayClear(void);
 void displayPresent(void);
 void destroyDisplay(void);

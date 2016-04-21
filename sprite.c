@@ -57,7 +57,8 @@ void eventSpriteTimestepHandler(unsigned int entityId, void *data) {
 
 	sprite->lastX = sprite->x;
 	sprite->lastY = sprite->y;
-
+	sprite->lastScaleW = sprite->scaleW;
+	sprite->lastScaleH = sprite->scaleH;
 	sprite->lastAlpha = sprite->alpha;
 }
 
@@ -70,20 +71,22 @@ void eventDrawCallback(unsigned int entityId, void *data) {
 	double cameraZoom = drawEvent->cameraZoom;
 	SDL_Rect renderRect;
 
-	renderRect.w = interp(sprite->lastWidth * sprite->lastScaleW, sprite->width * sprite->scaleW, delta);
-	renderRect.h = interp(sprite->lastHeight * sprite->lastScaleH, sprite->height * sprite->scaleH, delta);
+	sprite->scaleW = interp(sprite->lastScaleW, sprite->scaleW, delta);
+	sprite->scaleH = interp(sprite->lastScaleH, sprite->scaleH, delta);
 
-	sprite->alpha = interp(sprite->alpha, sprite->lastAlpha, delta);
+	renderRect.w = sprite->width * sprite->scaleW;
+	renderRect.h = sprite->height * sprite->scaleH;
+
+	sprite->alpha = interp(sprite->lastAlpha, sprite->alpha, delta);
 
 	SDL_SetTextureAlphaMod(sprite->texture, sprite->alpha);
 
 	renderRect.x = interp(sprite->lastX, sprite->x, delta) - cameraOffsetX;
 	renderRect.y = interp(sprite->lastY, sprite->y, delta) - cameraOffsetY;
 
-	renderRect.x -= (renderRect.w - interp(sprite->lastWidth, sprite->width, delta) / 2);
-	renderRect.y -= (renderRect.h - interp(sprite->lastHeight, sprite->height, delta) / 2);
+	renderRect.x += round((sprite->width - renderRect.w) / 2.f);
+	renderRect.y += round((sprite->height - renderRect.h) / 2.f);
 
-	//#TODO: Center point
 	SDL_RenderCopyEx(renderer, sprite->texture, NULL, &renderRect, sprite->angle, NULL, SDL_FLIP_NONE);
 }
 

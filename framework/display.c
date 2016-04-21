@@ -21,14 +21,16 @@ float FPS_CAP = -1; //1000 / 400.;
 bool FULLSCREEN = false;
 
 
-int initDisplay() {
+int initDisplay(char *windowTitle, int windowWidth, int windowHeight) {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER) != 0) {
 		printf("Couldn't init SDL.\n");
 		
 		return 0;
 	}
 	
-	WINDOW = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
+	WINDOW_WIDTH = windowWidth;
+	WINDOW_HEIGHT = windowHeight;
+	WINDOW = SDL_CreateWindow(windowTitle, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
 	RENDERER = SDL_CreateRenderer(WINDOW, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
 	FRAME_TIMER = SDL_GetTicks();
 	
