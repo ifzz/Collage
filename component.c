@@ -6,17 +6,18 @@
 #include "component.h"
 
 
+int COMPONENT_SIZES[255];
+
 void addComponentToWorld(unsigned int *id, size_t size) {
 	World *world = getWorld();
 
 	//NOTE: We can either init memory on the fly here, or do it at runtime.
 	
-	/*world->components[world->componentCount] = calloc(world->entityCountMax, sizeof(ComponentContainer));*/
 	world->components[world->componentCount] = calloc(world->entityCountMax, size);
-	/*world->components[world->componentCount] = malloc(world->entityCountMax * sizeof(ComponentContainer));*/
 
 	assert(world->components[world->componentCount]);
 	
+	COMPONENT_SIZES[world->componentCount] = size;
 	*id = 1 << world->componentCount;
 	++ world->componentCount;
 	
@@ -40,9 +41,7 @@ void addComponentToEntity(unsigned int entityId, unsigned int componentFlag) {
 void* getComponent(unsigned int entityId, unsigned int componentId) {
 	int id = (int)round(log(componentId) / log(2));
 
-	/*printf("Getting COMP %i with ID=%i for entity=%u\n", componentId, id, entityId);*/
-
-	return &getWorld()->components[id][entityId];
+	return &getWorld()->components[id][entityId * COMPONENT_SIZES[id]];
 }	
 
 void* getAllComponents(unsigned int componentId) {

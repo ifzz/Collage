@@ -17,7 +17,7 @@ typedef struct {
 	void **systems;
 	void (***systemCallback)(unsigned int, void*);
 	void (****entityEventCallback)(unsigned int, void*);
-	ComponentContainer **components;
+	void **components;
 	char *name;
 } World;
 

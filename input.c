@@ -32,7 +32,6 @@ void handleKeyInput(SDL_KeyboardEvent *key, bool pressed) {
 	//TODO: More key info here.
 	InputEvent keyEvent = {SDL_GetKeyName(key->keysym.sym), pressed};
 
-	/*triggerEvents(EVENT_KEY_INPUT, COMPONENT_INPUT, &keyEvent);*/
 	triggerEventForAll(EVENT_KEY_INPUT, COMPONENT_INPUT, &keyEvent);
 
 	if (key->keysym.sym == SDLK_ESCAPE)

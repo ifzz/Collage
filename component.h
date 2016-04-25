@@ -9,15 +9,15 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 
-typedef union componentContainer {
-	SpriteComponent sprite;
-	//HealthComponent health;
-	WorldPositionComponent worldPosition;
-	//PhysicsComponent physics;
-	InputComponent input;
-	SceneComponent scene;
-	StageComponent stage;
-} ComponentContainer;  
+//typedef union componentContainer {
+	////SpriteComponent sprite;
+	//////HealthComponent health;
+	////WorldPositionComponent worldPosition;
+	//////PhysicsComponent physics;
+	////InputComponent input;
+	////SceneComponent scene;
+	////StageComponent stage;
+//} ComponentContainer;  
 
 #endif
 

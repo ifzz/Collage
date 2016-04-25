@@ -16,7 +16,6 @@ typedef struct {
 
 typedef struct {
 	bool isKeyboard;
-	bool movingLeft, movingRight, movingUp, movingDown;
 	int controllerIndex;
 } InputComponent;
 
