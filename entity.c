@@ -23,7 +23,7 @@ unsigned int createEntity() {
 		assert(1 == 2);
 	}
 
-	printf("[ENTITY] Created new entity: %i\n", returnedId);
+	/*printf("[ENTITY] Created new entity: %i\n", returnedId);*/
 
 	return returnedId;
 }

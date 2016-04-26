@@ -9,7 +9,7 @@ void createSystem(unsigned int eventId, unsigned int componentMask, void (*callb
 	world->systemMask[eventId][world->systemIndex[eventId]] = componentMask;
 	world->systemCallback[eventId][world->systemIndex[eventId]] = callback;
 	
-	printf("[SYSTEM] Created callback for event ID=%u at INDEX=%i\n", eventId, world->systemIndex[eventId]);
+	/*printf("[SYSTEM] Created callback for event ID=%u at INDEX=%i\n", eventId, world->systemIndex[eventId]);*/
 
 	++ world->systemIndex[eventId];
 }

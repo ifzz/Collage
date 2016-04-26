@@ -21,7 +21,7 @@ void addComponentToWorld(unsigned int *id, size_t size) {
 	*id = 1 << world->componentCount;
 	++ world->componentCount;
 	
-	printf("[WORLD] Added new component \'%u\' @ ID=%i of size %lu\n", *id, world->componentCount - 1, size);
+	/*printf("[WORLD] Added new component \'%u\' @ ID=%i of size %lu\n", *id, world->componentCount - 1, size);*/
 }
 
 void removeComponentFromWorld(unsigned int componentId) {
@@ -35,13 +35,17 @@ void removeComponentFromWorld(unsigned int componentId) {
 void addComponentToEntity(unsigned int entityId, unsigned int componentFlag) {
 	getWorld()->entityMask[entityId] |= componentFlag;
 
-	printf("[ENTITY] Added entity #%u to component ID=%u\n", entityId, componentFlag);
+	/*printf("[ENTITY] Added entity #%u to component ID=%u\n", entityId, componentFlag);*/
 }
 
 void* getComponent(unsigned int entityId, unsigned int componentId) {
+	World *world = getWorld();
+
+	assert((world->entityMask[entityId] & componentId) == componentId && "Trying to access component not registered to entity");
+
 	int id = (int)round(log(componentId) / log(2));
 
-	return &getWorld()->components[id][entityId * COMPONENT_SIZES[id]];
+	return &world->components[id][entityId * COMPONENT_SIZES[id]];
 }	
 
 void* getAllComponents(unsigned int componentId) {

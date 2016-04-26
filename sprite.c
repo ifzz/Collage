@@ -94,8 +94,8 @@ void eventSetSpritePositionCallback(unsigned int entityId, void *data) {
 	SetPositionEvent *newPosition = (SetPositionEvent*)data;
 	SpriteComponent *sprite = getComponent(entityId, COMPONENT_SPRITE);
 
-	/*sprite->lastX = sprite->x;*/
-	/*sprite->lastY = sprite->y;*/
+	/*sprite->lastX = newPosition->x;*/
+	/*sprite->lastY = newPosition->y;*/
 	sprite->x = newPosition->x;
 	sprite->y = newPosition->y;
 }
