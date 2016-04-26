@@ -86,21 +86,21 @@ void eventDrawCallback(unsigned int entityId, void *data) {
 	double cameraZoom = drawEvent->cameraZoom;
 	SDL_Rect renderRect;
 
-	sprite->scaleW = interp(sprite->lastScaleW, sprite->scaleW, delta);
-	sprite->scaleH = interp(sprite->lastScaleH, sprite->scaleH, delta);
+	double tempScaleW = interp(sprite->lastScaleW, sprite->scaleW, delta);
+	double tempScaleH = interp(sprite->lastScaleH, sprite->scaleH, delta);
 
-	sprite->jigX = interp(sprite->lastJigX, sprite->jigX, delta);
-	sprite->jigY = interp(sprite->lastJigY, sprite->jigY, delta);
+	int tempJigX = interp(sprite->lastJigX, sprite->jigX, delta);
+	int tempJigY = interp(sprite->lastJigY, sprite->jigY, delta);
 
-	renderRect.w = sprite->width * sprite->scaleW;
-	renderRect.h = sprite->height * sprite->scaleH;
+	renderRect.w = sprite->width * tempScaleW;
+	renderRect.h = sprite->height * tempScaleH;
 
-	sprite->alpha = interp(sprite->lastAlpha, sprite->alpha, delta);
+	int tempAlpha = interp(sprite->lastAlpha, sprite->alpha, delta);
 
-	SDL_SetTextureAlphaMod(sprite->texture, sprite->alpha);
+	SDL_SetTextureAlphaMod(sprite->texture, tempAlpha);
 
-	renderRect.x = interp(sprite->lastX, sprite->x, delta) + sprite->jigX - cameraOffsetX;
-	renderRect.y = interp(sprite->lastY, sprite->y, delta) + sprite->jigY - cameraOffsetY;
+	renderRect.x = interp(sprite->lastX, sprite->x, delta) + tempJigX - cameraOffsetX;
+	renderRect.y = interp(sprite->lastY, sprite->y, delta) + tempJigY - cameraOffsetY;
 
 	renderRect.x += round((sprite->width - renderRect.w) / 2.f);
 	renderRect.y += round((sprite->height - renderRect.h) / 2.f);
