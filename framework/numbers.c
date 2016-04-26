@@ -20,6 +20,10 @@ int getRandomInt(int n) {
 	}
 }
 
+double getRandomDouble(double n) {
+	return (double)rand()/(double)(RAND_MAX / n);
+}
+
 double interp(double n1, double n2, double t) {
 	return n1 + (n2 - n1) * t;
 }

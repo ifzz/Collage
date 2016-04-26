@@ -1,6 +1,7 @@
 #include <stdbool.h>
 
 int getRandomInt(int);
+double getRandomDouble(double);
 double interp(double, double, double);
 int clip(int, int, int);
 float clipFloat(float, float, float);

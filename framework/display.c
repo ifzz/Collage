@@ -22,7 +22,8 @@ bool FULLSCREEN = false;
 
 
 int initDisplay(char *windowTitle, int windowWidth, int windowHeight) {
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER) != 0) {
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER)
+			!= 0) {
 		printf("Couldn't init SDL.\n");
 		
 		return 0;
@@ -30,8 +31,11 @@ int initDisplay(char *windowTitle, int windowWidth, int windowHeight) {
 	
 	WINDOW_WIDTH = windowWidth;
 	WINDOW_HEIGHT = windowHeight;
-	WINDOW = SDL_CreateWindow(windowTitle, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
-	RENDERER = SDL_CreateRenderer(WINDOW, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
+	WINDOW = SDL_CreateWindow(windowTitle, SDL_WINDOWPOS_UNDEFINED,
+			SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT,
+			SDL_WINDOW_SHOWN);
+	RENDERER = SDL_CreateRenderer(WINDOW, -1,
+			SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
 	FRAME_TIMER = SDL_GetTicks();
 	
 	if (displayGetFullscreen())
@@ -100,7 +104,8 @@ void displayPresent() {
 
 	SDL_SetRenderDrawColor(RENDERER, 15, 10, 10, 255);
 	SDL_RenderSetViewport(RENDERER, &displayRect);
-	SDL_RenderSetScale(RENDERER, getCameraZoom() * renderWidthScale, getCameraZoom() * renderHeightScale);
+	SDL_RenderSetScale(RENDERER, getCameraZoom() * renderWidthScale,
+			getCameraZoom() * renderHeightScale);
 	
 	SDL_RenderSetScale(RENDERER, renderWidthScale, renderHeightScale);
 
