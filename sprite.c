@@ -13,18 +13,24 @@ void eventSpriteTimestepHandler(unsigned int, void*);
 void eventDrawCallback(unsigned int, void*);
 void eventSetSpritePositionCallback(unsigned int, void*);
 void eventSetSpriteAlphaCallback(unsigned int, void*);
+void eventSetSpriteJig(unsigned int, void*);
 
 void initComponentSprite() {
 	addComponentToWorld(&COMPONENT_SPRITE, sizeof(SpriteComponent));
 	createEvent(&EVENT_DRAW);
 	createEvent(&EVENT_SET_ALPHA);
+	createEvent(&EVENT_SET_SPRITE_JIG);
 
 	startTextureManager();
 	createSystem(EVENT_TIMESTEP, COMPONENT_SPRITE, eventSpriteTimestepHandler);
 	createSystem(EVENT_DRAW, COMPONENT_SPRITE, eventDrawCallback);
 	createSystem(EVENT_DRAW, COMPONENT_SPRITE, eventDrawCallback);
-	createSystem(EVENT_SET_POSITION, COMPONENT_SPRITE, eventSetSpritePositionCallback);
-	createSystem(EVENT_SET_ALPHA, COMPONENT_SPRITE, eventSetSpriteAlphaCallback);
+	createSystem(EVENT_SET_POSITION, COMPONENT_SPRITE,
+			eventSetSpritePositionCallback);
+	createSystem(EVENT_SET_ALPHA, COMPONENT_SPRITE,
+			eventSetSpriteAlphaCallback);
+	createSystem(EVENT_SET_SPRITE_JIG, COMPONENT_SPRITE,
+			eventSetSpriteJig);
 }
 
 void destroyComponentSprite() {
@@ -38,12 +44,19 @@ void registerSprite(unsigned int entityId, char *spriteFilename) {
 
 	sprite->texture = textureCreate(spriteFilename);
 	
-	SDL_QueryTexture(sprite->texture, NULL, NULL, &sprite->width, &sprite->height);
+	SDL_QueryTexture(sprite->texture, NULL, NULL,
+			&sprite->width, &sprite->height);
 
 	sprite->lastWidth = sprite->width;
 	sprite->lastHeight = sprite->height;
 	sprite->x = 0; 
 	sprite->y = 0; 
+	sprite->lastJigX = 0;
+	sprite->lastJigY = 0;
+	sprite->jigX = 0;
+	sprite->jigX = 0;
+	sprite->jigX = 0;
+	sprite->jigY = 0;
 	sprite->lastScaleW = 1.;
 	sprite->lastScaleH = 1.;
 	sprite->scaleW = 1.;
@@ -55,6 +68,8 @@ void registerSprite(unsigned int entityId, char *spriteFilename) {
 void eventSpriteTimestepHandler(unsigned int entityId, void *data) {
 	SpriteComponent *sprite = getComponent(entityId, COMPONENT_SPRITE);
 
+	sprite->lastJigX = sprite->jigX;
+	sprite->lastJigY = sprite->jigY;
 	sprite->lastX = sprite->x;
 	sprite->lastY = sprite->y;
 	sprite->lastScaleW = sprite->scaleW;
@@ -74,6 +89,9 @@ void eventDrawCallback(unsigned int entityId, void *data) {
 	sprite->scaleW = interp(sprite->lastScaleW, sprite->scaleW, delta);
 	sprite->scaleH = interp(sprite->lastScaleH, sprite->scaleH, delta);
 
+	sprite->jigX = interp(sprite->lastJigX, sprite->jigX, delta);
+	sprite->jigY = interp(sprite->lastJigY, sprite->jigY, delta);
+
 	renderRect.w = sprite->width * sprite->scaleW;
 	renderRect.h = sprite->height * sprite->scaleH;
 
@@ -81,8 +99,8 @@ void eventDrawCallback(unsigned int entityId, void *data) {
 
 	SDL_SetTextureAlphaMod(sprite->texture, sprite->alpha);
 
-	renderRect.x = interp(sprite->lastX, sprite->x, delta) - cameraOffsetX;
-	renderRect.y = interp(sprite->lastY, sprite->y, delta) - cameraOffsetY;
+	renderRect.x = interp(sprite->lastX, sprite->x, delta) + sprite->jigX - cameraOffsetX;
+	renderRect.y = interp(sprite->lastY, sprite->y, delta) + sprite->jigY - cameraOffsetY;
 
 	renderRect.x += round((sprite->width - renderRect.w) / 2.f);
 	renderRect.y += round((sprite->height - renderRect.h) / 2.f);
@@ -98,6 +116,14 @@ void eventSetSpritePositionCallback(unsigned int entityId, void *data) {
 	/*sprite->lastY = newPosition->y;*/
 	sprite->x = newPosition->x;
 	sprite->y = newPosition->y;
+}
+
+void eventSetSpriteJig(unsigned int entityId, void *data) {
+	SetSpriteJigEvent *pos = (SetSpriteJigEvent*)data;
+	SpriteComponent *sprite = getComponent(entityId, COMPONENT_SPRITE);
+
+	sprite->jigX = pos->x;
+	sprite->jigY = pos->y;
 }
 
 void eventSetSpriteAlphaCallback(unsigned int entityId, void *data) {

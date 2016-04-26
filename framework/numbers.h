@@ -15,3 +15,4 @@ float **create2dFloatArray(int, int);
 void delete2dArray(void **, int);
 void drawCircle(int x, int y, int size, void (*)(int, int));
 float cubicPulse(float, float, float);
+float impulse(float, float);

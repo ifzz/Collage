@@ -4,6 +4,7 @@
 unsigned int COMPONENT_SPRITE;
 unsigned int EVENT_DRAW;
 unsigned int EVENT_SET_ALPHA;
+unsigned int EVENT_SET_SPRITE_JIG;
 
 #ifndef SPRITE_H
 #define SPRITE_H
@@ -12,6 +13,8 @@ typedef struct {
 	SDL_Texture *texture;
 	int x, lastX;
 	int y, lastY;
+	int lastJigX, lastJigY;
+	int jigX, jigY;
 	int width, lastWidth;
 	int height, lastHeight;
 	short int angle, lastAngle;
@@ -34,6 +37,10 @@ typedef struct {
 typedef struct {
 	int alpha;
 } SetAlphaEvent;
+
+typedef struct {
+	int x, y;
+} SetSpriteJigEvent;
 
 #endif
 

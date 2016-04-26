@@ -54,6 +54,12 @@ float cubicPulse(float c, float w, float x) {
 	return 1.f - x * x * (3.f - 2.f * x);
 }
 
+float impulse(float k, float x) {
+	const float h = k * x;
+
+	return h * expf(1.0f - h);
+}
+
 int clip(int i, int min, int max) {
 	const int t = i < min ? min : i;
 	return t > max ? max : t;
