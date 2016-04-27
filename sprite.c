@@ -49,6 +49,8 @@ void registerSprite(unsigned int entityId, char *spriteFilename) {
 
 	sprite->lastWidth = sprite->width;
 	sprite->lastHeight = sprite->height;
+	sprite->lastX = -333;
+	sprite->lastY = -333;
 	sprite->x = 0; 
 	sprite->y = 0; 
 	sprite->lastJigX = 0;
@@ -112,8 +114,13 @@ void eventSetSpritePositionCallback(unsigned int entityId, void *data) {
 	SetPositionEvent *newPosition = (SetPositionEvent*)data;
 	SpriteComponent *sprite = getComponent(entityId, COMPONENT_SPRITE);
 
-	/*sprite->lastX = newPosition->x;*/
-	/*sprite->lastY = newPosition->y;*/
+	if (sprite->lastX == -333 && sprite->lastY == -333) {
+		sprite->lastX = newPosition->x;
+		sprite->lastY = newPosition->y;
+
+		printf("Must be new...\n");
+	}
+
 	sprite->x = newPosition->x;
 	sprite->y = newPosition->y;
 }

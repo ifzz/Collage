@@ -54,7 +54,7 @@ void triggerEvents(unsigned int eventId, unsigned int componentFlags,
 
 	//#TODO: Can we cache event->entityIds?
 	for (unsigned int entityId = 0;
-			entityId < world->entityCount;
+			entityId <= world->highestEntityId;
 			++ entityId) {
 		unsigned int entityMask = getWorld()->entityMask[entityId];
 

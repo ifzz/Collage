@@ -2,6 +2,7 @@
 #include "scene.h"
 #include "system.h"
 #include "timestep.h"
+#include "world.h"
 
 float TIME = 0.;
 float DELTA_TIME = 1 / 6.;
@@ -69,6 +70,7 @@ void stepTime() {
 
 	update(simulationInfo);
 	render(simulationInfo);
+	cleanWorld();
 }	
 
 void showTimestepInfo() {

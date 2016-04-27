@@ -8,6 +8,7 @@ typedef struct {
 	unsigned int **systemMask;
 	unsigned int **entityEventCallbackCount;
 	int entityCount, entityCountMax;
+	int highestEntityId;
 	int deletedEntityCount;
 	int entityIdsToDeleteCount;
 	int systemCountMax;

@@ -37,7 +37,7 @@ void createWorld(char *name) {
 	newWorld->systemCountMax = MAX_EVENTS;
 	newWorld->entityMask = calloc(newWorld->entityCountMax, sizeof(unsigned int));
 	newWorld->components = calloc(40, sizeof(void*));
-	newWorld->entityEventCallbackCount = calloc(newWorld->entityCountMax, sizeof(unsigned int*));
+	newWorld->entityEventCallbackCount = calloc(newWorld->entityCountMax, sizeof(int*));
 
 	/*printf("\n\nREPLACE THESE WITH ACTUAL VALUES!!!!!!!!!\n\n");*/
 
@@ -82,17 +82,29 @@ void createWorld(char *name) {
 void cleanWorld() {
 	World *world = ACTIVE_WORLD;
 
+	if (!world->entityIdsToDeleteCount)
+		return;
+
 	printf("[WORLD-CLEANING] Number of entities to clean: %i\n", world->entityIdsToDeleteCount);
 
 	for (int i = 0; i < world->entityIdsToDeleteCount; ++ i) {
 		unsigned int entityId = world->entityIdsToDelete[i];
 
-		//#TODO: Clean up...
+		printf("[WORLD-CLEANING] Cleaning entity: %i\n", entityId);
+
+		for (int i = 0; i < world->eventCount; ++ i)
+			world->entityEventCallbackCount[entityId][i] = 0;
+
+		world->entityMask[entityId] = 0;
 		
-		-- world->entityIdsToDeleteCount;
 		world->deletedEntityIds[world->deletedEntityCount] = entityId;
 		++ world->deletedEntityCount;
+		-- world->entityCount;
 	}
+
+	world->entityIdsToDeleteCount = 0;
+
+	printf("[WORLD-CLEANING] Clean\n");
 }
 
 void deleteWorld(void *data) {

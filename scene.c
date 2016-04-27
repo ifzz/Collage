@@ -111,8 +111,23 @@ void destroyScene() {
 	deleteLinkedList(STAGES);
 }
 
+void removeEntityFromSceneHandler(unsigned int entityId, void *data) {
+	for (listItem_t *stageItem = STAGES->head; stageItem; stageItem = stageItem->next) {
+		StageComponent *stage = (StageComponent*)stageItem->item;
+
+		for (listItem_t *item = stage->scenes->head; item; item = item->next) {
+			SceneComponent *scene = (SceneComponent*)item->item;
+
+		}
+	}
+
+	printf("deleting from scene......................\n");
+}
+
 void addEntityToScene(char *stageName, char *sceneName, unsigned int entityId) {
 	SceneComponent *scene = getScene(stageName, sceneName);
+
+	registerEntityEvent(entityId, EVENT_DELETE, &removeEntityFromSceneHandler);
 
 	assert(scene->entityCount < scene->entityCountMax);
 
@@ -125,6 +140,8 @@ void clearScene(char *stageName, char *sceneName) {
 
 	for (int i = 0; i < scene->entityCount; ++ i)
 		deleteEntity(scene->entityIds[i]);
+
+	scene->entityCount = 0;
 }
 
 void drawScene(SceneComponent *scene, Delta *timestepInfo) {

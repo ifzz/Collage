@@ -4,6 +4,7 @@
 #include "entity.h"
 #include "system.h"
 
+int delCount = 0;
 
 void initEntities() {
 	createEvent(&EVENT_DELETE);
@@ -30,20 +31,27 @@ unsigned int createEntity() {
 
 	/*printf("[ENTITY] Created new entity: %i\n", returnedId);*/
 
+	if (returnedId > world->highestEntityId)
+		world->highestEntityId = returnedId;
+
 	return returnedId;
 }
 
 void deleteEntity(unsigned int entityId) {
 	World *world = getWorld();
 
-	/*triggerEvent(entityId, EVENT_DELETE, world);*/
+	triggerEvent(entityId, EVENT_DELETE, world);
 
-	world->entityMask[entityId] = 0;
-	world->entityIdsToDelete[world->deletedEntityCount] = entityId;
+	world->entityIdsToDelete[world->entityIdsToDeleteCount] = entityId;
 
 	++ world->entityIdsToDeleteCount;
 	
 	printf("[ENTITY] Deleted entity #%u\n", entityId);
+
+	/*if (delCount == 1)*/
+		/*assert ( 1 == 2);*/
+
+	/*++ delCount;*/
 }
 
 void registerEntityEvent(unsigned int entityId, unsigned int eventId,
@@ -58,7 +66,7 @@ void registerEntityEvent(unsigned int entityId, unsigned int eventId,
 
 void triggerEvent(unsigned int entityId, unsigned int eventId, void *data) {
 	World *world = getWorld();
-	unsigned int entityMask = getWorld()->entityMask[entityId];
+	unsigned int entityMask = world->entityMask[entityId];
 
 	for (unsigned int i = 0; i < world->systemIndex[eventId]; ++ i) {
 		unsigned int systemMask = world->systemMask[eventId][i];
