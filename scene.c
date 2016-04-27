@@ -30,6 +30,36 @@ void initScene() {
 	createSystem(EVENT_TIMESTEP_RENDER, COMPONENT_STAGE, drawStage);
 }
 
+StageComponent* getStage(char *name) {
+	for (listItem_t *stageItem = STAGES->head; stageItem; stageItem = stageItem->next) {
+		StageComponent *stage = (StageComponent*)stageItem->item;
+
+		if (!strcmp(stage->name, name))
+			return stage;
+	}
+
+	printf("[STAGE-#FATAL] Could not find stage: %s\n", name);
+	assert(1 == 2);
+
+	return NULL;
+}
+
+SceneComponent* getScene(char *stageName, char *sceneName) {
+	StageComponent *stage = getStage(stageName);
+
+	for (listItem_t *item = stage->scenes->head; item; item = item->next) {
+		SceneComponent *scene = (SceneComponent*)item->item;
+
+		if (!strcmp(scene->name, sceneName))
+			return scene;
+	}
+
+	printf("[SCENE-#FATAL] Could not find scene: %s\n", sceneName);
+	assert(1 == 2);
+
+	return NULL;
+}
+
 void createStage(char *name) {
 	unsigned int entityId = createEntity();
 
@@ -65,44 +95,36 @@ void createScene(char *stageName, char *name, int size, int renderIndex) {
 
 	printf("[SCENE] Created new scene: %s\n", scene->name);
 
-	for (listItem_t *item = STAGES->head; item; item = item->next) {
-		StageComponent *stage = (StageComponent*)item->item;
+	StageComponent *stage = getStage(stageName);
 
-		if (!strcmp(stage->name, stageName)) {
-			addListItem(stage->scenes, scene);
+	if (!strcmp(stage->name, stageName)) {
+		addListItem(stage->scenes, scene);
 
-			if (scene->renderIndex > stage->maxRenderIndex)
-				stage->maxRenderIndex = scene->renderIndex;
+		if (scene->renderIndex > stage->maxRenderIndex)
+			stage->maxRenderIndex = scene->renderIndex;
 
-			return;
-		}
+		return;
 	}
-
 }
 
 void destroyScene() {
 	deleteLinkedList(STAGES);
 }
 
-void addEntityToScene(char *name, unsigned int entityId) {
-	for (listItem_t *stageItem = STAGES->head; stageItem; stageItem = stageItem->next) {
-		StageComponent *stage = (StageComponent*)stageItem->item;
+void addEntityToScene(char *stageName, char *sceneName, unsigned int entityId) {
+	SceneComponent *scene = getScene(stageName, sceneName);
 
-		for (listItem_t *item = stage->scenes->head; item; item = item->next) {
-			SceneComponent *scene = (SceneComponent*)item->item;
+	assert(scene->entityCount < scene->entityCountMax);
 
-			if (!strcmp(scene->name, name)) {
-				assert(scene->entityCount < scene->entityCountMax);
+	scene->entityIds[scene->entityCount] = entityId;
+	++ scene->entityCount;
+}
 
-				scene->entityIds[scene->entityCount] = entityId;
-				++ scene->entityCount;
+void clearScene(char *stageName, char *sceneName) {
+	SceneComponent *scene = getScene(stageName, sceneName);
 
-				return;
-			}
-		}
-	}
-
-	printf("[SCENE-#FATAL] Could not find scene: %s\n", name);
+	for (int i = 0; i < scene->entityCount; ++ i)
+		deleteEntity(scene->entityIds[i]);
 }
 
 void drawScene(SceneComponent *scene, Delta *timestepInfo) {

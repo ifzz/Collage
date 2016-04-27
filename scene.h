@@ -27,5 +27,6 @@ void initScene(void);
 void destroyScene(void);
 void createStage(char*);
 void createScene(char*, char*, int, int);
-void addEntityToScene(char *, unsigned int);
+void clearScene(char*, char*);
+void addEntityToScene(char *, char *, unsigned int);
 void drawStage(unsigned int, void*);
