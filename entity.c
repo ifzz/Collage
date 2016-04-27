@@ -4,8 +4,6 @@
 #include "entity.h"
 #include "system.h"
 
-int delCount = 0;
-
 void initEntities() {
 	createEvent(&EVENT_DELETE);
 }
@@ -17,10 +15,13 @@ unsigned int createEntity() {
 	if (world->deletedEntityCount) {
 		returnedId = world->deletedEntityIds[world->deletedEntityCount - 1];
 
+		printf("Using deleted entity id...\n");
+
 		-- world->deletedEntityCount;
 	} else if (world->entityCount < world->entityCountMax) {
 		returnedId = world->entityCount;
 		++ world->entityCount;
+		printf("Using new entity id...\n");
 	}
 
 	if (returnedId == -1) {
@@ -28,6 +29,8 @@ unsigned int createEntity() {
 		
 		assert(1 == 2);
 	}
+
+	assert(returnedId < world->entityCountMax);
 
 	/*printf("[ENTITY] Created new entity: %i\n", returnedId);*/
 
@@ -40,18 +43,11 @@ unsigned int createEntity() {
 void deleteEntity(unsigned int entityId) {
 	World *world = getWorld();
 
-	triggerEvent(entityId, EVENT_DELETE, world);
-
 	world->entityIdsToDelete[world->entityIdsToDeleteCount] = entityId;
 
 	++ world->entityIdsToDeleteCount;
 	
 	printf("[ENTITY] Deleted entity #%u\n", entityId);
-
-	/*if (delCount == 1)*/
-		/*assert ( 1 == 2);*/
-
-	/*++ delCount;*/
 }
 
 void registerEntityEvent(unsigned int entityId, unsigned int eventId,

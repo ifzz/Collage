@@ -7,6 +7,7 @@
 #include "world.h"
 #include "component.h"
 #include "system.h"
+#include "entity.h"
 
 
 void deleteWorld(void*);
@@ -38,6 +39,8 @@ void createWorld(char *name) {
 	newWorld->entityMask = calloc(newWorld->entityCountMax, sizeof(unsigned int));
 	newWorld->components = calloc(40, sizeof(void*));
 	newWorld->entityEventCallbackCount = calloc(newWorld->entityCountMax, sizeof(int*));
+	newWorld->entityIdsToDeleteCount = 0;
+	newWorld->deletedEntityCount = 0;
 
 	/*printf("\n\nREPLACE THESE WITH ACTUAL VALUES!!!!!!!!!\n\n");*/
 
@@ -92,14 +95,18 @@ void cleanWorld() {
 
 		printf("[WORLD-CLEANING] Cleaning entity: %i\n", entityId);
 
+		triggerEvent(entityId, EVENT_DELETE, world);
+
 		for (int i = 0; i < world->eventCount; ++ i)
 			world->entityEventCallbackCount[entityId][i] = 0;
+
+		assert(world->entityMask[entityId] > 0);
 
 		world->entityMask[entityId] = 0;
 		
 		world->deletedEntityIds[world->deletedEntityCount] = entityId;
 		++ world->deletedEntityCount;
-		-- world->entityCount;
+		/*-- world->entityCount;*/
 	}
 
 	world->entityIdsToDeleteCount = 0;

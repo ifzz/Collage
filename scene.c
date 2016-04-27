@@ -117,11 +117,24 @@ void removeEntityFromSceneHandler(unsigned int entityId, void *data) {
 
 		for (listItem_t *item = stage->scenes->head; item; item = item->next) {
 			SceneComponent *scene = (SceneComponent*)item->item;
+			bool deleting = false;
 
+			for (int i = 0; i < scene->entityCount; ++ i) {
+				if (scene->entityIds[i] == entityId)
+					deleting = true;
+
+				if (deleting)
+					scene->entityIds[i] = scene->entityIds[i + 1];
+			}
+
+			if (deleting) {
+				-- scene->entityCount;
+
+				printf("Removed entity %i from scene %s\n", entityId,
+						scene->name);
+			}
 		}
 	}
-
-	printf("deleting from scene......................\n");
 }
 
 void addEntityToScene(char *stageName, char *sceneName, unsigned int entityId) {
@@ -140,8 +153,6 @@ void clearScene(char *stageName, char *sceneName) {
 
 	for (int i = 0; i < scene->entityCount; ++ i)
 		deleteEntity(scene->entityIds[i]);
-
-	scene->entityCount = 0;
 }
 
 void drawScene(SceneComponent *scene, Delta *timestepInfo) {
