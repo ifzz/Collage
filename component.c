@@ -13,7 +13,8 @@ void addComponentToWorld(unsigned int *id, size_t size) {
 
 	//NOTE: We can either init memory on the fly here, or do it at runtime.
 	
-	world->components[world->componentCount] = calloc(world->entityCountMax, size);
+	world->components[world->componentCount] = calloc(world->entityCountMax,
+			size);
 
 	assert(world->components[world->componentCount]);
 	
@@ -22,6 +23,10 @@ void addComponentToWorld(unsigned int *id, size_t size) {
 	++ world->componentCount;
 	
 	/*printf("[WORLD] Added new component \'%u\' @ ID=%i of size %lu\n", *id, world->componentCount - 1, size);*/
+}
+
+bool hasComponents(unsigned int entityId, unsigned int componentIds) {
+	return (getWorld()->entityMask[entityId] & componentIds) == componentIds;
 }
 
 void removeComponentFromWorld(unsigned int componentId) {
@@ -41,7 +46,8 @@ void addComponentToEntity(unsigned int entityId, unsigned int componentFlag) {
 void* getComponent(unsigned int entityId, unsigned int componentId) {
 	World *world = getWorld();
 
-	assert((world->entityMask[entityId] & componentId) == componentId && "Trying to access component not registered to entity");
+	assert((world->entityMask[entityId] & componentId) == componentId &&
+			"Trying to access component not registered to entity");
 
 	int id = (int)round(log(componentId) / log(2));
 

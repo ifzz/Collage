@@ -22,6 +22,7 @@
 #endif
 
 void addComponentToWorld(unsigned int*, size_t);
+bool hasComponents(unsigned int, unsigned int);
 void removeComponentFromWorld(unsigned int);
 void addComponentToEntity(unsigned int, unsigned int);
 void* getComponent(unsigned int, unsigned int);

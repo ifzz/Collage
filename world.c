@@ -105,6 +105,7 @@ void cleanWorld() {
 		world->entityMask[entityId] = 0;
 		
 		world->deletedEntityIds[world->deletedEntityCount] = entityId;
+
 		++ world->deletedEntityCount;
 		/*-- world->entityCount;*/
 	}
