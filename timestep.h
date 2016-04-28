@@ -14,6 +14,7 @@ typedef struct {
 #endif
 
 void initTimestep(void);
+void setTimestepModifier(float, float);
 void resetTimestep(void);
 void stepTime(void);
 void showTimestepInfo(void);

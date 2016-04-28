@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include "framework/numbers.h"
 #include "scene.h"
 #include "system.h"
 #include "timestep.h"
@@ -6,6 +7,9 @@
 
 float TIME = 0.;
 float DELTA_TIME = 1 / 6.;
+const float DELTA_TIME_STANDARD = 1 / 6.;
+float NEXT_DELTA_TIME = 1 / 6.;
+float NEXT_DELTA_TIME_MOD = .1;
 float CURRENT_TIME = 0.;
 float ACCUMULATOR = 0.;
 float MAX_ACCUMULATOR = 0.;
@@ -27,12 +31,26 @@ void resetTimestep() {
 	CURRENT_TIME = SDL_GetTicks();
 }
 
+void setTimestepModifier(float mod, float rate) {
+	if (rate == 1.) {
+		DELTA_TIME = DELTA_TIME_STANDARD * mod;
+	}
+
+	NEXT_DELTA_TIME = DELTA_TIME_STANDARD * mod;
+	NEXT_DELTA_TIME_MOD = rate;
+}
+
 void update(Delta simulationInfo) {
 	triggerEvents(EVENT_TIMESTEP_END, COMPONENT_STAGE, &simulationInfo);
 }
 
 void render(Delta simulationInfo) {
 	triggerEvents(EVENT_TIMESTEP_RENDER, COMPONENT_STAGE, &simulationInfo);
+}
+
+void manageTimestep() {
+	if (DELTA_TIME != NEXT_DELTA_TIME)
+		DELTA_TIME = interp(DELTA_TIME, NEXT_DELTA_TIME, NEXT_DELTA_TIME_MOD);
 }
 
 void stepTime() {
@@ -57,6 +75,7 @@ void stepTime() {
 		if (ACCUMULATOR > MAX_ACCUMULATOR)
 			MAX_ACCUMULATOR = ACCUMULATOR;
 
+		manageTimestep();
 		triggerEventForAll(EVENT_TICK, 0, &timeInfo);
 		triggerEvents(EVENT_TIMESTEP, 0, &timeInfo);
 
