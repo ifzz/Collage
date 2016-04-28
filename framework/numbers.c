@@ -60,6 +60,10 @@ float impulse(float k, float x) {
 	return h * expf(1.0f - h);
 }
 
+float parabola(float x, float k) {
+	return powf(4.0f * x * (1.0f - x), k);
+}
+
 int clip(int i, int min, int max) {
 	const int t = i < min ? min : i;
 	return t > max ? max : t;

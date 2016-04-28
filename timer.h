@@ -5,6 +5,7 @@ unsigned int EVENT_ADD_TIMER;
 
 void initTimer(void);
 void registerTimer(unsigned int);
+bool hasTimer(unsigned int, char*);
 
 #ifndef TIMER_H
 #define TIMER_H

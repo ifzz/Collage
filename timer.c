@@ -31,11 +31,25 @@ void registerTimer(unsigned int entityId) {
 	}
 }
 
+bool hasTimer(unsigned int entityId, char *name) {
+	TimerComponent *timer = getComponent(entityId, COMPONENT_TIMER);
+
+	for (int i = 0; i < MAX_TIMER_COUNT; ++ i) {
+		Timer *oldTimer = &timer->timers[i];
+
+		if (!oldTimer->active)
+			continue;
+
+		if (!strcmp(oldTimer->name, name))
+			return true;
+	}
+
+	return false;
+}
+
 void eventAddTimerHandler(unsigned int entityId, void *data) {
 	TimerComponent *timer = getComponent(entityId, COMPONENT_TIMER);
 	AddTimerEvent *newTimer = (AddTimerEvent*)data;
-
-	printf("registered\n");
 
 	for (int i = 0; i < MAX_TIMER_COUNT; ++ i) {
 		Timer *oldTimer = &timer->timers[i];
