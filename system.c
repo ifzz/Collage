@@ -36,7 +36,7 @@ void triggerEventForAll(unsigned int eventId, unsigned int componentFlags,
 			++ entityId) {
 		unsigned int entityMask = getWorld()->entityMask[entityId];
 
-		if (entityMask == 0)
+		if ((entityMask & componentFlags) != componentFlags)
 			continue;
 
 		for (unsigned int i = 0;

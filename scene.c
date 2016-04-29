@@ -15,6 +15,9 @@
 linkedList_t *STAGES = NULL;
 StageComponent *ACTIVE_STAGE = NULL;
 
+void tickStage(unsigned int, void *data);
+void startStage(unsigned int, void *data);
+
 void deleteScene(void *data) {
 	SceneComponent *scene = (SceneComponent*)data;
 
@@ -27,7 +30,9 @@ void initScene() {
 
 	addComponentToWorld(&COMPONENT_SCENE, sizeof(SceneComponent));
 	addComponentToWorld(&COMPONENT_STAGE, sizeof(StageComponent));
+	createSystem(EVENT_TIMESTEP, COMPONENT_STAGE, tickStage);
 	createSystem(EVENT_TIMESTEP_RENDER, COMPONENT_STAGE, drawStage);
+	createSystem(EVENT_TIMESTEP_START, COMPONENT_STAGE, startStage);
 }
 
 StageComponent* getStage(char *name) {
@@ -155,6 +160,17 @@ void clearScene(char *stageName, char *sceneName) {
 		deleteEntity(scene->entityIds[i]);
 }
 
+void tickScene(SceneComponent *scene, Delta *timestepInfo) {
+	for (int i = 0; i < scene->entityCount; ++ i) {
+		triggerEvent(scene->entityIds[i], EVENT_TICK, timestepInfo);
+	}
+}
+
+void startScene(SceneComponent *scene, Delta *timestepInfo) {
+	for (int i = 0; i < scene->entityCount; ++ i)
+		triggerEvent(scene->entityIds[i], EVENT_TIMESTEP_START, timestepInfo);
+}
+
 void drawScene(SceneComponent *scene, Delta *timestepInfo) {
 	//#TODO: Send camera data!
 
@@ -164,9 +180,31 @@ void drawScene(SceneComponent *scene, Delta *timestepInfo) {
 	drawEvent.cameraZoom = 1.;
 	drawEvent.cameraOffsetX = 0;
 	drawEvent.cameraOffsetY = 0;
-
+	
 	for (int i = 0; i < scene->entityCount; ++ i)
 		triggerEvent(scene->entityIds[i], EVENT_DRAW, &drawEvent);
+}
+
+void tickStage(unsigned int entityId, void *data) {
+	StageComponent *stage = getComponent(entityId, COMPONENT_STAGE);
+	Delta *timestepInfo = (Delta*)data;
+
+	for (listItem_t *item = stage->scenes->head; item; item = item->next) {
+		SceneComponent *scene = (SceneComponent*)item->item;
+
+		tickScene(scene, timestepInfo);
+	}
+}
+
+void startStage(unsigned int entityId, void *data) {
+	StageComponent *stage = getComponent(entityId, COMPONENT_STAGE);
+	Delta *timestepInfo = (Delta*)data;
+
+	for (listItem_t *item = stage->scenes->head; item; item = item->next) {
+		SceneComponent *scene = (SceneComponent*)item->item;
+
+		startScene(scene, timestepInfo);
+	}
 }
 
 void drawStage(unsigned int entityId, void *data) {

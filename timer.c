@@ -15,7 +15,7 @@ void initTimer() {
 	createEvent(&EVENT_TIMER_EMIT);
 	createEvent(&EVENT_ADD_TIMER);
 
-	createSystem(EVENT_TIMESTEP, COMPONENT_TIMER, eventTickTimerHandler);
+	createSystem(EVENT_TICK, COMPONENT_TIMER, eventTickTimerHandler);
 	createSystem(EVENT_ADD_TIMER, COMPONENT_TIMER, eventAddTimerHandler);
 }
 

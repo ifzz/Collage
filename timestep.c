@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include <assert.h>
 #include "framework/numbers.h"
 #include "scene.h"
 #include "system.h"
@@ -16,15 +17,20 @@ float MAX_ACCUMULATOR = 0.;
 float MIN_FRAME_TIME = 10000.;
 float MAX_FRAME_TIME = 0;
 float MAX_FRAMES = 0;
+Delta* TIMESTEP_INFO;
 
 
 void initTimestep() {
 	CURRENT_TIME = SDL_GetTicks();
 
 	createEvent(&EVENT_TIMESTEP);
-	createEvent(&EVENT_TIMESTEP_END);
+	createEvent(&EVENT_TIMESTEP_START);
 	createEvent(&EVENT_TIMESTEP_RENDER);
 	createEvent(&EVENT_TICK);
+
+	TIMESTEP_INFO = malloc(sizeof(Delta));
+
+	DELTA_TIME = DELTA_TIME_STANDARD;
 }
 
 void resetTimestep() {
@@ -40,17 +46,22 @@ void setTimestepModifier(float mod, float rate) {
 	NEXT_DELTA_TIME_MOD = rate;
 }
 
-void update(Delta simulationInfo) {
-	triggerEvents(EVENT_TIMESTEP_END, COMPONENT_STAGE, &simulationInfo);
+void tick(Delta *simulationInfo) {
+	triggerEvents(EVENT_TIMESTEP, COMPONENT_STAGE, simulationInfo);
 }
 
-void render(Delta simulationInfo) {
-	triggerEvents(EVENT_TIMESTEP_RENDER, COMPONENT_STAGE, &simulationInfo);
+void update(Delta *simulationInfo) {
+	triggerEvents(EVENT_TIMESTEP_START, COMPONENT_STAGE, simulationInfo);
+}
+
+void render(Delta *simulationInfo) {
+	triggerEvents(EVENT_TIMESTEP_RENDER, COMPONENT_STAGE, simulationInfo);
 }
 
 void manageTimestep() {
-	if (DELTA_TIME != NEXT_DELTA_TIME)
+	if (DELTA_TIME != NEXT_DELTA_TIME) {
 		DELTA_TIME = interp(DELTA_TIME, NEXT_DELTA_TIME, NEXT_DELTA_TIME_MOD);
+	}
 }
 
 void stepTime() {
@@ -70,25 +81,25 @@ void stepTime() {
 	ACCUMULATOR += frameTime;
 
 	while (ACCUMULATOR >= DELTA_TIME) {
-		Delta timeInfo = {TIME, DELTA_TIME};
+		TIMESTEP_INFO->time = TIME;
+		TIMESTEP_INFO->delta = DELTA_TIME;
 
 		if (ACCUMULATOR > MAX_ACCUMULATOR)
 			MAX_ACCUMULATOR = ACCUMULATOR;
 
-		manageTimestep();
-		triggerEventForAll(EVENT_TICK, 0, &timeInfo);
-		triggerEvents(EVENT_TIMESTEP, 0, &timeInfo);
+		update(TIMESTEP_INFO);
+		tick(TIMESTEP_INFO);
 
 		TIME += DELTA_TIME;
 		ACCUMULATOR -= DELTA_TIME;
+		manageTimestep();
 	}
 
-	const float alpha = ACCUMULATOR / DELTA_TIME;
+	float alpha = ACCUMULATOR / DELTA_TIME;
 
 	Delta simulationInfo = {TIME, alpha};
 
-	update(simulationInfo);
-	render(simulationInfo);
+	render(&simulationInfo);
 	cleanWorld();
 }	
 

@@ -22,8 +22,7 @@ void initComponentSprite() {
 	createEvent(&EVENT_SET_SPRITE_JIG);
 
 	startTextureManager();
-	createSystem(EVENT_TIMESTEP, COMPONENT_SPRITE, eventSpriteTimestepHandler);
-	createSystem(EVENT_DRAW, COMPONENT_SPRITE, eventDrawCallback);
+	createSystem(EVENT_TIMESTEP_START, COMPONENT_SPRITE, eventSpriteTimestepHandler);
 	createSystem(EVENT_DRAW, COMPONENT_SPRITE, eventDrawCallback);
 	createSystem(EVENT_SET_POSITION, COMPONENT_SPRITE,
 			eventSetSpritePositionCallback);
@@ -114,12 +113,12 @@ void eventSetSpritePositionCallback(unsigned int entityId, void *data) {
 	SetPositionEvent *newPosition = (SetPositionEvent*)data;
 	SpriteComponent *sprite = getComponent(entityId, COMPONENT_SPRITE);
 
-	if (sprite->lastX == -333 && sprite->lastY == -333) {
-		sprite->lastX = newPosition->x;
-		sprite->lastY = newPosition->y;
+	/*if (sprite->lastX == -333 && sprite->lastY == -333) {*/
+		/*sprite->lastX = newPosition->x;*/
+		/*sprite->lastY = newPosition->y;*/
 
-		printf("Must be new...\n");
-	}
+		/*printf("Must be new...\n");*/
+	/*}*/
 
 	sprite->x = newPosition->x;
 	sprite->y = newPosition->y;
