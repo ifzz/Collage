@@ -7,8 +7,9 @@
 #include "world.h"
 
 float TIME = 0.;
+int FRAMES, FPS_TIMER;
 float DELTA_TIME = 1 / 6.;
-const float DELTA_TIME_STANDARD = 1 / 6.;
+float DELTA_TIME_STANDARD = 1 / 6.;
 float NEXT_DELTA_TIME = 1 / 6.;
 float NEXT_DELTA_TIME_MOD = .1;
 float CURRENT_TIME = 0.;
@@ -22,6 +23,8 @@ Delta* TIMESTEP_INFO;
 
 void initTimestep() {
 	CURRENT_TIME = SDL_GetTicks();
+	FPS_TIMER = CURRENT_TIME;
+	FRAMES = 0;
 
 	createEvent(&EVENT_TIMESTEP);
 	createEvent(&EVENT_TIMESTEP_START);
@@ -60,7 +63,7 @@ void render(Delta *simulationInfo) {
 
 void manageTimestep() {
 	if (DELTA_TIME != NEXT_DELTA_TIME) {
-		DELTA_TIME = interp(DELTA_TIME, NEXT_DELTA_TIME, NEXT_DELTA_TIME_MOD);
+		DELTA_TIME = interpF(DELTA_TIME, NEXT_DELTA_TIME, NEXT_DELTA_TIME_MOD);
 	}
 }
 
@@ -90,9 +93,9 @@ void stepTime() {
 		update(TIMESTEP_INFO);
 		tick(TIMESTEP_INFO);
 
+		manageTimestep();
 		TIME += DELTA_TIME;
 		ACCUMULATOR -= DELTA_TIME;
-		manageTimestep();
 	}
 
 	float alpha = ACCUMULATOR / DELTA_TIME;
@@ -101,6 +104,17 @@ void stepTime() {
 
 	render(&simulationInfo);
 	cleanWorld();
+
+	++ FRAMES;
+
+	int currentTicks = SDL_GetTicks();
+
+	if (currentTicks - FPS_TIMER >= 1000) {
+		printf("FPS: %i\n", FRAMES);
+
+		FRAMES = 0;
+		FPS_TIMER = currentTicks;
+	}
 }	
 
 void showTimestepInfo() {

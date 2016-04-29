@@ -111,22 +111,22 @@ void displayPresent() {
 
 	SDL_RenderPresent(RENDERER);
 
-	++ FRAMES;
+	/*++ FRAMES;*/
 
-	if (FPS_CAP > -1) {
-		float ticks = (SDL_GetTicks() - FRAME_TIMER) / 1000.;
+	/*if (FPS_CAP > -1) {*/
+		/*float ticks = (SDL_GetTicks() - FRAME_TIMER) / 1000.;*/
 
-		if (ticks < FPS_CAP) {
-			SDL_Delay(FPS_CAP - ticks);
-		}
-	}
+		/*if (ticks < FPS_CAP) {*/
+			/*SDL_Delay(FPS_CAP - ticks);*/
+		/*}*/
+	/*}*/
 
-	if (SDL_GetTicks() - FRAME_TIMER >= 1000.) {
-		printf("FPS=%f\n", FRAMES);
+	/*if (SDL_GetTicks() - FRAME_TIMER >= 1000.) {*/
+		/*printf("FPS=%f\n", FRAMES);*/
 
-		FRAMES = 0;
-		FRAME_TIMER = SDL_GetTicks();
-	}
+		/*FRAMES = 0;*/
+		/*FRAME_TIMER = SDL_GetTicks();*/
+	/*}*/
 }
 
 int displayGetWindowWidth() {

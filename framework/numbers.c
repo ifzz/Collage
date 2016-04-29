@@ -28,6 +28,10 @@ double interp(double n1, double n2, double t) {
 	return n1 + (n2 - n1) * t;
 }
 
+float interpF(float n1, float n2, float t) {
+	return n1 + (n2 - n1) * t;
+}
+
 int distance(int x1, int y1, int x2, int y2) {
 	return abs(x2 - x1) + abs(y2 - y1);
 }

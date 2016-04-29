@@ -3,6 +3,7 @@
 int getRandomInt(int);
 double getRandomDouble(double);
 double interp(double, double, double);
+float interpF(float, float, float);
 int clip(int, int, int);
 float clipFloat(float, float, float);
 int distance(int, int, int, int);
