@@ -8,7 +8,7 @@
 
 float TIME = 0.;
 int FRAMES, FPS_TIMER;
-float DELTA_TIME = 1 / 6.;
+float DELTA_TIME;
 float DELTA_TIME_STANDARD = 1 / 6.;
 float NEXT_DELTA_TIME = 1 / 6.;
 float NEXT_DELTA_TIME_MOD = .1;
