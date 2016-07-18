@@ -78,6 +78,8 @@ void createStage(char *name) {
 
 	addListItem(STAGES, stage);
 
+	createScene(name, "_cameras", 25, -1);
+
 	printf("[STAGE] Created new stage: %s\n", stage->name);
 }
 
@@ -170,18 +172,18 @@ void startScene(SceneComponent *scene, Delta *timestepInfo) {
 		triggerEvent(scene->entityIds[i], EVENT_TIMESTEP_START, timestepInfo);
 }
 
-void drawScene(SceneComponent *scene, Delta *timestepInfo) {
+void drawScene(SceneComponent *scene, void *data) {
 	//#TODO: Send camera data!
 
-	DrawEvent drawEvent;
-	drawEvent.renderer = displayGetRenderer();
-	drawEvent.delta = timestepInfo->delta;
-	drawEvent.cameraZoom = 1.;
-	drawEvent.cameraOffsetX = 0;
-	drawEvent.cameraOffsetY = 0;
+	/*DrawEvent drawEvent;*/
+	/*drawEvent.renderer = displayGetRenderer();*/
+	/*drawEvent.delta = timestepInfo->delta;*/
+	/*drawEvent.cameraZoom = 1.;*/
+	/*drawEvent.cameraOffsetX = 0;*/
+	/*drawEvent.cameraOffsetY = 0;*/
 	
 	for (int i = 0; i < scene->entityCount; ++ i)
-		triggerEvent(scene->entityIds[i], EVENT_DRAW, &drawEvent);
+		triggerEvent(scene->entityIds[i], EVENT_DRAW, data);
 }
 
 void tickStage(unsigned int entityId, void *data) {

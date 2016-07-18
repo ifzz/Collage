@@ -3,6 +3,7 @@
 #include "framework/numbers.h"
 #include "scene.h"
 #include "system.h"
+#include "camera.h"
 #include "timestep.h"
 #include "world.h"
 
@@ -58,7 +59,7 @@ void update(Delta *simulationInfo) {
 }
 
 void render(Delta *simulationInfo) {
-	triggerEvents(EVENT_TIMESTEP_RENDER, COMPONENT_STAGE, simulationInfo);
+	triggerEvents(EVENT_TIMESTEP_RENDER, COMPONENT_CAMERA, simulationInfo);
 }
 
 void manageTimestep() {

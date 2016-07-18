@@ -31,6 +31,8 @@ void initScene(void);
 void destroyScene(void);
 void createStage(char*);
 void createScene(char*, char*, int, int);
+void drawScene(SceneComponent*, void*);
+StageComponent* getStage(char*);
 SceneComponent* getScene(char*, char*);
 void clearScene(char*, char*);
 void addEntityToScene(char *, char *, unsigned int);
