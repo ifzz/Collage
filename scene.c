@@ -15,14 +15,13 @@
 linkedList_t *STAGES = NULL;
 StageComponent *ACTIVE_STAGE = NULL;
 
-void tickStage(unsigned int, void *data);
 void startStage(unsigned int, void *data);
+void tickStage(unsigned int, void *data);
 
 void deleteScene(void *data) {
 	SceneComponent *scene = (SceneComponent*)data;
 
 	free(scene->entityIds);
-	free(scene->name);
 }
 
 void initScene() {
@@ -31,7 +30,7 @@ void initScene() {
 	addComponentToWorld(&COMPONENT_SCENE, sizeof(SceneComponent));
 	addComponentToWorld(&COMPONENT_STAGE, sizeof(StageComponent));
 	createSystem(EVENT_TIMESTEP, COMPONENT_STAGE, tickStage);
-	createSystem(EVENT_TIMESTEP_RENDER, COMPONENT_STAGE, drawStage);
+	/*createSystem(EVENT_TIMESTEP_RENDER, COMPONENT_STAGE, drawStage);*/
 	createSystem(EVENT_TIMESTEP_START, COMPONENT_STAGE, startStage);
 }
 
@@ -75,7 +74,7 @@ void createStage(char *name) {
 	stage->scenes = createLinkedList(&deleteScene);
 	stage->maxRenderIndex = 0;
 
-	copyText(&stage->name, name);
+	snprintf(stage->name, MAX_STAGE_NAME_LEN, "%s", name);
 
 	addListItem(STAGES, stage);
 
@@ -89,7 +88,7 @@ void createScene(char *stageName, char *name, int size, int renderIndex) {
 
 	SceneComponent *scene = getComponent(entityId, COMPONENT_SCENE);
 
-	copyText(&scene->name, name);
+	snprintf(scene->name, MAX_SCENE_NAME_LEN, "%s", name);
 
 	//#TODO: EntityIds never get free'd!
 	scene->renderIndex = renderIndex;

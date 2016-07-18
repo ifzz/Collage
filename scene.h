@@ -3,11 +3,15 @@
 unsigned int COMPONENT_STAGE;
 unsigned int COMPONENT_SCENE;
 
+#define MAX_STAGE_NAME_LEN 25
+#define MAX_SCENE_NAME_LEN 25
+#define MAX_SCENE_COUNT_PER_CAMERA 10
+
 #ifndef SCENE_H
 #define SCENE_H
 
 typedef struct {
-	char *name;
+	char name[MAX_STAGE_NAME_LEN];
 	int renderIndex;
 	int entityCount;
 	int entityCountMax;
@@ -15,7 +19,7 @@ typedef struct {
 } SceneComponent;
 
 typedef struct {
-	char *name;
+	char name[MAX_SCENE_NAME_LEN];
 	linkedList_t *scenes;
 	int maxRenderIndex;
 } StageComponent;
