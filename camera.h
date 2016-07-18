@@ -14,6 +14,7 @@ struct CameraComponent {
 	char stageName[MAX_STAGE_NAME_LEN];
 	char sceneNames[MAX_SCENE_COUNT_PER_CAMERA][MAX_SCENE_NAME_LEN];
 	double exactX, exactY, nextExactX, nextExactY;
+	double zoom, nextZoom;
 	int sceneCount;
 	int x, y;
 };
