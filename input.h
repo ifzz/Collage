@@ -4,6 +4,7 @@
 unsigned int COMPONENT_INPUT;
 unsigned int EVENT_KEY_INPUT;
 unsigned int EVENT_CONTROLLER_INPUT;
+unsigned int EVENT_MOUSEWHEEL_INPUT;
 bool HARD_EXIT;
 
 #ifndef INPUT_H

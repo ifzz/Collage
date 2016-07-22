@@ -13,6 +13,7 @@ void initInput() {
 	addComponentToWorld(&COMPONENT_INPUT, sizeof(InputComponent));
 
 	createEvent(&EVENT_KEY_INPUT);
+	createEvent(&EVENT_MOUSEWHEEL_INPUT);
 	createEvent(&EVENT_CONTROLLER_INPUT);
 
 	HARD_EXIT = 0;
@@ -36,6 +37,10 @@ void handleKeyInput(SDL_KeyboardEvent *key, bool pressed) {
 
 	if (key->keysym.sym == SDLK_ESCAPE)
 		HARD_EXIT = 1;
+}
+
+void handleMouseWheel(SDL_MouseWheelEvent *mouseWheel) {
+	triggerEventForAll(EVENT_MOUSEWHEEL_INPUT, COMPONENT_INPUT, mouseWheel);
 }
 
 void inputLoop() {
@@ -63,7 +68,7 @@ void inputLoop() {
 
 				break;
 			case SDL_MOUSEWHEEL:
-				/*handleMouseWheel(&EVENT.wheel);*/
+				handleMouseWheel(&EVENT.wheel);
 
 				break;
 			case SDL_JOYAXISMOTION:
