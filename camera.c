@@ -35,8 +35,14 @@ void registerCamera(unsigned int entityId, char *name) {
 	camera->exactY = 0;
 	camera->nextExactX = 0;
 	camera->nextExactY = 0;
-	camera->x = 100;
-	camera->y = 100;
+	camera->x = 0;
+	camera->y = 0;
+	camera->panExactX = 0;
+	camera->panExactY = 0;
+	camera->nextPanExactX = 0;
+	camera->nextPanExactY = 0;
+	camera->panX = 0;
+	camera->panY = 0;
 	camera->followingEntity = false;
 	camera->viewportWidth = 0;
 	camera->viewportHeight = 0;
@@ -68,6 +74,15 @@ void tickCamera(unsigned int entityId, void *data) {
 
 	camera->x = round(camera->exactX);
 	camera->y = round(camera->exactY);
+
+	camera->panExactX = interp(camera->panExactX, camera->nextPanExactX, .02);
+	camera->panExactY = interp(camera->panExactY, camera->nextPanExactY, .02);
+
+	camera->panX = round(camera->panExactX);
+	camera->panY = round(camera->panExactY);
+
+	camera->x += camera->panX;
+	camera->y += camera->panY;
 
 	camera->viewportWidth = round(displayGetWindowWidth() / camera->zoom);
 	camera->viewportHeight = round(displayGetWindowHeight() / camera->zoom);
@@ -135,4 +150,11 @@ void cameraFollowEntityId(unsigned int entityId, unsigned int targetId) {
 
 	camera->followingEntity = true;
 	camera->followingEntityId = targetId;
+}
+
+void setCameraLead(unsigned int entityId, int x, int y) {
+	CameraComponent *camera = getComponent(entityId, COMPONENT_CAMERA);
+
+	camera->nextPanExactX = x;
+	camera->nextPanExactY = y;
 }

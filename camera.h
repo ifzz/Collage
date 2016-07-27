@@ -1,5 +1,6 @@
 #define MAX_CAMERA_NAME_LEN 12
 
+#include <stdbool.h>
 #include "SDL2/SDL.h"
 #include "timestep.h"
 #include "scene.h"
@@ -17,10 +18,12 @@ struct CameraComponent {
 	char sceneNames[MAX_SCENE_COUNT_PER_CAMERA][MAX_SCENE_NAME_LEN];
 	char name[MAX_CAMERA_NAME_LEN];
 	double exactX, exactY, nextExactX, nextExactY;
+	double panExactX, panExactY, nextPanExactX, nextPanExactY;
 	double zoom, nextZoom;
 	int viewportWidth, viewportHeight;
 	int sceneCount;
 	int x, y;
+	int panX, panY;
 	unsigned int followingEntityId;
 	bool followingEntity;
 };
@@ -40,4 +43,5 @@ void registerCamera(unsigned int, char*);
 void assignCameraToStage(unsigned int, char*);
 void addSceneToCamera(unsigned int, char*);
 void cameraFollowEntityId(unsigned int, unsigned int);
+void setCameraLead(unsigned int, int, int);
 unsigned int getCameraWithName(char*);
