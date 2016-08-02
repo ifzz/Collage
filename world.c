@@ -13,16 +13,20 @@
 void deleteWorld(void*);
 
 World *ACTIVE_WORLD = NULL;
-linkedList_t *WORLD_LIST = NULL;
+World *WORLD_LIST[5];
+int WORLD_COUNT = 0;
+/*linkedList_t *WORLD_LIST = NULL;*/
 
 int MAX_EVENTS = 70;
 
 void initWorlds() {
-	WORLD_LIST = createLinkedList(&deleteWorld);
+	/*WORLD_LIST = createLinkedList(&deleteWorld);*/
+
+	/*assert(1 == 2);*/
 }
 
 void destroyWorlds() {
-	deleteLinkedList(WORLD_LIST);
+	/*deleteLinkedList(WORLD_LIST);*/
 }
 
 void createWorld(char *name) {
@@ -75,11 +79,13 @@ void createWorld(char *name) {
 	newWorld->deletedEntityIds = calloc(newWorld->entityCountMax, sizeof(unsigned int));
 	newWorld->systems = calloc(newWorld->entityCountMax, sizeof(void*));
 
-	copyText(&newWorld->name, name);
+	snprintf(newWorld->name, 25, "%s", name);
 
 	printf("[WORLD] Created new world: %s\n", name);
 	
-	addListItem(WORLD_LIST, newWorld);
+	WORLD_LIST[WORLD_COUNT] = newWorld;
+	++ WORLD_COUNT;
+	/*addListItem(WORLD_LIST, newWorld);*/
 }
 
 void cleanWorld() {
@@ -161,8 +167,11 @@ World* getWorld() {
 }
 
 void setWorld(char *name) {
-	for (listItem_t *item = WORLD_LIST->head; item; item = item->next) {
-		World *world = item->item;
+	/*for (listItem_t *item = WORLD_LIST->head; item; item = item->next) {*/
+	for (int i = 0; i < WORLD_COUNT; ++ i) {
+		printf("Looking for world: %s\n", name);
+		World *world = WORLD_LIST[i];
+		/*World *world = item->item;*/
 		
 		if (!strcmp(world->name, name)) {
 			ACTIVE_WORLD = world;

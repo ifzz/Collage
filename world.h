@@ -19,7 +19,7 @@ typedef struct {
 	void (***systemCallback)(unsigned int, void*);
 	void (****entityEventCallback)(unsigned int, void*);
 	void **components;
-	char *name;
+	char name[25];
 } World;
 
 
