@@ -35,6 +35,8 @@ void initScene() {
 }
 
 StageComponent* getStage(char *name) {
+	assert(STAGES != NULL);
+
 	for (listItem_t *stageItem = STAGES->head; stageItem; stageItem = stageItem->next) {
 		StageComponent *stage = (StageComponent*)stageItem->item;
 

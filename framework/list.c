@@ -91,7 +91,7 @@ void addListItem(linkedList_t *list, void *item) {
 
 	list->tail = newListItem;
 
-	if (!list->count) {
+	if (list->count == 0) {
 		list->head = newListItem;
 	} else {
 		while (listIterator->next) {
