@@ -1,6 +1,7 @@
 #include <stdio.h>
-#include "world.h"
 #include "system.h"
+#include "world.h"
+#include "debug.h"
 
 
 void createSystem(unsigned int eventId, unsigned int componentMask,
@@ -22,7 +23,7 @@ void createEvent(unsigned int *eventId) {
 	world->systemIndex[world->eventCount] = 0;
 	*eventId = world->eventCount;
 
-	printf("Created new event: %i\n", world->eventCount);
+	logInfo("Created new event: %i", world->eventCount);
 
 	++ world->eventCount;
 }

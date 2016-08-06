@@ -3,6 +3,7 @@
 #include "world.h"
 #include "entity.h"
 #include "system.h"
+#include "debug.h"
 
 void initEntities() {
 	createEvent(&EVENT_DELETE);
@@ -25,7 +26,7 @@ unsigned int createEntity() {
 	}
 
 	if (returnedId == -1) {
-		printf("[ENTITY-#FATAL] Cannot return new entity ID\n");
+		logError("[ENTITY-#FATAL] Cannot return new entity ID");
 		
 		assert(1 == 2);
 	}
@@ -47,7 +48,7 @@ void deleteEntity(unsigned int entityId) {
 
 	++ world->entityIdsToDeleteCount;
 	
-	printf("[ENTITY] Deleted entity #%u\n", entityId);
+	logInfo("[ENTITY] Deleted entity #%u", entityId);
 }
 
 void registerEntityEvent(unsigned int entityId, unsigned int eventId,

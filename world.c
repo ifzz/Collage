@@ -8,6 +8,7 @@
 #include "component.h"
 #include "system.h"
 #include "entity.h"
+#include "debug.h"
 
 
 void deleteWorld(void*);
@@ -81,7 +82,7 @@ void createWorld(char *name) {
 
 	snprintf(newWorld->name, 25, "%s", name);
 
-	printf("[WORLD] Created new world: %s\n", name);
+	logInfo("[WORLD] Created new world: %s", name);
 	
 	WORLD_LIST[WORLD_COUNT] = newWorld;
 	++ WORLD_COUNT;
@@ -94,12 +95,12 @@ void cleanWorld() {
 	if (!world->entityIdsToDeleteCount)
 		return;
 
-	printf("[WORLD-CLEANING] Number of entities to clean: %i\n", world->entityIdsToDeleteCount);
+	logInfo("[WORLD-CLEANING] Number of entities to clean: %i", world->entityIdsToDeleteCount);
 
 	for (int i = 0; i < world->entityIdsToDeleteCount; ++ i) {
 		unsigned int entityId = world->entityIdsToDelete[i];
 
-		printf("[WORLD-CLEANING] Cleaning entity: %i\n", entityId);
+		logInfo("[WORLD-CLEANING] Cleaning entity: %i", entityId);
 
 		triggerEvent(entityId, EVENT_DELETE, world);
 
@@ -118,7 +119,7 @@ void cleanWorld() {
 
 	world->entityIdsToDeleteCount = 0;
 
-	printf("[WORLD-CLEANING] Clean\n");
+	logInfo("[WORLD-CLEANING] Clean");
 }
 
 void deleteWorld(void *data) {
@@ -169,20 +170,20 @@ World* getWorld() {
 void setWorld(char *name) {
 	/*for (listItem_t *item = WORLD_LIST->head; item; item = item->next) {*/
 	for (int i = 0; i < WORLD_COUNT; ++ i) {
-		printf("Looking for world: %s\n", name);
+		/*printf("Looking for world: %s\n", name);*/
 		World *world = WORLD_LIST[i];
 		/*World *world = item->item;*/
 		
 		if (!strcmp(world->name, name)) {
 			ACTIVE_WORLD = world;
 
-			printf("[WORLD] Active World changed to: %s\n", name);
+			logInfo("[WORLD] Active World changed to: %s", name);
 
 			return;
 		}
 	}
 
-	printf("[WORLD-#FATAL] Cannot get world: %s\n", name);
+	logError("[WORLD-#FATAL] Cannot get world: %s", name);
 
 	assert(NULL);
 }

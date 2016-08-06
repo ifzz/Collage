@@ -11,6 +11,7 @@
 #include "sprite.h"
 #include "entity.h"
 #include "component.h"
+#include "debug.h"
 
 linkedList_t *STAGES = NULL;
 StageComponent *ACTIVE_STAGE = NULL;
@@ -44,7 +45,7 @@ StageComponent* getStage(char *name) {
 			return stage;
 	}
 
-	printf("[STAGE-#FATAL] Could not find stage: %s\n", name);
+	logError("[STAGE-#FATAL] Could not find stage: %s", name);
 	assert(1 == 2);
 
 	return NULL;
@@ -60,7 +61,7 @@ SceneComponent* getScene(char *stageName, char *sceneName) {
 			return scene;
 	}
 
-	printf("[SCENE-#FATAL] Could not find scene: %s\n", sceneName);
+	logError("[SCENE-#FATAL] Could not find scene: %s", sceneName);
 	assert(1 == 2);
 
 	return NULL;
@@ -82,7 +83,7 @@ void createStage(char *name) {
 
 	createScene(name, "_cameras", 25, -1);
 
-	printf("[STAGE] Created new stage: %s\n", stage->name);
+	logInfo("[STAGE] Created new stage: %s", stage->name);
 }
 
 void createScene(char *stageName, char *name, int size, int renderIndex) {
@@ -101,7 +102,7 @@ void createScene(char *stageName, char *name, int size, int renderIndex) {
 	scene->entityCount = 0;
 	scene->entityCountMax = size;
 
-	printf("[SCENE] Created new scene: %s\n", scene->name);
+	logInfo("[SCENE] Created new scene: %s", scene->name);
 
 	StageComponent *stage = getStage(stageName);
 
@@ -138,7 +139,7 @@ void removeEntityFromSceneHandler(unsigned int entityId, void *data) {
 			if (deleting) {
 				-- scene->entityCount;
 
-				printf("Removed entity %i from scene %s\n", entityId,
+				logInfo("Removed entity %i from scene %s\n", entityId,
 						scene->name);
 			}
 		}

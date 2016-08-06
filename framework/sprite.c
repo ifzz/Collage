@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+#include "../debug.h"
 #include "list.h"
 #include "display.h"
 #include "sprite.h"
@@ -161,7 +162,7 @@ void addTexture(char *filename, SDL_Texture *texture) {
 
 	addListItem(TEXTURE_MANAGER, textureEntry);
 
-	printf("[SPRITE] Loaded new texture: %s\n", textureEntry->name);
+	logInfo("[SPRITE] Loaded new texture: %s", textureEntry->name);
 }
 
 SDL_Texture* getTextureWithName(char *filename) {
@@ -199,7 +200,7 @@ SDL_Texture* textureCreate(char *filename) {
 	}
 
 	if (texture == NULL){
-		printf("Problem loading texture: %s\n", SDL_GetError());
+		logError("Problem loading texture: %s", SDL_GetError());
 
 		assert(texture != NULL);
 	}
@@ -212,7 +213,7 @@ SDL_Texture* textureCreateFromSurface(SDL_Surface *surface) {
 	SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
 
 	if (texture == NULL){
-		printf("Problem loading texture: %s\n", SDL_GetError());
+		logError("Problem loading texture: %s", SDL_GetError());
 
 		//displayDestroy();
 	}
