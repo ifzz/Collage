@@ -15,13 +15,13 @@ unsigned int createEntity() {
 	if (world->deletedEntityCount) {
 		returnedId = world->deletedEntityIds[world->deletedEntityCount - 1];
 
-		printf("Using deleted entity id...\n");
+		/*printf("Using deleted entity id...\n");*/
 
 		-- world->deletedEntityCount;
 	} else if (world->entityCount < world->entityCountMax) {
 		returnedId = world->entityCount;
 		++ world->entityCount;
-		printf("Using new entity id...\n");
+		/*printf("Using new entity id...\n");*/
 	}
 
 	if (returnedId == -1) {
