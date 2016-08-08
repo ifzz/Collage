@@ -46,6 +46,7 @@ void createWorld(char *name) {
 	newWorld->entityEventCallbackCount = calloc(newWorld->entityCountMax, sizeof(int*));
 	newWorld->entityIdsToDeleteCount = 0;
 	newWorld->deletedEntityCount = 0;
+	newWorld->highestEntityId = -1;
 
 	/*printf("\n\nREPLACE THESE WITH ACTUAL VALUES!!!!!!!!!\n\n");*/
 

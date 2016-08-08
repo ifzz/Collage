@@ -139,7 +139,9 @@ void removeEntityFromSceneHandler(unsigned int entityId, void *data) {
 			if (deleting) {
 				-- scene->entityCount;
 
-				logInfo("Removed entity %i from scene %s\n", entityId,
+				assert(scene->entityCount >= 0);
+
+				logInfo("Removed entity %i from scene %s", entityId,
 						scene->name);
 			}
 		}
