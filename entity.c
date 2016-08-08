@@ -16,13 +16,13 @@ unsigned int createEntity() {
 	if (world->deletedEntityCount) {
 		returnedId = world->deletedEntityIds[world->deletedEntityCount - 1];
 
-		/*printf("Using deleted entity id...\n");*/
+		printf("Using deleted entity id... %i\n", returnedId);
 
 		-- world->deletedEntityCount;
 	} else if (world->entityCount < world->entityCountMax) {
 		returnedId = world->entityCount;
 		++ world->entityCount;
-		/*printf("Using new entity id...\n");*/
+		printf("Using new entity id...\n");
 	}
 
 	if (returnedId == -1) {
@@ -44,9 +44,36 @@ unsigned int createEntity() {
 void deleteEntity(unsigned int entityId) {
 	World *world = getWorld();
 
-	world->entityIdsToDelete[world->entityIdsToDeleteCount] = entityId;
+#if defined(DEBUG)
+		for (int i = 0; i < world->entityIdsToDeleteCount; ++ i)
+			assert(entityId != world->entityIdsToDelete[i]);
+#else
+		bool foundDupe = false;
 
-	++ world->entityIdsToDeleteCount;
+		for (int i = 0; i < world->entityIdsToDeleteCount && !foundDupe; ++ i)
+			foundDupe = entityId != world->entityIdsToDelete[i];
+
+		if (foundDupe) {
+			puts("Error: Trying to delete duplicate entity");
+
+			return;
+		}
+
+#endif
+
+	triggerEvent(entityId, EVENT_DELETE, world);
+
+	world->entityMask[entityId] = 0;
+
+	for (int j = 0; j < world->eventCount; ++ j)
+		world->entityEventCallbackCount[entityId][j] = 0;
+	
+	world->deletedEntityIds[world->deletedEntityCount] = entityId;
+
+	++ world->deletedEntityCount;
+	/*world->entityIdsToDelete[world->entityIdsToDeleteCount] = entityId;*/
+
+	/*++ world->entityIdsToDeleteCount;*/
 	
 	logInfo("[ENTITY] Deleted entity #%u", entityId);
 }
@@ -73,7 +100,7 @@ void triggerEvent(unsigned int entityId, unsigned int eventId, void *data) {
 		}
 	}
 
-	for (unsigned int i = 0;
+	for (int i = 0;
 			i < world->entityEventCallbackCount[entityId][eventId];
 			++ i) {
 		world->entityEventCallback[entityId][eventId][i](entityId, data);

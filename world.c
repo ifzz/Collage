@@ -92,6 +92,8 @@ void createWorld(char *name) {
 void cleanWorld() {
 	World *world = ACTIVE_WORLD;
 
+	/*assert(1 == 2);*/
+
 	if (!world->entityIdsToDeleteCount)
 		return;
 
@@ -102,18 +104,23 @@ void cleanWorld() {
 
 		logInfo("[WORLD-CLEANING] Cleaning entity: %i", entityId);
 
-		triggerEvent(entityId, EVENT_DELETE, world);
+		assert(1 == 2);
 
-		for (int i = 0; i < world->eventCount; ++ i)
-			world->entityEventCallbackCount[entityId][i] = 0;
+		/*for (int j = 0; j < world->eventCount; ++ j)*/
+			/*world->entityEventCallbackCount[entityId][j] = 0;*/
 
-		assert(world->entityMask[entityId] > 0);
+#if defined(DEBUG)
+		/*assert(world->entityMask[entityId] > 0);*/
+#else
+		/*if (world->entityMask[entityId] == 0)*/
+			/*puts("Error: Trying to delete empty entity");*/
+#endif
 
-		world->entityMask[entityId] = 0;
+		/*world->entityMask[entityId] = 0;*/
 		
-		world->deletedEntityIds[world->deletedEntityCount] = entityId;
+		/*world->deletedEntityIds[world->deletedEntityCount] = entityId;*/
 
-		++ world->deletedEntityCount;
+		/*++ world->deletedEntityCount;*/
 		/*-- world->entityCount;*/
 	}
 
