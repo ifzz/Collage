@@ -93,9 +93,7 @@ void createWorld(char *name) {
 void cleanWorld() {
 	World *world = ACTIVE_WORLD;
 
-	/*assert(1 == 2);*/
-
-	if (!world->entityIdsToDeleteCount)
+	if (world->entityIdsToDeleteCount == 0)
 		return;
 
 	logInfo("[WORLD-CLEANING] Number of entities to clean: %i", world->entityIdsToDeleteCount);
@@ -105,23 +103,23 @@ void cleanWorld() {
 
 		logInfo("[WORLD-CLEANING] Cleaning entity: %i", entityId);
 
-		assert(1 == 2);
+		/*assert(1 == 2);*/
+		triggerEvent(entityId, EVENT_DELETE, world);
 
-		/*for (int j = 0; j < world->eventCount; ++ j)*/
-			/*world->entityEventCallbackCount[entityId][j] = 0;*/
+		for (int j = 0; j < world->eventCount; ++ j)
+			world->entityEventCallbackCount[entityId][j] = 0;
 
 #if defined(DEBUG)
-		/*assert(world->entityMask[entityId] > 0);*/
+		assert(world->entityMask[entityId] > 0);
 #else
-		/*if (world->entityMask[entityId] == 0)*/
-			/*puts("Error: Trying to delete empty entity");*/
+		if (world->entityMask[entityId] == 0)
+			puts("Error: Trying to delete empty entity");
 #endif
 
-		/*world->entityMask[entityId] = 0;*/
-		
-		/*world->deletedEntityIds[world->deletedEntityCount] = entityId;*/
+		world->entityMask[entityId] = 0;
+		world->deletedEntityIds[world->deletedEntityCount] = entityId;
 
-		/*++ world->deletedEntityCount;*/
+		++ world->deletedEntityCount;
 		/*-- world->entityCount;*/
 	}
 

@@ -93,6 +93,7 @@ void stepTime() {
 
 		update(TIMESTEP_INFO);
 		tick(TIMESTEP_INFO);
+		cleanWorld();
 
 		manageTimestep();
 		TIME += DELTA_TIME;
@@ -104,7 +105,6 @@ void stepTime() {
 	Delta simulationInfo = {TIME, alpha};
 
 	render(&simulationInfo);
-	cleanWorld();
 
 	++ FRAMES;
 

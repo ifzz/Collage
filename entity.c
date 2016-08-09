@@ -51,29 +51,30 @@ void deleteEntity(unsigned int entityId) {
 		bool foundDupe = false;
 
 		for (int i = 0; i < world->entityIdsToDeleteCount && !foundDupe; ++ i)
-			foundDupe = entityId != world->entityIdsToDelete[i];
+			foundDupe = entityId == world->entityIdsToDelete[i];
 
 		if (foundDupe) {
 			puts("Error: Trying to delete duplicate entity");
 
 			return;
 		}
-
 #endif
 
-	triggerEvent(entityId, EVENT_DELETE, world);
+	assert(1 == 2);
 
-	world->entityMask[entityId] = 0;
+	/*triggerEvent(entityId, EVENT_DELETE, world);*/
 
-	for (int j = 0; j < world->eventCount; ++ j)
-		world->entityEventCallbackCount[entityId][j] = 0;
+	/*world->entityMask[entityId] = 0;*/
+
+	/*for (int j = 0; j < world->eventCount; ++ j)*/
+		/*world->entityEventCallbackCount[entityId][j] = 0;*/
 	
-	world->deletedEntityIds[world->deletedEntityCount] = entityId;
+	/*world->deletedEntityIds[world->deletedEntityCount] = entityId;*/
 
-	++ world->deletedEntityCount;
-	/*world->entityIdsToDelete[world->entityIdsToDeleteCount] = entityId;*/
+	/*++ world->deletedEntityCount;*/
+	world->entityIdsToDelete[world->entityIdsToDeleteCount] = entityId;
 
-	/*++ world->entityIdsToDeleteCount;*/
+	++ world->entityIdsToDeleteCount;
 	
 	logInfo("[ENTITY] Deleted entity #%u", entityId);
 }
