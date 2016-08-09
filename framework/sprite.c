@@ -236,17 +236,34 @@ void textureRender(SDL_Renderer *renderer, SDL_Texture *texture, int x, int y) {
 
 void textureRenderWithScale(SDL_Renderer *renderer, SDL_Texture *texture, int x, int y, double wMod, double hMod) {
 	SDL_Rect dst;
-	SDL_Point pnt;
+	/*SDL_Point pnt;*/
 	dst.x = x;
 	dst.y = y;
 
 	SDL_QueryTexture(texture, NULL, NULL, &dst.w, &dst.h);
 	
-	pnt.x = dst.w / 2;
-	pnt.y = dst.h / 2;
+	/*pnt.x = dst.w / 2;*/
+	/*pnt.y = dst.h / 2;*/
 	dst.w *= wMod;
 	dst.h *= hMod;
 	
 	//SDL_RenderCopy(renderer, texture, NULL, &dst);
-	SDL_RenderCopyEx(renderer, texture, NULL, &dst, 0, &pnt, SDL_FLIP_NONE);
+	SDL_RenderCopyEx(renderer, texture, NULL, &dst, 0, NULL, SDL_FLIP_NONE);
+}
+
+void textureRenderEx(SDL_Renderer *renderer, SDL_Texture *texture, int x, int y, int rot, double wMod, double hMod) {
+	SDL_Rect dst;
+	/*SDL_Point pnt;*/
+	dst.x = x;
+	dst.y = y;
+
+	SDL_QueryTexture(texture, NULL, NULL, &dst.w, &dst.h);
+	
+	/*pnt.x = dst.w / 2;*/
+	/*pnt.y = dst.h / 2;*/
+	dst.w *= wMod;
+	dst.h *= hMod;
+	
+	//SDL_RenderCopy(renderer, texture, NULL, &dst);
+	SDL_RenderCopyEx(renderer, texture, NULL, &dst, rot, NULL, SDL_FLIP_NONE);
 }

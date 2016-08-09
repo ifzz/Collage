@@ -60,8 +60,6 @@ void deleteEntity(unsigned int entityId) {
 		}
 #endif
 
-	assert(1 == 2);
-
 	/*triggerEvent(entityId, EVENT_DELETE, world);*/
 
 	/*world->entityMask[entityId] = 0;*/
