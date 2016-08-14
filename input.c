@@ -14,6 +14,7 @@ void initInput() {
 
 	createEvent(&EVENT_KEY_INPUT);
 	createEvent(&EVENT_MOUSEWHEEL_INPUT);
+	createEvent(&EVENT_MOUSEBUTTON_INPUT);
 	createEvent(&EVENT_CONTROLLER_INPUT);
 
 	HARD_EXIT = 0;
@@ -39,6 +40,17 @@ void handleKeyInput(SDL_KeyboardEvent *key, bool pressed) {
 		HARD_EXIT = 1;
 }
 
+void handleMouseButton(SDL_MouseButtonEvent *mouseButton, bool pressed) {
+	InputEvent keyEvent = {"", pressed};
+
+	if (mouseButton->button == SDL_BUTTON_LEFT)
+		keyEvent.keyName = "Mouse1";
+	else if (mouseButton->button == SDL_BUTTON_RIGHT)
+		keyEvent.keyName = "Mouse2";
+
+	triggerEventForAll(EVENT_MOUSEBUTTON_INPUT, COMPONENT_INPUT, &keyEvent);
+}
+
 void handleMouseWheel(SDL_MouseWheelEvent *mouseWheel) {
 	triggerEventForAll(EVENT_MOUSEWHEEL_INPUT, COMPONENT_INPUT, mouseWheel);
 }
@@ -60,11 +72,11 @@ void inputLoop() {
 
 				break;
 			case SDL_MOUSEBUTTONDOWN:
-				/*handleMousePress(&EVENT.button);*/
+				handleMouseButton(&EVENT.button, true);
 
 				break;
 			case SDL_MOUSEBUTTONUP:
-				/*handleMouseRelease(&EVENT.button);*/
+				handleMouseButton(&EVENT.button, false);
 
 				break;
 			case SDL_MOUSEWHEEL:
