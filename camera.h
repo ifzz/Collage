@@ -43,5 +43,6 @@ void registerCamera(unsigned int, char*);
 void assignCameraToStage(unsigned int, char*);
 void addSceneToCamera(unsigned int, char*);
 void cameraFollowEntityId(unsigned int, unsigned int);
+void cameraUnfollowEntityId(unsigned int);
 void setCameraLead(unsigned int, int, int);
 unsigned int getCameraWithName(char*);

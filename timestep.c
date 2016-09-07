@@ -111,7 +111,7 @@ void stepTime() {
 	int currentTicks = SDL_GetTicks();
 
 	if (currentTicks - FPS_TIMER >= 1000) {
-		printf("FPS: %i\n", FRAMES);
+		/*printf("FPS: %i\n", FRAMES);*/
 
 		FRAMES = 0;
 		FPS_TIMER = currentTicks;

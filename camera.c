@@ -152,6 +152,13 @@ void cameraFollowEntityId(unsigned int entityId, unsigned int targetId) {
 	camera->followingEntityId = targetId;
 }
 
+void cameraUnfollowEntityId(unsigned int entityId) {
+	CameraComponent *camera = getComponent(entityId, COMPONENT_CAMERA);
+
+	camera->followingEntity = false;
+	camera->followingEntityId = 0;
+}
+
 void setCameraLead(unsigned int entityId, int x, int y) {
 	CameraComponent *camera = getComponent(entityId, COMPONENT_CAMERA);
 
