@@ -5,4 +5,6 @@ unsigned int createEntity(void);
 void deleteEntity(unsigned int);
 void registerEntityEvent(unsigned int, unsigned int,
 		void (*)(unsigned int, void*));
+void unregisterEntityEvent(unsigned int, unsigned int,
+		void (*)(unsigned int, void*));
 void triggerEvent(unsigned int, unsigned int, void*);

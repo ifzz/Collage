@@ -84,7 +84,26 @@ void registerEntityEvent(unsigned int entityId, unsigned int eventId,
 
 	world->entityEventCallback[entityId][eventId][callbackCount] = callback;
 	++ world->entityEventCallbackCount[entityId][eventId];
+}
 
+void unregisterEntityEvent(unsigned int entityId, unsigned int eventId,
+		void (*callback)(unsigned int, void*)) {
+	World *world = getWorld();
+	int callbackCount = world->entityEventCallbackCount[entityId][eventId];
+	bool shrinking = false;
+
+	for (int i = 0; i < callbackCount; ++ i) {
+		if (callback == world->entityEventCallback[entityId][eventId][i])
+			shrinking = true;
+
+		if (shrinking)
+			world->entityEventCallback[entityId][eventId][i] =
+				world->entityEventCallback[entityId][eventId][i + 1];
+	}
+
+	assert(shrinking);
+
+	-- world->entityEventCallbackCount[entityId][eventId];
 }
 
 void triggerEvent(unsigned int entityId, unsigned int eventId, void *data) {

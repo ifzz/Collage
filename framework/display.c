@@ -6,6 +6,7 @@
 
 #include "numbers.h"
 #include "display.h"
+#include "drawing.h"
 
 
 SDL_Window *WINDOW = NULL;
@@ -76,6 +77,7 @@ int initDisplay(char *windowTitle, int windowWidth, int windowHeight) {
 		return 0;
 	}
 	
+	startFonts();
 	displayClear();
 	
 	return 1;
@@ -104,8 +106,8 @@ void displayPresent() {
 
 	SDL_SetRenderDrawColor(RENDERER, 15, 10, 10, 255);
 	SDL_RenderSetViewport(RENDERER, &displayRect);
-	SDL_RenderSetScale(RENDERER, getCameraZoom() * renderWidthScale,
-			getCameraZoom() * renderHeightScale);
+	/*SDL_RenderSetScale(RENDERER, getCameraZoom() * renderWidthScale,*/
+			/*getCameraZoom() * renderHeightScale);*/
 	
 	SDL_RenderSetScale(RENDERER, renderWidthScale, renderHeightScale);
 

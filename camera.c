@@ -112,6 +112,7 @@ void renderCamera(unsigned int entityId, void *data) {
 
 	SDL_RenderSetViewport(cameraInfo.renderer, &displayRect);
 	SDL_RenderSetScale(cameraInfo.renderer, camera->zoom, camera->zoom);
+	bool obeyingZoom = true;
 
 	for (int z = 0; z <= stage->maxRenderIndex; ++ z) {
 		for (int i = 0; i < camera->sceneCount; ++ i) {
@@ -120,6 +121,17 @@ void renderCamera(unsigned int entityId, void *data) {
 
 			if (scene->renderIndex != z)
 				continue;
+
+			if (scene->obeyZoom && !obeyingZoom) {
+				SDL_RenderSetScale(cameraInfo.renderer, camera->zoom,
+						camera->zoom);
+
+				obeyingZoom = true;
+			} else if (!scene->obeyZoom && obeyingZoom) {
+				SDL_RenderSetScale(cameraInfo.renderer, 1, 1);
+
+				obeyingZoom = false;
+			}
 
 			drawScene(scene, &cameraInfo);
 		}

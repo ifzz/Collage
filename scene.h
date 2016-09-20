@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include "framework/list.h"
 
 unsigned int COMPONENT_STAGE;
@@ -16,6 +17,7 @@ typedef struct {
 	int entityCount;
 	int entityCountMax;
 	unsigned int *entityIds;
+	bool obeyZoom;
 } SceneComponent;
 
 typedef struct {
@@ -30,7 +32,7 @@ typedef struct {
 void initScene(void);
 void destroyScene(void);
 void createStage(char*);
-void createScene(char*, char*, int, int);
+void createScene(char*, char*, int, int, bool);
 void drawScene(SceneComponent*, void*);
 StageComponent* getStage(char*);
 SceneComponent* getScene(char*, char*);

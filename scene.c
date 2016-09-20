@@ -81,12 +81,13 @@ void createStage(char *name) {
 
 	addListItem(STAGES, stage);
 
-	createScene(name, "_cameras", 25, -1);
+	createScene(name, "_cameras", 25, -1, false);
 
 	logInfo("[STAGE] Created new stage: %s", stage->name);
 }
 
-void createScene(char *stageName, char *name, int size, int renderIndex) {
+void createScene(char *stageName, char *name, int size, int renderIndex,
+		bool obeyZoom) {
 	unsigned int entityId = createEntity();
 
 	addComponentToEntity(entityId, COMPONENT_SCENE);
@@ -101,6 +102,8 @@ void createScene(char *stageName, char *name, int size, int renderIndex) {
 
 	scene->entityCount = 0;
 	scene->entityCountMax = size;
+
+	scene->obeyZoom = obeyZoom;
 
 	logInfo("[SCENE] Created new scene: %s", scene->name);
 
