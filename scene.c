@@ -28,8 +28,8 @@ void deleteScene(void *data) {
 void initScene() {
 	STAGES = createLinkedList(&deleteScene);
 
-	addComponentToWorld(&COMPONENT_SCENE, sizeof(SceneComponent));
-	addComponentToWorld(&COMPONENT_STAGE, sizeof(StageComponent));
+	addComponentToWorld("scene", &COMPONENT_SCENE, sizeof(SceneComponent));
+	addComponentToWorld("stage", &COMPONENT_STAGE, sizeof(StageComponent));
 	createSystem(EVENT_TIMESTEP, COMPONENT_STAGE, tickStage);
 	/*createSystem(EVENT_TIMESTEP_RENDER, COMPONENT_STAGE, drawStage);*/
 	createSystem(EVENT_TIMESTEP_START, COMPONENT_STAGE, startStage);

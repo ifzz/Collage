@@ -10,7 +10,7 @@ SDL_Event EVENT;
 
 
 void initInput() {
-	addComponentToWorld(&COMPONENT_INPUT, sizeof(InputComponent));
+	addComponentToWorld("input", &COMPONENT_INPUT, sizeof(InputComponent));
 
 	createEvent(&EVENT_KEY_INPUT);
 	createEvent(&EVENT_MOUSEWHEEL_INPUT);

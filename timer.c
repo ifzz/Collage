@@ -9,7 +9,7 @@ void eventAddTimerHandler(unsigned int, void*);
 void eventTickTimerHandler(unsigned int, void*);
 
 void initTimer() {
-	addComponentToWorld(&COMPONENT_TIMER, sizeof(TimerComponent));
+	addComponentToWorld("timer", &COMPONENT_TIMER, sizeof(TimerComponent));
 
 	createEvent(&EVENT_TIMER_TICK);
 	createEvent(&EVENT_TIMER_EMIT);

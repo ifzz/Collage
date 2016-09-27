@@ -8,13 +8,15 @@
 
 int COMPONENT_SIZES[255];
 
-void addComponentToWorld(unsigned int *id, size_t size) {
+void addComponentToWorld(char *name, unsigned int *id, size_t size) {
 	World *world = getWorld();
 
 	//NOTE: We can either init memory on the fly here, or do it at runtime.
 	
 	world->components[world->componentCount] = calloc(world->entityCountMax,
 			size);
+	snprintf(world->componentNames[world->componentCount],
+			MAX_COMPONENT_NAME_LEN, "%s", name);
 
 	assert(world->components[world->componentCount]);
 	
@@ -53,6 +55,17 @@ void* getComponent(unsigned int entityId, unsigned int componentId) {
 
 	return &world->components[id][entityId * COMPONENT_SIZES[id]];
 }	
+
+void listAllEntityComponents(unsigned int entityId) {
+	World *world = getWorld();
+
+	for (int i = 0; i < world->componentCount; ++ i) {
+		unsigned int mask = 1 << i;
+
+		if (world->entityMask[entityId] & mask)
+			printf("\t%s\n", world->componentNames[i]);
+	}
+}
 
 void* getAllComponents(unsigned int componentId) {
 	int id = (int)round(log(componentId) / log(2));

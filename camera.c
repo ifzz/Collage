@@ -18,7 +18,7 @@ int CAMERA_COUNT = 0;
 
 
 void initCameras() {
-	addComponentToWorld(&COMPONENT_CAMERA, sizeof(CameraComponent));
+	addComponentToWorld("camera", &COMPONENT_CAMERA, sizeof(CameraComponent));
 
 	createSystem(EVENT_TIMESTEP_RENDER, COMPONENT_CAMERA, renderCamera);
 	createSystem(EVENT_TICK, COMPONENT_CAMERA, tickCamera);

@@ -16,7 +16,7 @@ void eventSetSpriteAlphaCallback(unsigned int, void*);
 void eventSetSpriteJig(unsigned int, void*);
 
 void initComponentSprite() {
-	addComponentToWorld(&COMPONENT_SPRITE, sizeof(SpriteComponent));
+	addComponentToWorld("sprite", &COMPONENT_SPRITE, sizeof(SpriteComponent));
 	createEvent(&EVENT_DRAW);
 	createEvent(&EVENT_SET_ALPHA);
 	createEvent(&EVENT_SET_SPRITE_JIG);

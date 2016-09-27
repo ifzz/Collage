@@ -43,6 +43,7 @@ void createWorld(char *name) {
 	newWorld->systemCountMax = MAX_EVENTS;
 	newWorld->entityMask = calloc(newWorld->entityCountMax, sizeof(unsigned int));
 	newWorld->components = calloc(40, sizeof(void*));
+	/*newWorld->componentNames = calloc(MAX_COMPONENT_NAME_LEN, sizeof(char));*/
 	newWorld->entityEventCallbackCount = calloc(newWorld->entityCountMax, sizeof(int*));
 	newWorld->entityIdsToDeleteCount = 0;
 	newWorld->deletedEntityCount = 0;

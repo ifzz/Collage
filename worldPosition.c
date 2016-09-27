@@ -11,7 +11,7 @@ void eventUpdateWorldPosition(unsigned int, void*);
 
 
 void initComponentWorldPosition() {
-	addComponentToWorld(&COMPONENT_WORLD_POSITION,
+	addComponentToWorld("world_position", &COMPONENT_WORLD_POSITION,
 			sizeof(WorldPositionComponent));
 	createEvent(&EVENT_SET_POSITION);
 

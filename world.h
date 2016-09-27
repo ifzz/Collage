@@ -19,6 +19,7 @@ typedef struct {
 	void (***systemCallback)(unsigned int, void*);
 	void (****entityEventCallback)(unsigned int, void*);
 	void **components;
+	char componentNames[32][MAX_COMPONENT_NAME_LEN];
 	char name[25];
 } World;
 
