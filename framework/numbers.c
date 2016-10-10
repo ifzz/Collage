@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include <math.h>
 
 #define M_PI 3.14159265358979323846
@@ -32,6 +33,48 @@ float interpF(float n1, float n2, float t) {
 	return n1 + (n2 - n1) * t;
 }
 
+void vectorAdd(double retVel[2], double vel1[2], double vel2[2]) {
+	retVel[0] = vel1[0] + vel2[0];
+	retVel[1] = vel1[1] + vel2[1];
+}
+
+void vectorSubtract(double retVel[2], double vel1[2], double vel2[2]) {
+	retVel[0] = vel1[0] - vel2[0];
+	retVel[1] = vel1[1] - vel2[1];
+}
+
+double vectorLength(double vel[2]) {
+	return sqrt((vel[0]*vel[0]) + (vel[1]*vel[1]));
+}
+
+double vectorDistance(double vel1[2], double vel2[2]) {
+	double subbed[2];
+
+	vectorSubtract(subbed, vel1, vel2);
+
+	return vectorLength(subbed);
+}
+
+void vectorNormalize(double ret[2], double vel[2]) {
+	double length = vectorLength(vel);
+
+	ret[0] = vel[0] / length;
+	ret[1] = vel[1] / length;
+}
+
+void vectorMultiply(double ret[2], double vel[2], double amount) {
+	ret[0] = vel[0] * amount;
+	ret[1] = vel[1] * amount;
+}
+
+void vectorTruncate(double vel[2], double maxVel) {
+	double i = maxVel / vectorLength(vel);
+
+	i = i < 1.0 ? i : 1.0;
+
+	vectorMultiply(vel, vel, i);
+}
+
 int distance(int x1, int y1, int x2, int y2) {
 	return abs(x2 - x1) + abs(y2 - y1);
 }
@@ -45,6 +88,10 @@ float distanceFloat(float x1, float y1, float x2, float y2) {
 	} else {
 		return (float) (x_dist + (y_dist - x_dist));
 	}
+}
+
+double eulerDist(double x1, double y1, double x2, double y2) {
+	return sqrt((x1 - x2) * (x1 - x2)  + (y1 - y2) * (y1 - y2));
 }
 
 float cubicPulse(float c, float w, float x) {
