@@ -125,6 +125,11 @@ float clipFloat(float f, float min, float max) {
   return t > max ? max : t;
 }
 
+double clipDouble(double f, double min, double max) {
+  const double t = f < min ? min : f;
+  return t > max ? max : t;
+}
+
 int directionTo(int x1, int y1, int x2, int y2) {
 	double theta = atan2((y2 - y1), -(x1 - x2));
 

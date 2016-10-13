@@ -156,6 +156,11 @@ void addEntityToScene(char *stageName, char *sceneName, unsigned int entityId) {
 
 	registerEntityEvent(entityId, EVENT_DELETE, &removeEntityFromSceneHandler);
 
+	if (scene->entityCount >= scene->entityCountMax) {
+		printf("Scene `%s` hit entity limit: %i\n", sceneName,
+				scene->entityCountMax);
+	}
+
 	assert(scene->entityCount < scene->entityCountMax);
 
 	scene->entityIds[scene->entityCount] = entityId;

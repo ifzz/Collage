@@ -6,6 +6,7 @@ double interp(double, double, double);
 float interpF(float, float, float);
 int clip(int, int, int);
 float clipFloat(float, float, float);
+double clipDouble(double, double, double);
 int distance(int, int, int, int);
 float distanceFloat(float, float, float, float);
 double eulerDist(double, double, double, double);

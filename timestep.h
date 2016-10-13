@@ -18,4 +18,5 @@ void setTimestepModifier(float, float);
 void resetTimestep(void);
 void stepTime(void);
 void showTimestepInfo(void);
-
+void increaseTimestepAccel(void);
+void decreaseTimestepAccel(void);

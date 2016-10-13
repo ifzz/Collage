@@ -9,6 +9,7 @@
 
 float TIME = 0.;
 int FRAMES, FPS_TIMER;
+int TIMESTEP_ACCEL = 1;
 float DELTA_TIME;
 float DELTA_TIME_STANDARD = 1 / 6.;
 float NEXT_DELTA_TIME = 1 / 6.;
@@ -48,6 +49,15 @@ void setTimestepModifier(float mod, float rate) {
 
 	NEXT_DELTA_TIME = DELTA_TIME_STANDARD * mod;
 	NEXT_DELTA_TIME_MOD = rate;
+}
+
+void increaseTimestepAccel() {
+	TIMESTEP_ACCEL ++;
+}
+
+void decreaseTimestepAccel() {
+	if (TIMESTEP_ACCEL > 1)
+		TIMESTEP_ACCEL --;
 }
 
 void tick(Delta *simulationInfo) {
@@ -91,9 +101,11 @@ void stepTime() {
 		if (ACCUMULATOR > MAX_ACCUMULATOR)
 			MAX_ACCUMULATOR = ACCUMULATOR;
 
-		update(TIMESTEP_INFO);
-		tick(TIMESTEP_INFO);
-		cleanWorld();
+		for (int i = 0; i < TIMESTEP_ACCEL; ++ i) {
+			update(TIMESTEP_INFO);
+			tick(TIMESTEP_INFO);
+			cleanWorld();
+		}
 
 		manageTimestep();
 		TIME += DELTA_TIME;
@@ -111,7 +123,7 @@ void stepTime() {
 	int currentTicks = SDL_GetTicks();
 
 	if (currentTicks - FPS_TIMER >= 1000) {
-		printf("FPS: %i\n", FRAMES);
+		/*printf("FPS: %i\n", FRAMES);*/
 
 		FRAMES = 0;
 		FPS_TIMER = currentTicks;
