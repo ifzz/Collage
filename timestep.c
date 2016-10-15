@@ -10,6 +10,7 @@
 float TIME = 0.;
 int FRAMES, FPS_TIMER;
 int TIMESTEP_ACCEL = 1;
+int TICKS = 0;
 float DELTA_TIME;
 float DELTA_TIME_STANDARD = 1 / 6.;
 float NEXT_DELTA_TIME = 1 / 6.;
@@ -51,6 +52,10 @@ void setTimestepModifier(float mod, float rate) {
 	NEXT_DELTA_TIME_MOD = rate;
 }
 
+int getTimestepTicks() {
+	return TICKS;
+}
+
 void increaseTimestepAccel() {
 	TIMESTEP_ACCEL ++;
 }
@@ -61,6 +66,7 @@ void decreaseTimestepAccel() {
 }
 
 void tick(Delta *simulationInfo) {
+	++ TICKS;
 	triggerEvents(EVENT_TIMESTEP, COMPONENT_STAGE, simulationInfo);
 }
 
