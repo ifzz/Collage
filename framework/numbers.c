@@ -55,6 +55,13 @@ double vectorDistance(double vel1[2], double vel2[2]) {
 	return vectorLength(subbed);
 }
 
+void vectorRotate(double ret[2], double vel[2], int ang) {
+	float angle = ang * (M_PI / 180);
+
+	ret[0] = vel[0] * cos(angle) - vel[1] * sin(angle);
+	ret[1] = vel[0] * sin(angle) + vel[1] * cos(angle);
+}
+
 void vectorNormalize(double ret[2], double vel[2]) {
 	double length = vectorLength(vel);
 

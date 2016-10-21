@@ -22,6 +22,7 @@ float impulse(float, float);
 float parabola(float, float);
 void vectorAdd(double[2], double[2], double[2]);
 void vectorSubtract(double[2], double[2], double[2]);
+void vectorRotate(double[2], double[2], int);
 void vectorNormalize(double[2], double[2]);
 void vectorMultiply(double[2], double[2], double);
 void vectorTruncate(double[2], double);
