@@ -111,7 +111,7 @@ void cleanWorld() {
 			world->entityEventCallbackCount[entityId][j] = 0;
 
 #if defined(DEBUG)
-		assert(world->entityMask[entityId] > 0);
+		/*assert(world->entityMask[entityId] > 0);*/
 #else
 		if (world->entityMask[entityId] == 0)
 			puts("Error: Trying to delete empty entity");

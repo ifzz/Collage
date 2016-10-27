@@ -45,8 +45,8 @@ void deleteEntity(unsigned int entityId) {
 	World *world = getWorld();
 
 #if defined(DEBUG)
-		for (int i = 0; i < world->entityIdsToDeleteCount; ++ i)
-			assert(entityId != world->entityIdsToDelete[i]);
+		/*for (int i = 0; i < world->entityIdsToDeleteCount; ++ i)*/
+			/*assert(entityId != world->entityIdsToDelete[i]);*/
 #else
 		bool foundDupe = false;
 

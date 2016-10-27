@@ -55,6 +55,10 @@ double vectorDistance(double vel1[2], double vel2[2]) {
 	return vectorLength(subbed);
 }
 
+double vectorDot(double vel1[2], double vel2[2]) {
+	return (vel1[0] * vel2[0]) + (vel1[1] * vel2[1]);
+}
+
 void vectorRotate(double ret[2], double vel[2], int ang) {
 	float angle = ang * (M_PI / 180);
 
@@ -80,6 +84,14 @@ void vectorTruncate(double vel[2], double maxVel) {
 	i = i < 1.0 ? i : 1.0;
 
 	vectorMultiply(vel, vel, i);
+}
+
+int radToDeg(double rad) {
+	return rad * (180 / M_PI);
+}
+
+double degToRad(int deg) {
+	return deg * (M_PI / 180);
 }
 
 int distance(int x1, int y1, int x2, int y2) {
@@ -154,6 +166,11 @@ void velocity(double velocityArray[2], int direction, double speed) {
 	velocityArray[1] = (sin(rad) * speed);
 }
 
+void velocityRad(double velocityArray[2], double radian, double speed) {
+	velocityArray[0] = cos(radian) * speed;
+	velocityArray[1] = sin(radian) * speed;
+}
+
 int **create2dIntArray(int width, int height) {
 	int **array;
 	int i;
@@ -204,14 +221,15 @@ void delete2dArray(void **array, int width) {
 }
 
 //Source: http://stackoverflow.com/a/10322471
-void drawCircle(int x, int y, int size, void (*callback)(int, int)) {
+void drawCircle(int x, int y, int size, void *data,
+		void (*callback)(void*, int, int)) {
 	for(int xx = -size; xx <= size; xx++) {
 		for(int yy = -size; yy <= size; yy++) {
 			double dx = (double)xx / (double)size;
 			double dy = (double)yy / (double)size;
 			
-			if(dx*dx+dy*dy <= 1) {
-				callback(x + xx, y + yy);
+			if (dx*dx+dy*dy <= 1) {
+				callback(data, x + xx, y + yy);
 			}
 		}
 	}

@@ -5,6 +5,7 @@
 #include "../debug.h"
 #include "list.h"
 #include "drawing.h"
+#include "numbers.h"
 
 
 typedef struct fontManagerEntry {
@@ -129,4 +130,24 @@ SDL_Texture *renderFont(SDL_Renderer *renderer, char *fontName, int r, int g,
 	SDL_FreeSurface(surfaceMessage);
 
 	return texture;
+}
+
+void drawRotatedBox(SDL_Renderer *renderer, int rot, int pnts[][2],
+		int pntCnt) {
+	//TODO: Broken
+	SDL_Point points[255];
+
+	assert(pntCnt < 255);
+
+	for (int i = 0; i < pntCnt; ++ i) {
+		SDL_Point *pnt = &points[i];
+		double point[2] = {pnts[i][0], pnts[i][1]};
+
+		vectorRotate(point, point, rot);
+
+		pnt->x = round(point[0]);
+		pnt->y = round(point[1]);
+	}
+
+	SDL_RenderDrawLines(renderer, points, pntCnt);
 }
