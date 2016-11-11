@@ -54,7 +54,7 @@ void deleteEntity(unsigned int entityId) {
 			foundDupe = entityId == world->entityIdsToDelete[i];
 
 		if (foundDupe) {
-			puts("Error: Trying to delete duplicate entity");
+			/*puts("Error: Trying to delete duplicate entity");*/
 
 			return;
 		}

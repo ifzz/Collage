@@ -72,9 +72,6 @@ void tickCamera(unsigned int entityId, void *data) {
 	camera->exactX = interp(camera->exactX, camera->nextExactX, .1);
 	camera->exactY = interp(camera->exactY, camera->nextExactY, .1);
 
-	camera->x = round(camera->exactX);
-	camera->y = round(camera->exactY);
-
 	camera->panExactX = interp(camera->panExactX, camera->nextPanExactX, .02);
 	camera->panExactY = interp(camera->panExactY, camera->nextPanExactY, .02);
 
@@ -84,10 +81,19 @@ void tickCamera(unsigned int entityId, void *data) {
 	camera->x += camera->panX;
 	camera->y += camera->panY;
 
+	double oldZoomWidth = camera->viewportWidth;
+	double oldZoomHeight = camera->viewportHeight;
+
 	camera->viewportWidth = round(displayGetWindowWidth() / camera->zoom);
 	camera->viewportHeight = round(displayGetWindowHeight() / camera->zoom);
 
 	camera->zoom = interp(camera->zoom, camera->nextZoom, .1);
+
+	camera->nextExactX += (oldZoomWidth - camera->viewportWidth) / 2;
+	camera->nextExactY += (oldZoomHeight - camera->viewportHeight) / 2;
+
+	camera->x = round(camera->exactX);
+	camera->y = round(camera->exactY);
 
 	if (camera->followingEntity) {
 		WorldPositionComponent *position =
