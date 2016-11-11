@@ -30,7 +30,7 @@ void registerCamera(unsigned int entityId, char *name) {
 	CameraComponent *camera = getComponent(entityId, COMPONENT_CAMERA);
 
 	camera->zoom = 1.;
-	camera->nextZoom = 1.2;
+	camera->nextZoom = .9;
 	camera->exactX = 0;
 	camera->exactY = 0;
 	camera->nextExactX = 0;
@@ -66,6 +66,18 @@ unsigned int getCameraWithName(char *name) {
 	assert(1 == 2);
 }
 
+bool isInCameraViewport(CameraComponent *camera, int x, int y) {
+	int minX = camera->x - 128;
+	int minY = camera->y - 128;
+	int maxX = camera->x + displayGetWindowWidth() / camera->zoom;
+	int maxY = camera->y + displayGetWindowHeight() / camera->zoom;
+
+	if (x < minX || x > maxX || y < minY || y > maxY)
+		return false;
+
+	return true;
+}
+
 void tickCamera(unsigned int entityId, void *data) {
 	CameraComponent *camera = getComponent(entityId, COMPONENT_CAMERA);
 
@@ -78,8 +90,8 @@ void tickCamera(unsigned int entityId, void *data) {
 	camera->panX = round(camera->panExactX);
 	camera->panY = round(camera->panExactY);
 
-	camera->x += camera->panX;
-	camera->y += camera->panY;
+	camera->exactX += camera->panX;
+	camera->exactY += camera->panY;
 
 	double oldZoomWidth = camera->viewportWidth;
 	double oldZoomHeight = camera->viewportHeight;
