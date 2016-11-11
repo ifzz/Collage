@@ -46,3 +46,4 @@ void cameraFollowEntityId(unsigned int, unsigned int);
 void cameraUnfollowEntityId(unsigned int);
 void setCameraLead(unsigned int, int, int);
 unsigned int getCameraWithName(char*);
+bool isInCameraViewport(CameraComponent*, int, int);

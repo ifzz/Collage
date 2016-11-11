@@ -39,7 +39,7 @@ void createWorld(char *name) {
 
 	newWorld->entityCount = 0;
 	newWorld->componentCount = 0;
-	newWorld->entityCountMax = 3000;
+	newWorld->entityCountMax = 10000;
 	newWorld->systemCountMax = MAX_EVENTS;
 	newWorld->entityMask = calloc(newWorld->entityCountMax, sizeof(unsigned int));
 	newWorld->components = calloc(40, sizeof(void*));
@@ -196,7 +196,8 @@ void setWorld(char *name) {
 }
 
 void killWorld() {
-	deleteListItem(WORLD_LIST, ACTIVE_WORLD);
+	printf("***WARNING*** Not actually clearing world\n");
+	/*deleteListItem(WORLD_LIST, ACTIVE_WORLD);*/
 
 	ACTIVE_WORLD = NULL;
 }
