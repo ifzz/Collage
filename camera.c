@@ -67,8 +67,8 @@ unsigned int getCameraWithName(char *name) {
 }
 
 bool isInCameraViewport(CameraComponent *camera, int x, int y) {
-	int minX = camera->x - 128;
-	int minY = camera->y - 128;
+	int minX = camera->x - 256;
+	int minY = camera->y - 256;
 	int maxX = camera->x + displayGetWindowWidth() / camera->zoom;
 	int maxY = camera->y + displayGetWindowHeight() / camera->zoom;
 

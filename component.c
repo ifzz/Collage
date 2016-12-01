@@ -18,6 +18,11 @@ void addComponentToWorld(char *name, unsigned int *id, size_t size) {
 	snprintf(world->componentNames[world->componentCount],
 			MAX_COMPONENT_NAME_LEN, "%s", name);
 
+	/*char *debugText[MAX_COMPONENT_NAME_LEN + 12];*/
+
+	/*snprintf(debugText, MAX_COMPONENT_NAME_LEN + 12, "%s", name);*/
+	/*drawLog(debugText);*/
+
 	assert(world->components[world->componentCount]);
 	
 	COMPONENT_SIZES[world->componentCount] = size;

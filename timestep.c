@@ -11,6 +11,7 @@ float TIME = 0.;
 int FRAMES, FPS_TIMER;
 int TIMESTEP_ACCEL = 1;
 int TICKS = 0;
+int CURRENT_FPS = 0;
 float DELTA_TIME;
 float DELTA_TIME_STANDARD = 1 / 6.;
 float NEXT_DELTA_TIME = 1 / 6.;
@@ -50,6 +51,10 @@ void setTimestepModifier(float mod, float rate) {
 
 	NEXT_DELTA_TIME = DELTA_TIME_STANDARD * mod;
 	NEXT_DELTA_TIME_MOD = rate;
+}
+
+int getFps() {
+	return CURRENT_FPS;
 }
 
 int getTimestepTicks() {
@@ -130,6 +135,7 @@ void stepTime() {
 
 	if (currentTicks - FPS_TIMER >= 1000) {
 		/*printf("FPS: %i\n", FRAMES);*/
+		CURRENT_FPS = FRAMES;
 
 		FRAMES = 0;
 		FPS_TIMER = currentTicks;
