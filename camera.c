@@ -41,11 +41,15 @@ void registerCamera(unsigned int entityId, char *name) {
 	camera->panExactY = 0;
 	camera->nextPanExactX = 0;
 	camera->nextPanExactY = 0;
+	camera->shakeRate = .8;
+	camera->shakeX = 0;
+	camera->shakeY = 0;
 	camera->panX = 0;
 	camera->panY = 0;
 	camera->followingEntity = false;
 	camera->viewportWidth = 0;
 	camera->viewportHeight = 0;
+	camera->panRate = .02;
 
 	snprintf(camera->name, MAX_CAMERA_NAME_LEN, "%s", name);
 
@@ -84,11 +88,16 @@ void tickCamera(unsigned int entityId, void *data) {
 	camera->exactX = interp(camera->exactX, camera->nextExactX, .1);
 	camera->exactY = interp(camera->exactY, camera->nextExactY, .1);
 
-	camera->panExactX = interp(camera->panExactX, camera->nextPanExactX, .02);
-	camera->panExactY = interp(camera->panExactY, camera->nextPanExactY, .02);
+	camera->panExactX = interp(camera->panExactX, camera->nextPanExactX,
+			camera->panRate);
+	camera->panExactY = interp(camera->panExactY, camera->nextPanExactY,
+			camera->panRate);
 
 	camera->panX = round(camera->panExactX);
 	camera->panY = round(camera->panExactY);
+
+	camera->shakeX *= camera->shakeRate;
+	camera->shakeY *= camera->shakeRate;
 
 	camera->exactX += camera->panX;
 	camera->exactY += camera->panY;
@@ -104,8 +113,8 @@ void tickCamera(unsigned int entityId, void *data) {
 	camera->nextExactX += (oldZoomWidth - camera->viewportWidth) / 2;
 	camera->nextExactY += (oldZoomHeight - camera->viewportHeight) / 2;
 
-	camera->x = round(camera->exactX);
-	camera->y = round(camera->exactY);
+	camera->x = round(camera->exactX + camera->shakeX);
+	camera->y = round(camera->exactY + camera->shakeY);
 
 	if (camera->followingEntity) {
 		WorldPositionComponent *position =
@@ -194,4 +203,26 @@ void setCameraLead(unsigned int entityId, int x, int y) {
 
 	camera->nextPanExactX = x;
 	camera->nextPanExactY = y;
+}
+
+void setCameraPanRate(unsigned int entityId, double rate) {
+	CameraComponent *camera = getComponent(entityId, COMPONENT_CAMERA);
+
+	camera->panRate = rate;
+}
+
+void setCameraShake(unsigned int entityId, double amount) {
+	CameraComponent *camera = getComponent(entityId, COMPONENT_CAMERA);
+	double shake[2];
+
+	velocity(shake, getRandomInt(360), amount);
+
+	camera->shakeX = shake[0];
+	camera->shakeY = shake[1];
+}
+
+void setCameraShakeRate(unsigned int entityId, double rate) {
+	CameraComponent *camera = getComponent(entityId, COMPONENT_CAMERA);
+
+	camera->shakeRate = rate;
 }
