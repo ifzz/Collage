@@ -12,6 +12,7 @@ float distanceFloat(float, float, float, float);
 double eulerDist(double, double, double, double);
 int directionTo(int, int, int, int);
 void velocity(double[2], int, double);
+void velocityFloat(float[2], int, float);
 void velocityRad(double[2], double, double);
 int **create2dIntArray(int, int);
 bool **create2dBoolArray(int, int);

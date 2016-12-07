@@ -166,6 +166,13 @@ void velocity(double velocityArray[2], int direction, double speed) {
 	velocityArray[1] = (sin(rad) * speed);
 }
 
+void velocityFloat(float velocityArray[2], int direction, float speed) {
+	float rad = (float)direction * (M_PI / 180);
+
+	velocityArray[0] = (cos(rad) * speed);
+	velocityArray[1] = (sin(rad) * speed);
+}
+
 void velocityRad(double velocityArray[2], double radian, double speed) {
 	velocityArray[0] = cos(radian) * speed;
 	velocityArray[1] = sin(radian) * speed;
