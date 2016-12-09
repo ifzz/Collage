@@ -38,4 +38,5 @@ StageComponent* getStage(char*);
 SceneComponent* getScene(char*, char*);
 void clearScene(char*, char*);
 void addEntityToScene(char *, char *, unsigned int);
+void removeEntityFromScene(unsigned int);
 void drawStage(unsigned int, void*);

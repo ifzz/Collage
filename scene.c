@@ -167,6 +167,10 @@ void addEntityToScene(char *stageName, char *sceneName, unsigned int entityId) {
 	++ scene->entityCount;
 }
 
+void removeEntityFromScene(unsigned int entityId) {
+	removeEntityFromSceneHandler(entityId, NULL);
+}
+
 void clearScene(char *stageName, char *sceneName) {
 	SceneComponent *scene = getScene(stageName, sceneName);
 
