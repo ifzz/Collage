@@ -105,8 +105,29 @@ void tickCamera(unsigned int entityId, void *data) {
 	double oldZoomWidth = camera->viewportWidth;
 	double oldZoomHeight = camera->viewportHeight;
 
-	camera->viewportWidth = round(displayGetWindowWidth() / camera->zoom);
-	camera->viewportHeight = round(displayGetWindowHeight() / camera->zoom);
+	int windowWidth = displayGetWindowWidth();
+	int windowHeight = displayGetWindowHeight();
+	int renderWidth = displayGetRenderWidth();
+	int renderHeight = displayGetRenderHeight();
+
+	double renderWidthScale;
+	double renderHeightScale;
+
+	if (windowWidth < renderWidth)
+		renderWidthScale = renderWidth / (double)windowWidth;
+	else
+		renderWidthScale = windowWidth / (double)renderWidth;
+
+	if (windowHeight < renderHeight)
+		renderHeightScale = renderHeight / (double)windowHeight;
+	else
+		renderHeightScale = windowHeight / (double)renderHeight;
+
+	double scaledZoomWidth = camera->zoom * renderWidthScale;
+	double scaledZoomHeight = camera->zoom * renderHeightScale;
+
+	camera->viewportWidth = round(displayGetWindowHeight() / scaledZoomWidth);
+	camera->viewportHeight = round(displayGetWindowHeight() / scaledZoomHeight);
 
 	camera->zoom = interp(camera->zoom, camera->nextZoom, .1);
 
@@ -133,12 +154,33 @@ void renderCamera(unsigned int entityId, void *data) {
 	cameraInfo.camera = camera;
 	cameraInfo.delta = (Delta*)data;
 	cameraInfo.renderer = displayGetRenderer();
+	int windowWidth = displayGetWindowWidth();
+	int windowHeight = displayGetWindowHeight();
+	int renderWidth = displayGetRenderWidth();
+	int renderHeight = displayGetRenderHeight();
 
-	SDL_Rect displayRect = {0, 0, displayGetWindowWidth(),
-		displayGetWindowHeight()};
+	SDL_Rect displayRect = {0, 0, windowWidth, windowHeight};
+
+	double renderWidthScale;
+	double renderHeightScale;
+
+	if (windowWidth < renderWidth)
+		renderWidthScale = renderWidth / (double)windowWidth;
+	else
+		renderWidthScale = windowWidth / (double)renderWidth;
+
+	if (windowHeight < renderHeight)
+		renderHeightScale = renderHeight / (double)windowHeight;
+	else
+		renderHeightScale = windowHeight / (double)renderHeight;
+
+	double scaledZoomWidth = camera->zoom * renderWidthScale;
+	double scaledZoomHeight = camera->zoom * renderHeightScale;
+
+	/*printf("%i - %i\n", renderWidth, windowWidth);*/
 
 	SDL_RenderSetViewport(cameraInfo.renderer, &displayRect);
-	SDL_RenderSetScale(cameraInfo.renderer, camera->zoom, camera->zoom);
+	SDL_RenderSetScale(cameraInfo.renderer, scaledZoomWidth, scaledZoomHeight);
 	bool obeyingZoom = true;
 
 	for (int z = 0; z <= stage->maxRenderIndex; ++ z) {
@@ -150,8 +192,8 @@ void renderCamera(unsigned int entityId, void *data) {
 				continue;
 
 			if (scene->obeyZoom && !obeyingZoom) {
-				SDL_RenderSetScale(cameraInfo.renderer, camera->zoom,
-						camera->zoom);
+				SDL_RenderSetScale(cameraInfo.renderer, scaledZoomWidth,
+						scaledZoomHeight);
 
 				obeyingZoom = true;
 			} else if (!scene->obeyZoom && obeyingZoom) {

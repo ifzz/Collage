@@ -20,6 +20,7 @@ float FRAMES = 0;
 float FRAME_TIMER = 0.;
 float FPS_CAP = -1; //1000 / 400.;
 bool FULLSCREEN = false;
+unsigned int WINDOW_FLAGS = SDL_WINDOW_SHOWN;
 
 
 int initDisplay(char *windowTitle, int windowWidth, int windowHeight) {
@@ -34,7 +35,7 @@ int initDisplay(char *windowTitle, int windowWidth, int windowHeight) {
 	WINDOW_HEIGHT = windowHeight;
 	WINDOW = SDL_CreateWindow(windowTitle, SDL_WINDOWPOS_UNDEFINED,
 			SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT,
-			SDL_WINDOW_SHOWN);
+			WINDOW_FLAGS);
 	RENDERER = SDL_CreateRenderer(WINDOW, -1,
 			SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
 	FRAME_TIMER = SDL_GetTicks();
@@ -83,6 +84,10 @@ int initDisplay(char *windowTitle, int windowWidth, int windowHeight) {
 	return 1;
 }
 
+void diplaySetWindowFlag(int flag) {
+	WINDOW_FLAGS |= flag;
+}
+
 void displayClear() {
 	SDL_RenderClear(RENDERER);
 }
@@ -94,13 +99,21 @@ float getCameraZoom() {
 void displayPresent() {
 	SDL_Rect displayRect;
 
-	int viewportWidth = RENDER_WIDTH;//getViewportWidth();
-	int viewportHeight = RENDER_HEIGHT;//getViewportHeight();
-	double renderWidthScale = WINDOW_WIDTH / (double)viewportWidth;
-	double renderHeightScale = WINDOW_HEIGHT / (double)viewportHeight;
+	double renderWidthScale;
+	double renderHeightScale;
 
-	displayRect.w = viewportWidth;
-	displayRect.h = viewportHeight;
+	if (WINDOW_WIDTH < RENDER_WIDTH)
+		renderWidthScale = RENDER_WIDTH / (double)WINDOW_WIDTH;
+	else
+		renderWidthScale = WINDOW_WIDTH / (double)RENDER_WIDTH;
+
+	if (WINDOW_HEIGHT < RENDER_HEIGHT)
+		renderHeightScale = RENDER_HEIGHT / (double)WINDOW_HEIGHT;
+	else
+		renderHeightScale = WINDOW_HEIGHT / (double)RENDER_HEIGHT;
+
+	displayRect.w = WINDOW_WIDTH;
+	displayRect.h = WINDOW_HEIGHT;
 	displayRect.x = 0;
 	displayRect.y = 0;
 
@@ -165,6 +178,14 @@ void displaySetFullscreen() {
 
 void displaySetWindowed() {
 	FULLSCREEN = false;
+}
+
+void displaySetWindowBorder(bool on) {
+	SDL_SetWindowBordered(WINDOW, on);
+}
+
+void displayResizeWindow() {
+	SDL_SetWindowSize(WINDOW, WINDOW_WIDTH, WINDOW_HEIGHT);
 }
 
 void displayApplyResolution() {

@@ -15,7 +15,7 @@ bool hasTimer(unsigned int, char*);
 
 typedef struct {
 	char name[MAX_TIMER_NAME_LEN];
-	int ticks, maxTicks, repeats;
+	int ticks, maxTicks, repeats, maxRepeats;
 	bool paused, active;
 } Timer;
 

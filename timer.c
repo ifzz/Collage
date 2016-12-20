@@ -60,6 +60,7 @@ void eventAddTimerHandler(unsigned int entityId, void *data) {
 			oldTimer->ticks = 0;
 			oldTimer->maxTicks = newTimer->time;
 			oldTimer->repeats = newTimer->repeats;
+			oldTimer->maxRepeats = newTimer->repeats;
 			oldTimer->active = true;
 			oldTimer->paused = false;
 
@@ -96,7 +97,9 @@ void eventTickTimerHandler(unsigned int entityId, void *data) {
 
 			if (timer->repeats != -1)
 				-- timer->repeats;
-		} else
+		} else {
+			timer->active = false;
 			timer->paused = true;
+		}
 	}
 }
