@@ -126,7 +126,7 @@ void tickCamera(unsigned int entityId, void *data) {
 	double scaledZoomWidth = camera->zoom * renderWidthScale;
 	double scaledZoomHeight = camera->zoom * renderHeightScale;
 
-	camera->viewportWidth = round(displayGetWindowHeight() / scaledZoomWidth);
+	camera->viewportWidth = round(displayGetWindowWidth() / scaledZoomWidth);
 	camera->viewportHeight = round(displayGetWindowHeight() / scaledZoomHeight);
 
 	camera->zoom = interp(camera->zoom, camera->nextZoom, .1);
