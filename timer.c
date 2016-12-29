@@ -13,6 +13,7 @@ void initTimer() {
 
 	createEvent(&EVENT_TIMER_TICK);
 	createEvent(&EVENT_TIMER_EMIT);
+	createEvent(&EVENT_TIMER_FINISH);
 	createEvent(&EVENT_ADD_TIMER);
 
 	createSystem(EVENT_TICK, COMPONENT_TIMER, eventTickTimerHandler);
@@ -61,6 +62,8 @@ void eventAddTimerHandler(unsigned int entityId, void *data) {
 			oldTimer->maxTicks = newTimer->time;
 			oldTimer->repeats = newTimer->repeats;
 			oldTimer->maxRepeats = newTimer->repeats;
+			oldTimer->callback = newTimer->callback;
+			oldTimer->data = newTimer->data;
 			oldTimer->active = true;
 			oldTimer->paused = false;
 
@@ -98,6 +101,8 @@ void eventTickTimerHandler(unsigned int entityId, void *data) {
 			if (timer->repeats != -1)
 				-- timer->repeats;
 		} else {
+			triggerEvent(entityId, EVENT_TIMER_FINISH, timer);
+
 			timer->active = false;
 			timer->paused = true;
 		}
