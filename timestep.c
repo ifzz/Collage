@@ -34,6 +34,7 @@ void initTimestep() {
 	createEvent(&EVENT_TIMESTEP_START);
 	createEvent(&EVENT_TIMESTEP_RENDER);
 	createEvent(&EVENT_TICK);
+	createEvent(&EVENT_HALF_TICK);
 
 	TIMESTEP_INFO = malloc(sizeof(Delta));
 

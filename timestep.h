@@ -2,6 +2,7 @@ unsigned int EVENT_TIMESTEP;
 unsigned int EVENT_TIMESTEP_START;
 unsigned int EVENT_TIMESTEP_RENDER;
 unsigned int EVENT_TICK;
+unsigned int EVENT_HALF_TICK;
 
 #ifndef TIMESTEP_H
 #define TIMESTEP_H

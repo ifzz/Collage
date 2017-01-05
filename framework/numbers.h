@@ -22,6 +22,7 @@ void drawCircle(int x, int y, int size, void*, void (*)(void*, int, int));
 float cubicPulse(float, float, float);
 float impulse(float, float);
 float parabola(float, float);
+float powerCurve(float, float, float);
 void vectorAdd(double[2], double[2], double[2]);
 void vectorSubtract(double[2], double[2], double[2]);
 void vectorRotate(double[2], double[2], int);

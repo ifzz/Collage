@@ -50,6 +50,7 @@ void registerCamera(unsigned int entityId, char *name) {
 	camera->viewportWidth = 0;
 	camera->viewportHeight = 0;
 	camera->panRate = .02;
+	camera->enablePan = true;
 
 	snprintf(camera->name, MAX_CAMERA_NAME_LEN, "%s", name);
 
@@ -88,13 +89,34 @@ void tickCamera(unsigned int entityId, void *data) {
 	camera->exactX = interp(camera->exactX, camera->nextExactX, .1);
 	camera->exactY = interp(camera->exactY, camera->nextExactY, .1);
 
-	camera->panExactX = interp(camera->panExactX, camera->nextPanExactX,
-			camera->panRate);
-	camera->panExactY = interp(camera->panExactY, camera->nextPanExactY,
-			camera->panRate);
+	if (camera->enablePan) {
+		camera->panExactX = interp(camera->panExactX, camera->nextPanExactX,
+				camera->panRate);
+		camera->panExactY = interp(camera->panExactY, camera->nextPanExactY,
+				camera->panRate);
+		camera->panX = round(camera->panExactX);
+		camera->panY = round(camera->panExactY);
+	} else {
+		camera->panExactX = interp(camera->panExactX, 0, camera->panRate);
+		camera->panExactY = interp(camera->panExactY, 0, camera->panRate);
 
-	camera->panX = round(camera->panExactX);
-	camera->panY = round(camera->panExactY);
+		if (fabs(camera->panExactX) < 15 && fabs(camera->panExactY) < 15) {
+			double weirdPanX = 3 * sin(getTimestepTicks() * .05);
+			double weirdPanY = 3 * sin(getTimestepTicks() * .06);
+			double maxPan = round(fabs(camera->panExactX));
+
+			if (fabs(camera->panExactX) < fabs(camera->panExactY))
+				maxPan = fabs(camera->panExactY);
+
+			double mod = 1 - (maxPan / 15.);
+
+			camera->panX = round(weirdPanX * mod) + 2;
+			camera->panY = round(weirdPanY * mod) + 2;
+		} else {
+			camera->panX = round(camera->panExactX);
+			camera->panY = round(camera->panExactY);
+		}
+	}
 
 	camera->shakeX *= camera->shakeRate;
 	camera->shakeY *= camera->shakeRate;
@@ -139,7 +161,8 @@ void tickCamera(unsigned int entityId, void *data) {
 
 	if (camera->followingEntity) {
 		WorldPositionComponent *position =
-			getComponent(camera->followingEntityId, COMPONENT_WORLD_POSITION);
+			getComponent(camera->followingEntityId,
+					COMPONENT_WORLD_POSITION);
 		camera->nextExactX = position->x - camera->viewportWidth / 2;
 		camera->nextExactY = position->y - camera->viewportHeight / 2;
 	}
@@ -267,4 +290,10 @@ void setCameraShakeRate(unsigned int entityId, double rate) {
 	CameraComponent *camera = getComponent(entityId, COMPONENT_CAMERA);
 
 	camera->shakeRate = rate;
+}
+
+void setCameraPanToggle(unsigned int entityId, bool on) {
+	CameraComponent *camera = getComponent(entityId, COMPONENT_CAMERA);
+
+	camera->enablePan = on;
 }

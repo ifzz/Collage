@@ -133,6 +133,12 @@ float impulse(float k, float x) {
 float parabola(float x, float k) {
 	return powf(4.0f * x * (1.0f - x), k);
 }
+	
+float powerCurve(float x, float a, float b) {
+	float k = powf(a+b,a+b) / (pow(a,a)*pow(b,b));
+
+	return k * powf( x, a ) * powf( 1.0-x, b );
+}
 
 int clip(int i, int min, int max) {
 	const int t = i < min ? min : i;

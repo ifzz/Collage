@@ -179,7 +179,12 @@ void clearScene(char *stageName, char *sceneName) {
 }
 
 void tickScene(SceneComponent *scene, Delta *timestepInfo) {
+	int timestepTicks = getTimestepTicks();
+
 	for (int i = 0; i < scene->entityCount; ++ i) {
+		if (timestepTicks % 2)
+			triggerEvent(scene->entityIds[i], EVENT_HALF_TICK, timestepInfo);
+
 		triggerEvent(scene->entityIds[i], EVENT_TICK, timestepInfo);
 	}
 }

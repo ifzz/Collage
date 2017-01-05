@@ -101,6 +101,7 @@ void eventTickTimerHandler(unsigned int entityId, void *data) {
 			if (timer->repeats != -1)
 				-- timer->repeats;
 		} else {
+			printf("%i - %i - %s\n", entityId, EVENT_TIMER_FINISH, timer->name);
 			triggerEvent(entityId, EVENT_TIMER_FINISH, timer);
 
 			timer->active = false;

@@ -28,6 +28,7 @@ struct CameraComponent {
 	int x, y;
 	int panX, panY;
 	unsigned int followingEntityId;
+	bool enablePan;
 	bool followingEntity;
 };
 
@@ -51,5 +52,6 @@ void setCameraLead(unsigned int, int, int);
 void setCameraPanRate(unsigned int, double);
 void setCameraShake(unsigned int, double);
 void setCameraShakeRate(unsigned int, double);
+void setCameraPanToggle(unsigned int, bool);
 unsigned int getCameraWithName(char*);
 bool isInCameraViewport(CameraComponent*, int, int);
