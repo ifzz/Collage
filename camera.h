@@ -23,6 +23,7 @@ struct CameraComponent {
 	double zoom, nextZoom;
 	double shakeRate;
 	double panRate;
+	double zoomRate;
 	int viewportWidth, viewportHeight;
 	int sceneCount;
 	int x, y;
@@ -50,6 +51,7 @@ void cameraFollowEntityId(unsigned int, unsigned int);
 void cameraUnfollowEntityId(unsigned int);
 void setCameraLead(unsigned int, int, int);
 void setCameraPanRate(unsigned int, double);
+void setCameraZoomRate(unsigned int, double);
 void setCameraShake(unsigned int, double);
 void setCameraShakeRate(unsigned int, double);
 void setCameraPanToggle(unsigned int, bool);

@@ -6,6 +6,7 @@ unsigned int EVENT_KEY_INPUT;
 unsigned int EVENT_CONTROLLER_INPUT;
 unsigned int EVENT_MOUSEWHEEL_INPUT;
 unsigned int EVENT_MOUSEBUTTON_INPUT;
+unsigned int EVENT_MOUSE_MOTION;
 bool HARD_EXIT;
 
 #ifndef INPUT_H
@@ -14,6 +15,7 @@ bool HARD_EXIT;
 typedef struct {
 	const char *keyName;
 	bool pressed;
+	int timeHeld;
 } InputEvent;
 
 typedef struct {

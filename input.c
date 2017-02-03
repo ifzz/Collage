@@ -16,6 +16,7 @@ void initInput() {
 	createEvent(&EVENT_MOUSEWHEEL_INPUT);
 	createEvent(&EVENT_MOUSEBUTTON_INPUT);
 	createEvent(&EVENT_CONTROLLER_INPUT);
+	createEvent(&EVENT_MOUSE_MOTION);
 
 	HARD_EXIT = 0;
 
@@ -32,7 +33,8 @@ void registerKeyboardInput(unsigned int entityId) {
 
 void handleKeyInput(SDL_KeyboardEvent *key, bool pressed) {
 	//TODO: More key info here.
-	InputEvent keyEvent = {SDL_GetKeyName(key->keysym.sym), pressed};
+	InputEvent keyEvent = {SDL_GetKeyName(key->keysym.sym), pressed,
+		key->repeat};
 
 	triggerEventForAll(EVENT_KEY_INPUT, COMPONENT_INPUT, &keyEvent);
 
@@ -53,6 +55,10 @@ void handleMouseButton(SDL_MouseButtonEvent *mouseButton, bool pressed) {
 
 void handleMouseWheel(SDL_MouseWheelEvent *mouseWheel) {
 	triggerEventForAll(EVENT_MOUSEWHEEL_INPUT, COMPONENT_INPUT, mouseWheel);
+}
+
+void handleMouseMotion(SDL_MouseMotionEvent *mouseMotion) {
+	triggerEventForAll(EVENT_MOUSE_MOTION, COMPONENT_INPUT, mouseMotion);
 }
 
 void inputLoop() {
@@ -81,6 +87,10 @@ void inputLoop() {
 				break;
 			case SDL_MOUSEWHEEL:
 				handleMouseWheel(&EVENT.wheel);
+
+				break;
+			case SDL_MOUSEMOTION:
+				handleMouseMotion(&EVENT);
 
 				break;
 			case SDL_JOYAXISMOTION:

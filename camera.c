@@ -50,6 +50,7 @@ void registerCamera(unsigned int entityId, char *name) {
 	camera->viewportWidth = 0;
 	camera->viewportHeight = 0;
 	camera->panRate = .02;
+	camera->zoomRate = .1;
 	camera->enablePan = true;
 
 	snprintf(camera->name, MAX_CAMERA_NAME_LEN, "%s", name);
@@ -101,8 +102,8 @@ void tickCamera(unsigned int entityId, void *data) {
 		camera->panExactY = interp(camera->panExactY, 0, camera->panRate);
 
 		if (fabs(camera->panExactX) < 15 && fabs(camera->panExactY) < 15) {
-			double weirdPanX = 3 * sin(getTimestepTicks() * .05);
-			double weirdPanY = 3 * sin(getTimestepTicks() * .06);
+			double weirdPanX = 3 * sin(getTimestepTicks() * .03);
+			double weirdPanY = 3 * sin(getTimestepTicks() * .04);
 			double maxPan = round(fabs(camera->panExactX));
 
 			if (fabs(camera->panExactX) < fabs(camera->panExactY))
@@ -151,7 +152,7 @@ void tickCamera(unsigned int entityId, void *data) {
 	camera->viewportWidth = round(displayGetWindowWidth() / scaledZoomWidth);
 	camera->viewportHeight = round(displayGetWindowHeight() / scaledZoomHeight);
 
-	camera->zoom = interp(camera->zoom, camera->nextZoom, .1);
+	camera->zoom = interp(camera->zoom, camera->nextZoom, camera->zoomRate);
 
 	camera->nextExactX += (oldZoomWidth - camera->viewportWidth) / 2;
 	camera->nextExactY += (oldZoomHeight - camera->viewportHeight) / 2;
@@ -274,6 +275,12 @@ void setCameraPanRate(unsigned int entityId, double rate) {
 	CameraComponent *camera = getComponent(entityId, COMPONENT_CAMERA);
 
 	camera->panRate = rate;
+}
+
+void setCameraZoomRate(unsigned int entityId, double rate) {
+	CameraComponent *camera = getComponent(entityId, COMPONENT_CAMERA);
+
+	camera->zoomRate = rate;
 }
 
 void setCameraShake(unsigned int entityId, double amount) {
