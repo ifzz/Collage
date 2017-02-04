@@ -5,7 +5,8 @@
 #include <string.h>
 #include <SDL2/SDL_mixer.h>
 #include <assert.h>
-#include "../ecs/entities.h"
+#include "../entity.h"
+#include "../world.h"
 #include "strings.h"
 #include "list.h"
 
@@ -276,7 +277,7 @@ void deleteSoundFromList(void *sound) {
 	Mix_FreeChunk(sound);
 }
 
-void startSound() {
+void initSounds() {
 	int flags = MIX_INIT_MP3;
 
 	SOUND_MANAGER = createLinkedList(&deleteSoundFromList);
@@ -291,70 +292,6 @@ void startSound() {
 
 	Mix_AllocateChannels(SOUND_CHANNELS);
 	Mix_ChannelFinished(soundCallbackManagerCallback);
-
-	loadSound("data/sound/player_spawn.wav", "player spawn");
-	loadSound("data/sound/player_spawn_end.wav", "player spawn end");
-	loadSound("data/sound/hit.wav", "hit");
-	loadSound("data/sound/hit_2.wav", "hit 2");
-	loadSound("data/sound/mine.wav", "mine");
-	loadSound("data/sound/jetpack.wav", "jetpack");
-	loadSound("data/sound/jetpack_full.wav", "jetpack full");
-	loadSound("data/sound/shoot.wav", "weak shot");
-	loadSound("data/sound/shoot_2.wav", "shot");
-	loadSound("data/sound/storm.wav", "storm");
-	loadSound("data/sound/voice_blood.wav", "voice taunt");
-	loadSound("data/sound/voice_blood_2.wav", "voice taunt 2");
-	loadSound("data/sound/voice_burn.wav", "voice taunt 3");
-	loadSound("data/sound/voice_crushed.wav", "voice taunt 4");
-	loadSound("data/sound/voice_death_is_quick.wav", "voice taunt 5");
-	loadSound("data/sound/voice_fuck_you.wav", "voice taunt 6");
-	loadSound("data/sound/voice_gunning.wav", "voice taunt 7");
-	loadSound("data/sound/voice_more_death.wav", "voice taunt 8");
-	loadSound("data/sound/voice_youre_done.wav", "voice taunt 9");
-	loadSound("data/sound/teleport_out.wav", "teleport out");
-	loadSound("data/sound/em_intro.wav", "game intro 1");
-	loadSound("data/sound/em_outtro.wav", "game intro 2");
-	loadSound("data/sound/em_intro_2.wav", "game intro 3");
-	loadSound("data/sound/em_intro_3.wav", "game intro 4");
-	loadSound("data/sound/em_intro_4.wav", "game intro 5");
-	loadSound("data/sound/robot_death.wav", "death");
-	loadSound("data/sound/human_death_1.wav", "human death 1");
-	loadSound("data/sound/human_death_2.wav", "human death 2");
-	loadSound("data/sound/human_death_3.wav", "human death 3");
-	loadSound("data/sound/human_death_4_long.wav", "human death 4");
-	loadSound("data/sound/human_death_5_long.wav", "human death 5");
-	loadSound("data/sound/human_death_6.wav", "human death 6");
-	loadSound("data/sound/human_death_7.wav", "human death 7");
-	loadSound("data/sound/explosion_1.wav", "explosion 1");
-	loadSound("data/sound/explosion_2.wav", "explosion 2");
-	loadSound("data/sound/explosion_far_away.wav", "explosion far");
-	loadSound("data/sound/deflector_shield_hit.wav", "deflector shield hit");
-	loadSound("data/sound/deflector_shield_idle.wav", "deflector shield idle");
-	loadSound("data/sound/ship_lower.wav", "ship lower");
-	loadSound("data/sound/missile_hit.wav", "missile hit");
-	loadSound("data/sound/missile_kill.wav", "missile kill");
-	loadSound("data/sound/rocket_launch.wav", "rocket launch");
-	loadSound("data/sound/rocket_launch_2.wav", "rocket launch 2");
-	loadSound("data/sound/land.wav", "player land");
-	loadSound("data/sound/mortar_volley.wav", "mortar volley");
-	loadSound("data/sound/shoot_missile.wav", "missile shoot");
-	loadSound("data/sound/shoot_shotgun.wav", "shotgun shoot");
-	loadSound("data/sound/surgical_laser.wav", "surgical laser fire");
-	loadSound("data/sound/surgical_laser_hit.wav", "surgical laser hit");
-	loadSound("data/sound/lightning.wav", "lightning");
-	loadSound("data/sound/lightning_far.wav", "lightning far");
-	loadSound("data/sound/gravity_well.wav", "gravity well");
-	loadSound("data/sound/sniper_missile.wav", "sniper missile");
-	loadSound("data/sound/fire.wav", "fire");
-	loadSound("data/sound/warning.wav", "warning");
-	loadSound("data/sound/ambient_career_menu_idle.wav", "career menu idle");
-	loadSound("data/sound/ambient_career_menu_load.wav", "career menu load");
-	loadSound("data/sound/menu_error.wav", "career menu error");
-	loadSound("data/sound/menu_select_1.wav", "career menu select 1");
-	loadSound("data/sound/menu_back_1.wav", "career menu back 1");
-	loadSound("data/sound/game_boot.wav", "boot jingle");
-	loadSound("data/sound/talk_1.wav", "talk 1");
-	loadSound("data/sound/barrier_build.wav", "barrier build");
 
 	//printf("Volume set to: %i\n", 10);
 	//Mix_Volume(-1, 10);
