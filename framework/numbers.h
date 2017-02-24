@@ -11,6 +11,7 @@ int distance(int, int, int, int);
 float distanceFloat(float, float, float, float);
 double eulerDist(double, double, double, double);
 int directionTo(int, int, int, int);
+double directionToDouble(double, double, double, double);
 void velocity(double[2], int, double);
 void velocityFloat(float[2], int, float);
 void velocityRad(double[2], double, double);

@@ -169,6 +169,16 @@ int directionTo(int x1, int y1, int x2, int y2) {
 	return (int)((theta * (180 / M_PI)) + .5);
 }
 
+double directionToDouble(double x1, double y1, double x2, double y2) {
+	double theta = atan2((y2 - y1), -(x1 - x2));
+
+	if (theta < 0) {
+		theta += 2 * M_PI;
+	}
+
+	return theta * (180 / M_PI);
+}
+
 void velocity(double velocityArray[2], int direction, double speed) {
 	double rad = (double)direction * (M_PI / 180);
 

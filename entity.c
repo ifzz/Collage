@@ -48,17 +48,15 @@ void deleteEntity(unsigned int entityId) {
 		/*for (int i = 0; i < world->entityIdsToDeleteCount; ++ i)*/
 			/*assert(entityId != world->entityIdsToDelete[i]);*/
 #else
-		bool foundDupe = false;
-
-		for (int i = 0; i < world->entityIdsToDeleteCount && !foundDupe; ++ i)
-			foundDupe = entityId == world->entityIdsToDelete[i];
-
-		if (foundDupe) {
-			/*puts("Error: Trying to delete duplicate entity");*/
-
-			return;
-		}
 #endif
+	bool foundDupe = false;
+
+	for (int i = 0; i < world->entityIdsToDeleteCount && !foundDupe; ++ i)
+		foundDupe = entityId == world->entityIdsToDelete[i];
+
+	if (foundDupe) {
+		return;
+	}
 
 	/*triggerEvent(entityId, EVENT_DELETE, world);*/
 
