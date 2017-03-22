@@ -141,6 +141,8 @@ SDL_Surface* surfaceCreate(char *filename) {
 
 	if (tempSurface == NULL) {
 		printf("Problem loading sprite: %s\n", SDL_GetError());
+
+		assert(1 == 2);
 	} else {
 		surface = SDL_ConvertSurface(tempSurface, windowSurface->format, 0);
 		surfaceDestroy(tempSurface);
