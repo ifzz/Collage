@@ -30,7 +30,7 @@ void registerCamera(unsigned int entityId, char *name) {
 	CameraComponent *camera = getComponent(entityId, COMPONENT_CAMERA);
 
 	camera->zoom = 1.;
-	camera->nextZoom = .9;
+	camera->nextZoom = 1.;
 	camera->exactX = 0;
 	camera->exactY = 0;
 	camera->nextExactX = 0;

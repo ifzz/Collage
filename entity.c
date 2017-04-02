@@ -104,6 +104,12 @@ void unregisterEntityEvent(unsigned int entityId, unsigned int eventId,
 	-- world->entityEventCallbackCount[entityId][eventId];
 }
 
+void unregisterAllEntityEvents(unsigned int entityId, unsigned int eventId) {
+	World *world = getWorld();
+
+	world->entityEventCallbackCount[entityId][eventId] = 0;
+}
+
 void triggerEvent(unsigned int entityId, unsigned int eventId, void *data) {
 	World *world = getWorld();
 	unsigned int entityMask = world->entityMask[entityId];
