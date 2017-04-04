@@ -45,6 +45,10 @@ void resetTimestep() {
 	CURRENT_TIME = SDL_GetTicks();
 }
 
+Delta* getTimestepInfo() {
+	return TIMESTEP_INFO;
+}
+
 void setTimestepModifier(float mod, float rate) {
 	if (rate == 1.) {
 		DELTA_TIME = DELTA_TIME_STANDARD * mod;

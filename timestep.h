@@ -23,3 +23,4 @@ int getTimestepTicks(void);
 void increaseTimestepAccel(void);
 void decreaseTimestepAccel(void);
 int getFps(void);
+Delta* getTimestepInfo(void);
