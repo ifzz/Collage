@@ -25,12 +25,14 @@ struct CameraComponent {
 	double panRate;
 	double zoomRate;
 	int viewportWidth, viewportHeight;
+	int windowWidth, windowHeight;
 	int sceneCount;
 	int x, y;
 	int panX, panY;
 	unsigned int followingEntityId;
 	bool enablePan;
 	bool followingEntity;
+	SDL_Texture *targetTexture;
 };
 
 struct CameraRenderEvent {
@@ -51,6 +53,7 @@ void cameraFollowEntityId(unsigned int, unsigned int);
 void cameraUnfollowEntityId(unsigned int);
 void setCameraLead(unsigned int, int, int);
 void setCameraPanRate(unsigned int, double);
+void setCameraSize(unsigned int, int, int);
 void setCameraZoomRate(unsigned int, double);
 void setCameraShake(unsigned int, double);
 void setCameraShakeRate(unsigned int, double);

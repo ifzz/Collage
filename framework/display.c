@@ -11,6 +11,7 @@
 
 SDL_Window *WINDOW = NULL;
 SDL_Renderer *RENDERER = NULL;
+SDL_Texture *RENDER_TARGET = NULL;
 int IMAGE_INIT_FLAGS = IMG_INIT_JPG | IMG_INIT_PNG;
 int RENDER_WIDTH = 1024;
 int RENDER_HEIGHT = 768;
@@ -64,6 +65,8 @@ int initDisplay(char *windowTitle, int windowWidth, int windowHeight) {
 	
 	if (IMG_Init(IMAGE_INIT_FLAGS) != IMAGE_INIT_FLAGS) {
 		printf("Couldn't init SDL_image's JPG or PNG support.\n");
+
+		printf("ERROR: %s\n", SDL_GetError());
 		
 		SDL_Quit();
 		
@@ -90,6 +93,17 @@ void diplaySetWindowFlag(int flag) {
 
 void displayClear() {
 	SDL_RenderClear(RENDERER);
+}
+
+void displaySetDefaultRenderTarget(SDL_Renderer *renderer,
+		SDL_Texture *texture) {
+	RENDER_TARGET = texture;
+
+	SDL_SetRenderTarget(renderer, RENDER_TARGET);
+}
+
+void displayResetRenderTarget(SDL_Renderer *renderer) {
+	SDL_SetRenderTarget(renderer, RENDER_TARGET);
 }
 
 float getCameraZoom() {

@@ -7,6 +7,7 @@
 #include "system.h"
 #include "camera.h"
 #include "scene.h"
+#include "debug.h"
 
 
 void tickCamera(unsigned int, void *data);
@@ -52,8 +53,12 @@ void registerCamera(unsigned int entityId, char *name) {
 	camera->panRate = .02;
 	camera->zoomRate = .1;
 	camera->enablePan = true;
+	camera->targetTexture = NULL;
+	camera->windowWidth = 1000;
+	camera->windowHeight = 1000;
 
 	snprintf(camera->name, MAX_CAMERA_NAME_LEN, "%s", name);
+	snprintf(camera->stageName, MAX_STAGE_NAME_LEN, "NULL");
 
 	CAMERA_IDS[CAMERA_COUNT] = entityId;
 
@@ -171,6 +176,13 @@ void tickCamera(unsigned int entityId, void *data) {
 
 void renderCamera(unsigned int entityId, void *data) {
 	CameraComponent *camera = getComponent(entityId, COMPONENT_CAMERA);
+
+	if (!strcmp(camera->stageName, "NULL")) {
+		logError("Camera %s has no stage.", camera->name);
+
+		return;
+	}
+
 	StageComponent *stage = getStage(camera->stageName);
 
 	CameraRenderEvent cameraInfo;
@@ -178,8 +190,8 @@ void renderCamera(unsigned int entityId, void *data) {
 	cameraInfo.camera = camera;
 	cameraInfo.delta = (Delta*)data;
 	cameraInfo.renderer = displayGetRenderer();
-	int windowWidth = displayGetWindowWidth();
-	int windowHeight = displayGetWindowHeight();
+	int windowWidth = camera->windowWidth;//displayGetWindowWidth();
+	int windowHeight = camera->windowHeight;//displayGetWindowHeight();
 	int renderWidth = displayGetRenderWidth();
 	int renderHeight = displayGetRenderHeight();
 
@@ -200,8 +212,6 @@ void renderCamera(unsigned int entityId, void *data) {
 
 	double scaledZoomWidth = camera->zoom * renderWidthScale;
 	double scaledZoomHeight = camera->zoom * renderHeightScale;
-
-	/*printf("%i - %i\n", renderWidth, windowWidth);*/
 
 	SDL_RenderSetViewport(cameraInfo.renderer, &displayRect);
 	SDL_RenderSetScale(cameraInfo.renderer, scaledZoomWidth, scaledZoomHeight);
@@ -262,6 +272,13 @@ void cameraUnfollowEntityId(unsigned int entityId) {
 
 	camera->followingEntity = false;
 	camera->followingEntityId = 0;
+}
+
+void setCameraSize(unsigned int entityId, int w, int h) {
+	CameraComponent *camera = getComponent(entityId, COMPONENT_CAMERA);
+
+	camera->windowWidth = w;
+	camera->windowHeight = h;
 }
 
 void setCameraLead(unsigned int entityId, int x, int y) {

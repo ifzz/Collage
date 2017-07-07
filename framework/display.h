@@ -6,6 +6,8 @@ int WINDOW_WIDTH, WINDOW_HEIGHT;
 int initDisplay(char*, int, int);
 void displayClear(void);
 void displayPresent(void);
+void displaySetDefaultRenderTarget(SDL_Renderer*, SDL_Texture*);
+void displayResetRenderTarget(SDL_Renderer*);
 void destroyDisplay(void);
 void displayFrameStart(void);
 void displayFrameEnd(void);

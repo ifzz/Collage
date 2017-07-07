@@ -4,6 +4,7 @@
 #include <assert.h>
 #include "../debug.h"
 #include "list.h"
+#include "display.h"
 #include "drawing.h"
 #include "numbers.h"
 
@@ -46,7 +47,7 @@ SDL_Texture* textureGenerateTile(SDL_Renderer *renderer,
 		}
 	}
 
-	SDL_SetRenderTarget(renderer, NULL); 
+	displayResetRenderTarget(renderer);
 	
 	return targetTexture;
 }
