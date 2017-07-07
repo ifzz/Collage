@@ -54,8 +54,12 @@ void registerCamera(unsigned int entityId, char *name) {
 	camera->zoomRate = .1;
 	camera->enablePan = true;
 	camera->targetTexture = NULL;
-	camera->windowWidth = 1000;
-	camera->windowHeight = 1000;
+	camera->windowWidth = 1280;
+	camera->windowHeight = 720;
+	camera->windowRenderWidth = 1280;
+	camera->windowRenderHeight = 720;
+	camera->windowX = 0;
+	camera->windowY = 0;
 
 	snprintf(camera->name, MAX_CAMERA_NAME_LEN, "%s", name);
 	snprintf(camera->stageName, MAX_STAGE_NAME_LEN, "NULL");
@@ -133,10 +137,10 @@ void tickCamera(unsigned int entityId, void *data) {
 	double oldZoomWidth = camera->viewportWidth;
 	double oldZoomHeight = camera->viewportHeight;
 
-	int windowWidth = displayGetWindowWidth();
-	int windowHeight = displayGetWindowHeight();
-	int renderWidth = displayGetRenderWidth();
-	int renderHeight = displayGetRenderHeight();
+	int windowWidth = camera->windowWidth;//displayGetWindowWidth();
+	int windowHeight = camera->windowHeight;//displayGetWindowHeight();
+	int renderWidth = camera->windowRenderWidth;//displayGetRenderWidth();
+	int renderHeight = camera->windowRenderHeight;//displayGetRenderWidth();
 
 	double renderWidthScale;
 	double renderHeightScale;
@@ -154,8 +158,8 @@ void tickCamera(unsigned int entityId, void *data) {
 	double scaledZoomWidth = camera->zoom * renderWidthScale;
 	double scaledZoomHeight = camera->zoom * renderHeightScale;
 
-	camera->viewportWidth = round(displayGetWindowWidth() / scaledZoomWidth);
-	camera->viewportHeight = round(displayGetWindowHeight() / scaledZoomHeight);
+	camera->viewportWidth = round(windowWidth / scaledZoomWidth);
+	camera->viewportHeight = round(windowHeight / scaledZoomHeight);
 
 	camera->zoom = interp(camera->zoom, camera->nextZoom, camera->zoomRate);
 
@@ -192,10 +196,10 @@ void renderCamera(unsigned int entityId, void *data) {
 	cameraInfo.renderer = displayGetRenderer();
 	int windowWidth = camera->windowWidth;//displayGetWindowWidth();
 	int windowHeight = camera->windowHeight;//displayGetWindowHeight();
-	int renderWidth = displayGetRenderWidth();
-	int renderHeight = displayGetRenderHeight();
+	int renderWidth = camera->windowRenderWidth;//displayGetRenderWidth();
+	int renderHeight = camera->windowRenderHeight;//displayGetRenderWidth();
 
-	SDL_Rect displayRect = {0, 0, windowWidth, windowHeight};
+	SDL_Rect displayRect = {camera->windowX, camera->windowY, windowWidth, windowHeight};
 
 	double renderWidthScale;
 	double renderHeightScale;
@@ -274,11 +278,25 @@ void cameraUnfollowEntityId(unsigned int entityId) {
 	camera->followingEntityId = 0;
 }
 
-void setCameraSize(unsigned int entityId, int w, int h) {
+void setCameraWindowSize(unsigned int entityId, int w, int h) {
 	CameraComponent *camera = getComponent(entityId, COMPONENT_CAMERA);
 
 	camera->windowWidth = w;
 	camera->windowHeight = h;
+}
+
+void setCameraRenderSize(unsigned int entityId, int w, int h) {
+	CameraComponent *camera = getComponent(entityId, COMPONENT_CAMERA);
+
+	camera->windowRenderWidth = w;
+	camera->windowRenderHeight = h;
+}
+
+void setCameraWindowPosition(unsigned int entityId, int x, int y) {
+	CameraComponent *camera = getComponent(entityId, COMPONENT_CAMERA);
+
+	camera->windowX = x;
+	camera->windowY = y;
 }
 
 void setCameraLead(unsigned int entityId, int x, int y) {
@@ -292,6 +310,13 @@ void setCameraPanRate(unsigned int entityId, double rate) {
 	CameraComponent *camera = getComponent(entityId, COMPONENT_CAMERA);
 
 	camera->panRate = rate;
+}
+
+void setCameraZoom(unsigned int entityId, double amount) {
+	CameraComponent *camera = getComponent(entityId, COMPONENT_CAMERA);
+
+	camera->zoom = amount;
+	camera->nextZoom = amount;
 }
 
 void setCameraZoomRate(unsigned int entityId, double rate) {
