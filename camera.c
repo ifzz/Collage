@@ -163,8 +163,8 @@ void tickCamera(unsigned int entityId, void *data) {
 
 	camera->zoom = interp(camera->zoom, camera->nextZoom, camera->zoomRate);
 
-	camera->nextExactX += (oldZoomWidth - camera->viewportWidth) / 2;
-	camera->nextExactY += (oldZoomHeight - camera->viewportHeight) / 2;
+	camera->nextExactX += (oldZoomWidth - camera->viewportWidth) / 2.;
+	camera->nextExactY += (oldZoomHeight - camera->viewportHeight) / 2.;
 
 	camera->x = round(camera->exactX + camera->shakeX);
 	camera->y = round(camera->exactY + camera->shakeY);

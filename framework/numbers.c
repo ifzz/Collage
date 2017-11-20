@@ -249,14 +249,14 @@ void delete2dArray(void **array, int width) {
 
 //Source: http://stackoverflow.com/a/10322471
 void drawCircle(int x, int y, int size, void *data,
-		void (*callback)(void*, int, int)) {
+		void (*callback)(void*, int, int, int)) {
 	for(int xx = -size; xx <= size; xx++) {
 		for(int yy = -size; yy <= size; yy++) {
 			double dx = (double)xx / (double)size;
 			double dy = (double)yy / (double)size;
 			
 			if (dx*dx+dy*dy <= 1) {
-				callback(data, x + xx, y + yy);
+				callback(data, x + xx, y + yy, size);
 			}
 		}
 	}

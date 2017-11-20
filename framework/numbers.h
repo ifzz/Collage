@@ -19,7 +19,7 @@ int **create2dIntArray(int, int);
 bool **create2dBoolArray(int, int);
 float **create2dFloatArray(int, int);
 void delete2dArray(void **, int);
-void drawCircle(int x, int y, int size, void*, void (*)(void*, int, int));
+void drawCircle(int x, int y, int size, void*, void (*)(void*, int, int, int));
 float cubicPulse(float, float, float);
 float impulse(float, float);
 float parabola(float, float);
