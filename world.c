@@ -39,7 +39,7 @@ void createWorld(char *name) {
 
 	newWorld->entityCount = 0;
 	newWorld->componentCount = 0;
-	newWorld->entityCountMax = 15000;
+	newWorld->entityCountMax = 500;
 	newWorld->systemCountMax = MAX_EVENTS;
 	newWorld->entityMask = calloc(newWorld->entityCountMax, sizeof(unsigned int));
 	newWorld->components = calloc(40, sizeof(void*));
