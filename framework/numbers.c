@@ -25,6 +25,15 @@ double getRandomDouble(double n) {
 	return (double)rand()/(double)(RAND_MAX / n);
 }
 
+int roll(int num, int sides) {
+	int result = 0;
+
+	for (int i = 0; i < num; ++ i)
+		result += 1 + getRandomInt(sides);
+
+	return result;
+}
+
 double interp(double n1, double n2, double t) {
 	return n1 + (n2 - n1) * t;
 }

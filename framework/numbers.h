@@ -35,3 +35,4 @@ double vectorLength(double[2]);
 double vectorDot(double[2], double[2]);
 int radToDeg(double);
 double degToRad(int);
+int roll(int, int);
