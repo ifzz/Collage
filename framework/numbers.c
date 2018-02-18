@@ -100,7 +100,7 @@ void vectorTruncate(double vel[2], double maxVel) {
 }
 
 int radToDeg(double rad) {
-	return rad * (180 / M_PI);
+	return round(rad * (180 / M_PI));
 }
 
 double degToRad(int deg) {
