@@ -1,4 +1,5 @@
 unsigned int EVENT_DELETE;
+unsigned int EVENT_CLEANUP;
 
 void initEntities(void);
 unsigned int createEntity(void);

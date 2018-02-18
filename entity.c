@@ -7,6 +7,7 @@
 
 void initEntities() {
 	createEvent(&EVENT_DELETE);
+	createEvent(&EVENT_CLEANUP);
 }
 
 unsigned int createEntity() {
@@ -16,13 +17,14 @@ unsigned int createEntity() {
 	if (world->deletedEntityCount) {
 		returnedId = world->deletedEntityIds[world->deletedEntityCount - 1];
 
-		logInfo("Using deleted entity id=%i, remaining=%i", returnedId, world->deletedEntityCount);
+		/*logInfo("Using deleted entity id=%i, remaining=%i", returnedId, world->deletedEntityCount);*/
 
 		-- world->deletedEntityCount;
 	} else if (world->entityCount < world->entityCountMax) {
 		returnedId = world->entityCount;
 		++ world->entityCount;
-		logInfo("Using new entity id=%i, total count: %i", returnedId, world->entityCount);
+
+		/*logInfo("Using new entity id=%i, total count: %i", returnedId, world->entityCount);*/
 	}
 
 	if (returnedId == -1) {
@@ -31,6 +33,7 @@ unsigned int createEntity() {
 		assert(1 == 2);
 	}
 
+	
 	assert(returnedId < world->entityCountMax);
 
 	/*printf("[ENTITY] Created new entity: %i\n", returnedId);*/
@@ -58,7 +61,7 @@ void deleteEntity(unsigned int entityId) {
 		return;
 	}
 
-	/*triggerEvent(entityId, EVENT_DELETE, world);*/
+	triggerEvent(entityId, EVENT_CLEANUP, world);
 
 	/*world->entityMask[entityId] = 0;*/
 

@@ -154,7 +154,7 @@ void removeEntityFromSceneHandler(unsigned int entityId, void *data) {
 void addEntityToScene(char *stageName, char *sceneName, unsigned int entityId) {
 	SceneComponent *scene = getScene(stageName, sceneName);
 
-	registerEntityEvent(entityId, EVENT_DELETE, &removeEntityFromSceneHandler);
+	registerEntityEvent(entityId, EVENT_CLEANUP, &removeEntityFromSceneHandler);
 
 	if (scene->entityCount >= scene->entityCountMax) {
 		printf("Scene `%s` hit entity limit: %i\n", sceneName,
