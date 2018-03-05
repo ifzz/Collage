@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL2_gfxPrimitives.h>
 #include <string.h>
 #include <assert.h>
 #include "../debug.h"
@@ -151,4 +152,12 @@ void drawRotatedBox(SDL_Renderer *renderer, int rot, int pnts[][2],
 	}
 
 	SDL_RenderDrawLines(renderer, points, pntCnt);
+}
+
+void drawText(SDL_Renderer *renderer, char *text, int x, int y, bool centered,
+		int r, int g, int b, int a) {
+	if (centered)
+		x -= strlen(text) * 6;
+
+	stringRGBA(renderer, x, y, text, r, g, b, a);
 }

@@ -144,8 +144,8 @@ void removeEntityFromSceneHandler(unsigned int entityId, void *data) {
 
 				assert(scene->entityCount >= 0);
 
-				logInfo("Removed entity %i from scene %s", entityId,
-						scene->name);
+				/*logInfo("Removed entity %i from scene %s", entityId,*/
+						/*scene->name);*/
 			}
 		}
 	}

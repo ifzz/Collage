@@ -75,7 +75,7 @@ void deleteEntity(unsigned int entityId) {
 
 	++ world->entityIdsToDeleteCount;
 	
-	logInfo("[ENTITY] Deleted entity #%u", entityId);
+	/*logInfo("[ENTITY] Deleted entity #%u", entityId);*/
 }
 
 void registerEntityEvent(unsigned int entityId, unsigned int eventId,

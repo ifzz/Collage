@@ -97,12 +97,12 @@ void cleanWorld() {
 	if (world->entityIdsToDeleteCount == 0)
 		return;
 
-	logInfo("[WORLD-CLEANING] Number of entities to clean: %i", world->entityIdsToDeleteCount);
+	/*logInfo("[WORLD-CLEANING] Number of entities to clean: %i", world->entityIdsToDeleteCount);*/
 
 	for (int i = 0; i < world->entityIdsToDeleteCount; ++ i) {
 		unsigned int entityId = world->entityIdsToDelete[i];
 
-		logInfo("[WORLD-CLEANING] Cleaning entity: %i", entityId);
+		/*logInfo("[WORLD-CLEANING] Cleaning entity: %i", entityId);*/
 
 		/*assert(1 == 2);*/
 		triggerEvent(entityId, EVENT_DELETE, world);
@@ -126,7 +126,7 @@ void cleanWorld() {
 
 	world->entityIdsToDeleteCount = 0;
 
-	logInfo("[WORLD-CLEANING] Clean");
+	/*logInfo("[WORLD-CLEANING] Clean");*/
 }
 
 void deleteWorld(void *data) {
