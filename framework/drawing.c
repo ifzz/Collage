@@ -154,10 +154,12 @@ void drawRotatedBox(SDL_Renderer *renderer, int rot, int pnts[][2],
 	SDL_RenderDrawLines(renderer, points, pntCnt);
 }
 
-void drawText(SDL_Renderer *renderer, char *text, int x, int y, bool centered,
-		int r, int g, int b, int a) {
-	if (centered)
-		x -= strlen(text) * 6;
+void drawText(SDL_Renderer *renderer, char *text, int x, int y,
+		unsigned char align, int r, int g, int b, int a) {
+	if (align == ALIGN_CENTER)
+		x -= (strlen(text) / 2) * 8;
+	else if (align == ALIGN_RIGHT)
+		x -= strlen(text) * 8;
 
 	stringRGBA(renderer, x, y, text, r, g, b, a);
 }
